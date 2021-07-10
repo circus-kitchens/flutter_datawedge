@@ -48,18 +48,37 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          brightness: Brightness.dark,
+        ),
+        primarySwatch: Colors.blue,
+        accentColor: Colors.pinkAccent
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Flutter DataWedge'),
         ),
         body: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Last code: $_lastCode'),
-              Text('Status: $_scannerStatus'),
+              Column(
+                children: [
+                  Text('Last code:'),
+                  Text(_lastCode, style: Theme.of(context).textTheme.headline5),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Column(
+                children: [
+                  Text('Status:'),
+                  Text(_scannerStatus, style: Theme.of(context).textTheme.headline6),
+                ],
+              ),
+              SizedBox(height: 10.0),
               ElevatedButton(
                 child: Text(_isEnabled ? 'Desactivate' : 'Activate'),
                 onPressed: () {
