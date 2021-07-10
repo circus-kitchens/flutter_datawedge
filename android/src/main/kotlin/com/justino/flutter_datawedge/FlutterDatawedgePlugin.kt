@@ -1,9 +1,14 @@
 package com.justino.flutter_datawedge
 
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.NonNull
+import com.justino.flutter_datawedge.consts.MyChannels
+import com.justino.flutter_datawedge.consts.MyIntents
+import com.justino.flutter_datawedge.consts.MyMethods
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink
@@ -15,9 +20,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import org.json.JSONObject
 
 class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
-  private val commandChannel = "com.justino.flutter_datawedge/command"
-  private val scanChannel = "com.justino.flutter_datawedge/scan"
-  private val profileIntentAction = "com.justino.flutter_datawedge.SCAN"
+
   private val profileIntentBroadcast = "2"
 
   private lateinit var scanEventChannel: EventChannel
@@ -40,32 +43,37 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
     context = flutterPluginBinding.applicationContext
 
     intentFilter = IntentFilter()
-    intentFilter.addAction(profileIntentAction)
-    intentFilter.addAction(DWInterface.DATAWEDGE_RETURN_ACTION)
-    intentFilter.addCategory(DWInterface.DATAWEDGE_RETURN_CATEGORY)
+    intentFilter.addAction(MyIntents.SCAN_EVENT_INTENT_ACTION)
+    intentFilter.addAction(DWInterface.ACTION_RESULT)
+    intentFilter.addAction(DWInterface.ACTION_RESULT_NOTIFICATION)
+    intentFilter.addCategory(Intent.CATEGORY_DEFAULT)
 
-    scanEventChannel = EventChannel(flutterPluginBinding.binaryMessenger, scanChannel)
+    scanEventChannel = EventChannel(flutterPluginBinding.binaryMessenger, MyChannels.scanChannel)
     scanEventChannel.setStreamHandler(this)
 
-    commandMethodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, commandChannel)
+    commandMethodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, MyChannels.commandChannel)
     commandMethodChannel.setMethodCallHandler(this)
 
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+
     when (call.method) {
-      "getPlatformVersion" -> {
+      MyMethods.getPlatformVersion -> {
         result.success("Android ${android.os.Build.VERSION.RELEASE}")
       }
-      "sendDataWedgeCommandStringParameter" -> {
+      MyMethods.sendDataWedgeCommandStringParameter -> {
         val arguments = JSONObject(call.arguments.toString())
         val command: String = arguments.get("command") as String
         val parameter: String = arguments.get("parameter") as String
         dwInterface.sendCommandString(context, command, parameter)
         //  result.success(0);  //  DataWedge does not return responses
       }
-      "createDataWedgeProfile" -> {
+      MyMethods.createDataWedgeProfile -> {
         createDataWedgeProfile(call.arguments.toString())
+      }
+      MyMethods.listenScannerStatus -> {
+        listenScannerStatus()
       }
       else -> {
         result.notImplemented()
@@ -84,36 +92,56 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
   }
 
   private fun createDataWedgeProfile(profileName: String) {
-    //  Create and configure the DataWedge profile associated with this application
-    //  For readability's sake, I have not defined each of the keys in the DWInterface file
-    dwInterface.sendCommandString(context, DWInterface.DATAWEDGE_SEND_CREATE_PROFILE, profileName)
+
+
+    //https://techdocs.zebra.com/datawedge/latest/guide/api/createprofile/
+    dwInterface.sendCommandString(context, DWInterface.EXTRA_CREATE_PROFILE, profileName)
     val profileConfig = Bundle()
-    profileConfig.putString("PROFILE_NAME", profileName)
+    profileConfig.putString(DWInterface.EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME, profileName)
     profileConfig.putString("PROFILE_ENABLED", "true") //  These are all strings
     profileConfig.putString("CONFIG_MODE", "UPDATE")
+
     val barcodeConfig = Bundle()
     barcodeConfig.putString("PLUGIN_NAME", "BARCODE")
-    barcodeConfig.putString("RESET_CONFIG", "true") //  This is the default but never hurts to specify
+    //  This is the default but never hurts to specify
+    barcodeConfig.putString("RESET_CONFIG", "true")
+
     val barcodeProps = Bundle()
     barcodeConfig.putBundle("PARAM_LIST", barcodeProps)
     profileConfig.putBundle("PLUGIN_CONFIG", barcodeConfig)
+
     val appConfig = Bundle()
-    appConfig.putString("PACKAGE_NAME", context.packageName)      //  Associate the profile with this app
+    //  Associate the profile with this app
+    appConfig.putString("PACKAGE_NAME", context.packageName)
     appConfig.putStringArray("ACTIVITY_LIST", arrayOf("*"))
     profileConfig.putParcelableArray("APP_LIST", arrayOf(appConfig))
-    dwInterface.sendCommandBundle(context, DWInterface.DATAWEDGE_SEND_SET_CONFIG, profileConfig)
+
+    dwInterface.sendCommandBundle(context, DWInterface.ACTION_SET_CONFIG, profileConfig)
     //  You can only configure one plugin at a time in some versions of DW, now do the intent output
     profileConfig.remove("PLUGIN_CONFIG")
+
     val intentConfig = Bundle()
     intentConfig.putString("PLUGIN_NAME", "INTENT")
     intentConfig.putString("RESET_CONFIG", "true")
+
     val intentProps = Bundle()
     intentProps.putString("intent_output_enabled", "true")
-    intentProps.putString("intent_action", profileIntentAction)
+    intentProps.putString("intent_action", MyIntents.SCAN_EVENT_INTENT_ACTION)
     intentProps.putString("intent_delivery", profileIntentBroadcast)  //  "2"
     intentConfig.putBundle("PARAM_LIST", intentProps)
     profileConfig.putBundle("PLUGIN_CONFIG", intentConfig)
-    dwInterface.sendCommandBundle(context, DWInterface.DATAWEDGE_SEND_SET_CONFIG, profileConfig)
+
+    dwInterface.sendCommandBundle(context, DWInterface.ACTION_SET_CONFIG, profileConfig)
+  }
+
+  private fun listenScannerStatus(){
+    //https://techdocs.zebra.com/datawedge/latest/guide/api/registerfornotification
+    val b = Bundle()
+    b.putString(DWInterface.EXTRA_KEY_APPLICATION_NAME, context.packageName)
+    b.putString(DWInterface.EXTRA_KEY_NOTIFICATION_TYPE, DWInterface.EXTRA_KEY_VALUE_SCANNER_STATUS)
+
+    //https://techdocs.zebra.com/datawedge/latest/guide/api/setconfig/
+    dwInterface.sendCommandBundle(context, DWInterface.EXTRA_REGISTER_NOTIFICATION, b)
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {

@@ -16,44 +16,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  String _scannerStatus = "Scanner status";
+  String _lastCode = '';
+  bool _isEnabled = true;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
     initScanner();
   }
 
   void initScanner() {
     FlutterDataWedge.initScanner(
       profileName: 'FlutterDataWedge',
-      onEvent: (event){
-
-        Map barcodeScan = jsonDecode(event as String);
-        print("Barcode: " + barcodeScan['scanData']);
-        print("LabelType: " + barcodeScan['labelType']);
-        print("Source: " + barcodeScan['source']);
-
+      onScan: (result){
+        setState(() {
+          _lastCode = result.data;
+        }); 
+      },
+      onStatusUpdate: (result){
+        ScannerStatusType status = result.status;
+        setState(() {
+          _scannerStatus = status.toString().split('.')[1];
+        });
       }
     );
-  }
 
-  Future<void> initPlatformState() async {
-    String platformVersion;
-
-    try {
-      platformVersion =
-          await FlutterDataWedge.platformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    FlutterDataWedge.listenScannerStatus();
   }
 
   @override
@@ -64,18 +53,24 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
-          children: [
-            Center(
-              child: Text('Running on: $_platformVersion\n'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                FlutterDataWedge.enableScanner(true);
-              },
-              child: Text('Testar')
-            )
-          ],
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Last code: $_lastCode'),
+              Text('Status: $_scannerStatus'),
+              ElevatedButton(
+                child: Text(_isEnabled ? 'Desactivate' : 'Activate'),
+                onPressed: () {
+                  FlutterDataWedge.enableScanner(!_isEnabled);
+                  setState(() {
+                    _isEnabled = !_isEnabled;
+                  });
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
