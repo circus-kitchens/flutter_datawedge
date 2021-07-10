@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -24,13 +26,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initScanner() {
-    print('initScanner()');
-
     FlutterDatawedge.initScanner(
       profileName: 'FlutterDataWedge',
       onEvent: (event){
-        print('Event received in Flutter side');
-        print(event);
+
+        Map barcodeScan = jsonDecode(event as String);
+        print("Barcode: " + barcodeScan['scanData']);
+        print("LabelType: " + barcodeScan['labelType']);
+        print("Source: " + barcodeScan['source']);
+
       }
     );
   }
@@ -55,12 +59,23 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Column(
+          children: [
+            Center(
+              child: Text('Running on: $_platformVersion\n'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                FlutterDatawedge.enableScanner(true);
+              },
+              child: Text('Testar')
+            )
+          ],
         ),
       ),
     );
