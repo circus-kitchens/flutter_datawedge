@@ -5,7 +5,7 @@
 A Flutter plugin communicate with DataWedge scanners
 
 <p align="center">
- <img width="640px" src="https://raw.githubusercontent.com/rafaeljustinox/flutter_datawedge/main/.github/images/app.png" align="center" alt="Example" />
+ <img width="220px" src="https://raw.githubusercontent.com/rafaeljustinox/flutter_datawedge/main/.github/images/app.png" align="center" alt="Example" />
 </p>
 
 ## Getting Started (under development)
