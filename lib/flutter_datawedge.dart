@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-class FlutterDatawedge {
+class FlutterDataWedge {
 
   static const String _PLUGIN_PREFIX = 'com.justino.flutter_datawedge';
   

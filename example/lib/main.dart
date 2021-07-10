@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initScanner() {
-    FlutterDatawedge.initScanner(
+    FlutterDataWedge.initScanner(
       profileName: 'FlutterDataWedge',
       onEvent: (event){
 
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
 
     try {
       platformVersion =
-          await FlutterDatawedge.platformVersion() ?? 'Unknown platform version';
+          await FlutterDataWedge.platformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () {
-                FlutterDatawedge.enableScanner(true);
+                FlutterDataWedge.enableScanner(true);
               },
               child: Text('Testar')
             )
