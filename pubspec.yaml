@@ -1,5 +1,5 @@
 name: flutter_datawedge
-description: A new flutter plugin project.
+description: A Flutter plugin communicate with DataWedge scanners.
 version: 0.0.1
 homepage:
 
