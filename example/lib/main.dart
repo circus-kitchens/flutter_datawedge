@@ -41,8 +41,7 @@ class _MyAppState extends State<MyApp> {
         });
       }
     );
-
-    FlutterDataWedge.listenScannerStatus();
+    
   }
 
   @override

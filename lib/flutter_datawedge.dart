@@ -43,7 +43,7 @@ class FlutterDataWedge {
     }
   }
 
-  static Future<void> listenScannerStatus() async {
+  static Future<void> _listenScannerStatus() async {
     try {
       await _methodChannel.invokeMethod('listenScannerStatus');
     } on PlatformException {
@@ -116,6 +116,8 @@ class FlutterDataWedge {
       }, 
       onError: onError
     );
+
+    _listenScannerStatus();
   }
 
 }
