@@ -4,6 +4,10 @@
 
 A Flutter plugin communicate with DataWedge scanners
 
+<p align="center">
+ <img width="640px" src="https://raw.githubusercontent.com/rafaeljustinox/flutter_datawedge/main/.github/images/example01.png" align="center" alt=":package: shell-script-boilerplate" />
+</p>
+
 ## Getting Started (under development)
 
 This project is a starting point for a Flutter
