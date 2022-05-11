@@ -1,6 +1,6 @@
 name: flutter_datawedge
 description: A Flutter plugin communicate with DataWedge scanners.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/rafaeljustinox/flutter_datawedge
 repository: https://github.com/rafaeljustinox/flutter_datawedge
 

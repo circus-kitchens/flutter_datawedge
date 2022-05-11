@@ -9,12 +9,21 @@ A Flutter plugin communicate with DataWedge scanners
 </p>
 
 ## Getting Started (under development)
+#### Example with Streams
+Initialize the FlutterDataWedge Object and attach a listener to the onScanResult Stream. 
+``` dart
+import 'package:image_picker/image_picker.dart';
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+    FlutterDataWedge dw = FlutterDataWedge(profileName: "Example Profile");
+    StreamSubscription onScanSubscription = dw.onScanResult.listen((ScanResult result) {
+        print(result.data);
+    });
+    
+    [...]
+    
+    // Stop listening for new scans.
+    onScanSubscription.cancel();
+    dw.dispose();
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`dispose()` will close all Streams.
