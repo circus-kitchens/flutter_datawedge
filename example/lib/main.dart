@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:io';
 
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 
 void main() {
@@ -13,9 +14,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _scannerStatus = "Scanner status";
+  StreamSubscription? fdwListener;
   String _lastCode = '';
-  bool _isEnabled = true;
 
   @override
   void initState() {
@@ -24,34 +24,24 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initScanner() {
-    FlutterDataWedge.initScanner(
-      profileName: 'FlutterDataWedge',
-      onScan: (result){
-        setState(() {
-          _lastCode = result.data;
-        }); 
-      },
-      onStatusUpdate: (result){
-        ScannerStatusType status = result.status;
-        setState(() {
-          _scannerStatus = status.toString().split('.')[1];
-        });
-      }
-    );
-    
+    if(Platform.isAndroid) {
+      var fdw = FlutterDataWedge(profileName: 'FlutterDataWedge');
+      fdwListener = fdw.onScanResult.listen((code) => setState(() => _lastCode = code.data));
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    fdwListener?.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          brightness: Brightness.dark,
-        ),
         primarySwatch: Colors.blue,
-        accentColor: Colors.pinkAccent
       ),
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter DataWedge'),
@@ -61,35 +51,12 @@ class _MyAppState extends State<MyApp> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                children: [
-                  Text('Last code:'),
-                  Text(_lastCode, style: Theme.of(context).textTheme.headline5),
-                ],
-              ),
-              SizedBox(height: 10.0),
-              Column(
-                children: [
-                  Text('Status:'),
-                  Text(_scannerStatus, style: Theme.of(context).textTheme.headline6),
-                ],
-              ),
-              SizedBox(height: 10.0),
-              ElevatedButton(
-                child: Text(_isEnabled ? 'Desactivate' : 'Activate'),
-                onPressed: () {
-                  FlutterDataWedge.enableScanner(!_isEnabled);
-                  setState(() {
-                    _isEnabled = !_isEnabled;
-                  });
-                },
-              )
+              Text('Last code:'),
+              Text(_lastCode, style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
       ),
     );
   }
-
-  
 }

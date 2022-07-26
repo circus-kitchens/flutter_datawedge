@@ -10,37 +10,16 @@ export 'package:flutter_datawedge/consts/scanner_status_type.dart';
 class FlutterDataWedge {
   /// Name of the DatawedgeProfile, that will be created or used
   String profileName;
-  final StreamController<ScanResult> _scanController = StreamController<ScanResult>.broadcast();
+  final Stream _stream = _eventChannel.receiveBroadcastStream();
 
-  Stream<ScanResult> get onScanResult => _scanController.stream;
-
-  late StreamSubscription _broadcastSubscription;
+  Stream<ScanResult> get onScanResult => _stream.map((event) {
+        Map eventObj = jsonDecode(event as String);
+        String type = eventObj['EVENT_NAME'];
+        return (type == SCAN_RESULT) ? ScanResult.fromEvent(event) : ScanResult(data: "", labelType: "", source: "");
+      });
 
   FlutterDataWedge({required this.profileName}) {
-    _createProfile(profileName);
-
-    _broadcastSubscription = _eventChannel.receiveBroadcastStream().listen((dynamic event) {
-      Map eventObj = jsonDecode(event as String);
-      String type = eventObj['EVENT_NAME'];
-
-      switch (type) {
-        case SCAN_RESULT:
-          _scanController.add(ScanResult.fromEvent(event));
-          break;
-        case SCANNER_STATUS:
-          //if (onStatusUpdate != null) onStatusUpdate(ScannerStatus.fromEvent(event));
-          break;
-        default:
-      }
-    });
-  }
-
-
-  Future<void> dispose() async {
-    _broadcastSubscription.cancel();
-    if(!_scanController.isClosed){
-      await _scanController.close();
-    }
+    createProfile(profileName);
   }
 
   static const EventChannel _eventChannel = EventChannel('channels/scan');
@@ -66,12 +45,8 @@ class FlutterDataWedge {
     }
   }
 
-  static Future<void> _createProfile(String profileName) async {
-    try {
-      await _methodChannel.invokeMethod('createDataWedgeProfile', profileName);
-    } on PlatformException {
-      //  Error invoking Android method
-    }
+  static Future<void> createProfile(String profileName) async {
+    await _methodChannel.invokeMethod('createDataWedgeProfile', profileName);
   }
 
   static Future<void> _listenScannerStatus() async {
@@ -118,30 +93,5 @@ class FlutterDataWedge {
      */
     String command = activate ? 'RESUME_PLUGIN' : 'SUSPEND_PLUGIN';
     _sendDataWedgeCommand(_scannerPlugin, command);
-  }
-
-  static initScanner(
-      {required String profileName,
-      required void Function(ScanResult result) onScan,
-      void Function(ScannerStatus result)? onStatusUpdate,
-      void Function(dynamic)? onError}) {
-    _createProfile(profileName);
-
-    _eventChannel.receiveBroadcastStream().listen((dynamic event) {
-      Map eventObj = jsonDecode(event as String);
-      String type = eventObj['EVENT_NAME'];
-
-      switch (type) {
-        case SCAN_RESULT:
-          onScan(ScanResult.fromEvent(event));
-          break;
-        case SCANNER_STATUS:
-          if (onStatusUpdate != null) onStatusUpdate(ScannerStatus.fromEvent(event));
-          break;
-        default:
-      }
-    }, onError: onError);
-
-    _listenScannerStatus();
   }
 }
