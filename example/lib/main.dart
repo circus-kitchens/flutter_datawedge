@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_datawedge/flutter_datawedge_plus.dart';
+import 'package:flutter_datawedge_plus/flutter_datawedge_plus.dart';
 
 void main() {
   runApp(MyApp());
