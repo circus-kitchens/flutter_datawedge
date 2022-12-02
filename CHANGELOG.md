@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Update Gradle to Versions 7.4
+
 ## 0.0.3
 
 * Feature: Scanner status

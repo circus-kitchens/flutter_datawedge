@@ -1,13 +1,12 @@
 name: flutter_datawedge_plus
 description: A Flutter plugin communicate with DataWedge scanners.
-version: 1.0.0
+version: 0.0.5
 homepage: https://github.com/circuskitchens/flutter_datawedge_plus
 repository: https://github.com/circuskitchens/flutter_datawedge_plus
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
-  flutter: ^3.3.7
+  sdk: ">=2.15.0 <3.0.0"
+  flutter: '>=2.5.0'
 
 dependencies:
   flutter:
