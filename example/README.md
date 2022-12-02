@@ -1,4 +1,4 @@
-# flutter_datawedge_example
+# flutter_datawedge_plus_example
 
 Demonstrates how to use the flutter_datawedge plugin.
 

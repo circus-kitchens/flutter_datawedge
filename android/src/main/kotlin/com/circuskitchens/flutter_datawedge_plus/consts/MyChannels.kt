@@ -1,4 +1,4 @@
-package com.justino.flutter_datawedge.consts
+package com.circuskitchens.flutter_datawedge_plus.consts
 
 class MyChannels {
   companion object {

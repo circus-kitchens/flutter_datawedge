@@ -1,15 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter_datawedge/consts/scanner_status_type.dart';
+import 'package:flutter_datawedge_plus/consts/scanner_status_type.dart';
 
 class ScannerStatus {
   ScannerStatusType status = ScannerStatusType.IDLE;
   String profile = '';
 
-  ScannerStatus({
-    required String status,
-    required this.profile
-  }) {
+  ScannerStatus({required String status, required this.profile}) {
     switch (status) {
       case 'WAITING':
         this.status = ScannerStatusType.WAITING;
@@ -29,7 +26,7 @@ class ScannerStatus {
     }
   }
 
-  factory ScannerStatus.fromEvent(dynamic event){
+  factory ScannerStatus.fromEvent(dynamic event) {
     Map eventObj = jsonDecode(event as String);
     ScannerStatus scanResult = ScannerStatus(
       status: eventObj['status'],

@@ -1,12 +1,12 @@
-package com.justino.flutter_datawedge
+package com.circuskitchens.flutter_datawedge_plus
 
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.justino.flutter_datawedge.consts.MyEvents
-import com.justino.flutter_datawedge.consts.MyIntents.Companion.SCAN_EVENT_INTENT_ACTION
+import com.circuskitchens.flutter_datawedge_plus.consts.MyEvents
+import com.circuskitchens.flutter_datawedge_plus.consts.MyIntents.Companion.SCAN_EVENT_INTENT_ACTION
 import io.flutter.plugin.common.EventChannel.EventSink
 import org.json.JSONObject
 

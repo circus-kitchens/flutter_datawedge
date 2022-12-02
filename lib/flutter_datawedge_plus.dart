@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_datawedge/consts/datawedge_events.dart';
-import 'package:flutter_datawedge/models/scan_result.dart';
-import 'package:flutter_datawedge/models/scanner_status.dart';
-export 'package:flutter_datawedge/consts/scanner_status_type.dart';
+import 'package:flutter_datawedge_plus/consts/datawedge_events.dart';
+import 'package:flutter_datawedge_plus/models/scan_result.dart';
 
-class FlutterDataWedge {
+export 'package:flutter_datawedge_plus/consts/scanner_status_type.dart';
+
+class FlutterDataWedgePlus {
   /// Name of the DatawedgeProfile, that will be created or used
   String profileName;
   final Stream _stream = _eventChannel.receiveBroadcastStream();
@@ -18,7 +18,7 @@ class FlutterDataWedge {
         return (type == SCAN_RESULT) ? ScanResult.fromEvent(event) : ScanResult(data: "", labelType: "", source: "");
       });
 
-  FlutterDataWedge({required this.profileName}) {
+  FlutterDataWedgePlus({required this.profileName}) {
     createProfile(profileName);
   }
 
