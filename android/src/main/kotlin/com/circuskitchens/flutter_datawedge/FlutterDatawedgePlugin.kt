@@ -1,4 +1,4 @@
-package com.circuskitchens.flutter_datawedge_plus
+package com.circuskitchens.flutter_datawedge
 
 import android.content.Context
 import android.content.Intent
@@ -6,9 +6,9 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.NonNull
-import com.circuskitchens.flutter_datawedge_plus.consts.MyChannels
-import com.circuskitchens.flutter_datawedge_plus.consts.MyIntents
-import com.circuskitchens.flutter_datawedge_plus.consts.MyMethods
+import com.circuskitchens.flutter_datawedge.consts.MyChannels
+import com.circuskitchens.flutter_datawedge.consts.MyIntents
+import com.circuskitchens.flutter_datawedge.consts.MyMethods
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink

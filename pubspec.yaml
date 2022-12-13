@@ -1,8 +1,8 @@
-name: flutter_datawedge_plus
-description: A Flutter plugin communicate with DataWedge scanners.
-version: 0.0.5
-homepage: https://github.com/circuskitchens/flutter_datawedge_plus
-repository: https://github.com/circuskitchens/flutter_datawedge_plus
+name: flutter_datawedge
+description: A Flutter package to communicate with Zebra DataWedge scanners using the DataWedge Intent API
+version: 1.0.0
+homepage: https://github.com/circuskitchens/flutter_datawedge
+repository: https://github.com/circuskitchens/flutter_datawedge
 
 environment:
   sdk: ">=2.15.0 <3.0.0"
@@ -21,5 +21,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.circuskitchens.flutter_datawedge_plus
+        package: com.circuskitchens.flutter_datawedge
         pluginClass: FlutterDatawedgePlugin

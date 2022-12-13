@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_datawedge_plus/flutter_datawedge_plus.dart';
+import 'package:flutter_datawedge/flutter_datawedge.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +26,8 @@ class _MyAppState extends State<MyApp> {
   void initScanner() {
     if (Platform.isAndroid) {
       var fdw = FlutterDataWedgePlus(profileName: 'FlutterDataWedge');
-      fdwListener = fdw.onScanResult.listen((code) => setState(() => _lastCode = code.data));
+      fdwListener = fdw.onScanResult
+          .listen((code) => setState(() => _lastCode = code.data));
     }
   }
 

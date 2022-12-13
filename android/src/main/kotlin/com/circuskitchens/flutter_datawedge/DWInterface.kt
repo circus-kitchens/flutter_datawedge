@@ -1,4 +1,4 @@
-package com.circuskitchens.flutter_datawedge_plus
+package com.circuskitchens.flutter_datawedge
 
 import android.content.Context
 import android.content.Intent

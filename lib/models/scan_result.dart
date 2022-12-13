@@ -12,14 +12,12 @@ class ScanResult {
     required this.source,
   });
 
-  factory ScanResult.fromEvent(dynamic event){
+  factory ScanResult.fromEvent(dynamic event) {
     Map eventObj = jsonDecode(event as String);
     ScanResult scanResult = ScanResult(
-      data: eventObj['scanData'],
-      labelType: eventObj['labelType'],
-      source: eventObj['source']
-    );
+        data: eventObj['scanData'],
+        labelType: eventObj['labelType'],
+        source: eventObj['source']);
     return scanResult;
   }
-
 }

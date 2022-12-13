@@ -1,13 +1,9 @@
 
-# flutter_datawedge_plus
+# flutter_datawedge
 
-[![pub package](https://img.shields.io/pub/v/flutter_datawedge_plus.svg)](https://pub.dev/packages/flutter_datawedge_plus)
+[![pub package](https://img.shields.io/pub/v/flutter_datawedge.svg)](https://pub.dev/packages/flutter_datawedge)
 
-A Flutter plugin communicate with DataWedge scanners
-
-<p align="center">
- <img width="220px" src="https://raw.githubusercontent.com/circus-kitchens/flutter_datawedge_plus/main/.github/images/app.png" align="center" alt="Example" />
-</p>
+A Flutter package communicate with Zebra DataWedge scanners.
 
 ## Getting Started (under development)
 #### Example with Streams
@@ -28,3 +24,9 @@ import 'package:image_picker/image_picker.dart';
 ```
 
 `dispose()` will close all Streams.
+
+Also checkout the example application.
+
+## Acknowledgements
+The package was started by [rafaeljustinox](https://github.com/rafaeljustinox) and and contains contributions by [LenhartStephan](https://github.com/LenhartStephan).
+It is now maintained by [Circus Kitchens](https://github.com/circus-kitchens).

@@ -4,10 +4,7 @@ const String EVENT_NAME = 'EVENT_NAME';
 const String SCANNER_STATUS = 'SCANNER_STATUS';
 const String SCAN_RESULT = 'SCAN_RESULT';
 
-enum FlutterDataWedgeEvents {
-  scannerStatus,
-  scanResult
-}
+enum FlutterDataWedgeEvents { scannerStatus, scanResult }
 
 class DataWedgeEvent {
   String? type;
@@ -20,7 +17,6 @@ class DataWedgeEvent {
 
     switch (type) {
       case SCANNER_STATUS:
-        
         break;
       default:
     }
@@ -28,5 +24,4 @@ class DataWedgeEvent {
     DataWedgeEvent dataWedgeEvent = DataWedgeEvent();
     return dataWedgeEvent;
   }
-
 }

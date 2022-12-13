@@ -1,5 +1,5 @@
-name: flutter_datawedge_plus_example
-description: Demonstrates how to use the flutter_datawedge_plus plugin.
+name: flutter_datawedge_example
+description: Demonstrates how to use the flutter_datawedge plugin.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_datawedge_plus:
+  flutter_datawedge:
     # When depending on this package from a real application you should use:
     #   flutter_datawedge: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints

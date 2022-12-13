@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_datawedge_plus/consts/scanner_status_type.dart';
+import 'package:flutter_datawedge/consts/scanner_status_type.dart';
 
 class ScannerStatus {
   ScannerStatusType status = ScannerStatusType.IDLE;

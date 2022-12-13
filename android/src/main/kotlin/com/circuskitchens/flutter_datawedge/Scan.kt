@@ -1,4 +1,4 @@
-package com.circuskitchens.flutter_datawedge_plus
+package com.circuskitchens.flutter_datawedge
 
 import androidx.annotation.NonNull
 import org.json.JSONObject

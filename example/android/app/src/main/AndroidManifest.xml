@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.circuskitchens.flutter_datawedge_plus_example">
+    package="com.circuskitchens.flutter_datawedge_example">
    <application
-        android:label="flutter_datawedge_plus_example"
+        android:label="flutter_datawedge_example"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

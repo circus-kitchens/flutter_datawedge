@@ -1,4 +1,4 @@
-package com.circuskitchens.flutter_datawedge_plus.consts
+package com.circuskitchens.flutter_datawedge.consts
 
 class MyEvents {
   companion object {

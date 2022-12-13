@@ -1,4 +1,4 @@
-group 'com.circuskitchens.flutter_datawedge_plus'
+group 'com.circuskitchens.flutter_datawedge'
 version '1.0-SNAPSHOT'
 
 buildscript {
