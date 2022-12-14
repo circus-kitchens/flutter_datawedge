@@ -25,7 +25,7 @@ import 'package:image_picker/image_picker.dart';
 
 `dispose()` will close all Streams.
 
-Also checkout the example application.
+*Also checkout the example application.*
 
 ## Acknowledgements
 The package was started by [rafaeljustinox](https://github.com/rafaeljustinox) and and contains contributions by [LenhartStephan](https://github.com/LenhartStephan).
