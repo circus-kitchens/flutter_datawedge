@@ -1,3 +1,7 @@
+# 1.0.1
+
+* Fix wrongly named class
+
 ## 1.0.0
 
 * Maintainer switched from [rafaeljustinox](https://github.com/rafaeljustinox) to [Circus Kitchens](https://github.com/circus-kitchens)

@@ -7,7 +7,7 @@ import 'package:flutter_datawedge/models/scan_result.dart';
 
 export 'package:flutter_datawedge/consts/scanner_status_type.dart';
 
-class FlutterDataWedgePlus {
+class FlutterDataWedge {
   /// Name of the DatawedgeProfile, that will be created or used
   String profileName;
   final Stream _stream = _eventChannel.receiveBroadcastStream();
@@ -15,12 +15,10 @@ class FlutterDataWedgePlus {
   Stream<ScanResult> get onScanResult => _stream.map((event) {
         Map eventObj = jsonDecode(event as String);
         String type = eventObj['EVENT_NAME'];
-        return (type == SCAN_RESULT)
-            ? ScanResult.fromEvent(event)
-            : ScanResult(data: "", labelType: "", source: "");
+        return (type == SCAN_RESULT) ? ScanResult.fromEvent(event) : ScanResult(data: "", labelType: "", source: "");
       });
 
-  FlutterDataWedgePlus({required this.profileName}) {
+  FlutterDataWedge({required this.profileName}) {
     createProfile(profileName);
   }
 
@@ -28,26 +26,20 @@ class FlutterDataWedgePlus {
 
   static const MethodChannel _methodChannel = MethodChannel('channels/command');
 
-  static const String _softScanTrigger =
-      'com.symbol.datawedge.api.SOFT_SCAN_TRIGGER';
+  static const String _softScanTrigger = 'com.symbol.datawedge.api.SOFT_SCAN_TRIGGER';
 
-  static const String _scannerPlugin =
-      'com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN';
+  static const String _scannerPlugin = 'com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN';
 
   static Future<String?> platformVersion() async {
-    final String? version =
-        await _methodChannel.invokeMethod('getPlatformVersion');
+    final String? version = await _methodChannel.invokeMethod('getPlatformVersion');
     return version;
   }
 
-  static Future<void> _sendDataWedgeCommand(
-      String command, String parameter) async {
+  static Future<void> _sendDataWedgeCommand(String command, String parameter) async {
     try {
-      String argumentAsJson =
-          jsonEncode({"command": command, "parameter": parameter});
+      String argumentAsJson = jsonEncode({"command": command, "parameter": parameter});
 
-      await _methodChannel.invokeMethod(
-          'sendDataWedgeCommandStringParameter', argumentAsJson);
+      await _methodChannel.invokeMethod('sendDataWedgeCommandStringParameter', argumentAsJson);
     } on PlatformException {
       //  Error invoking Android method
     }
@@ -66,8 +58,7 @@ class FlutterDataWedgePlus {
   }
 
   static scannerControl(bool activate) {
-    _sendDataWedgeCommand(
-        _softScanTrigger, activate ? 'START_SCANNING' : 'STOP_SCANNING');
+    _sendDataWedgeCommand(_softScanTrigger, activate ? 'START_SCANNING' : 'STOP_SCANNING');
   }
 
   static void enableScanner(bool enable) {

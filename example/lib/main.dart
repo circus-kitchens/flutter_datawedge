@@ -25,9 +25,8 @@ class _MyAppState extends State<MyApp> {
 
   void initScanner() {
     if (Platform.isAndroid) {
-      var fdw = FlutterDataWedgePlus(profileName: 'FlutterDataWedge');
-      fdwListener = fdw.onScanResult
-          .listen((code) => setState(() => _lastCode = code.data));
+      var fdw = FlutterDataWedge(profileName: 'FlutterDataWedge');
+      fdwListener = fdw.onScanResult.listen((code) => setState(() => _lastCode = code.data));
     }
   }
 
