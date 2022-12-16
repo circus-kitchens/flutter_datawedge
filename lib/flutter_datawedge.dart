@@ -31,35 +31,35 @@ class FlutterDataWedge {
         return (type == SCAN_RESULT) ? ScanResult.fromEvent(event) : ScanResult();
       });
 
-  Future<void> createProfile(String profileName) => _methodChannel.invokeMethod(
-        MethodChannelMethods.createDataWedgeProfile.toString(),
+  Future<void> createProfile(String profileName) => _methodChannel.invokeMethod<String>(
+        MethodChannelMethods.createDataWedgeProfile.value,
         profileName,
       );
 
-  Future<String?> platformVersion() => _methodChannel.invokeMethod(
-        MethodChannelMethods.getPlatformVersion.toString(),
+  Future<String?> platformVersion() => _methodChannel.invokeMethod<String>(
+        MethodChannelMethods.getPlatformVersion.value,
       );
 
   Future<void> scannerControl(bool activate) => _sendDataWedgeCommand(
-        DatawedgeApiTargets.softScanTrigger.toString(),
-        activate ? ScannerControlStates.startScanning.toString() : ScannerControlStates.stopScanning.toString(),
+        DatawedgeApiTargets.softScanTrigger.value,
+        activate ? ScannerControlStates.startScanning.value : ScannerControlStates.stopScanning.value,
       );
 
   Future<void> enableScanner(bool enable) => _sendDataWedgeCommand(
-        DatawedgeApiTargets.scannerPlugin.toString(),
-        enable ? ScannerPluginCommand.enablePlugin.toString() : ScannerPluginCommand.disablePlugin.toString(),
+        DatawedgeApiTargets.scannerPlugin.value,
+        enable ? ScannerPluginCommand.enablePlugin.value : ScannerPluginCommand.disablePlugin.value,
       );
 
   Future<void> activateScanner(bool activate) => _sendDataWedgeCommand(
-        DatawedgeApiTargets.scannerPlugin.toString(),
-        activate ? ScannerPluginCommand.resumePlugin.toString() : ScannerPluginCommand.suspendPlugin.toString(),
+        DatawedgeApiTargets.scannerPlugin.value,
+        activate ? ScannerPluginCommand.resumePlugin.value : ScannerPluginCommand.suspendPlugin.value,
       );
 
   Future<void> _sendDataWedgeCommand(String command, String parameter) async {
     try {
       String argumentAsJson = jsonEncode({"command": command, "parameter": parameter});
-      await _methodChannel.invokeMethod(
-          MethodChannelMethods.sendDataWedgeCommandStringParameter.toString(), argumentAsJson);
+      await _methodChannel.invokeMethod<String>(
+          MethodChannelMethods.sendDataWedgeCommandStringParameter.value, argumentAsJson);
     } catch (e) {
       throw FlutterDatawedgeException("Error while sending command to DataWedge. caused by: $e");
     }
