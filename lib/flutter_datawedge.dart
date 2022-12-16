@@ -62,6 +62,9 @@ class FlutterDataWedge {
         MethodChannelMethods.getPlatformVersion.value,
       );
 
+  /// Allows user to manually control scanner
+  /// activate: true to trigger scanner, false to stop triggering
+  /// Triggering means here that the scanner is active, the red scanner light is visible and the scanner will recognize barcodes
   Future<void> scannerControl(bool activate) => _sendDataWedgeCommand(
         DatawedgeApiTargets.softScanTrigger.value,
         activate ? ScannerControlStates.startScanning.value : ScannerControlStates.stopScanning.value,
