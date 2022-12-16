@@ -15,18 +15,20 @@ import 'consts/scanner_plugin_command.dart';
 import 'models/flutter_datawedge_exception.dart';
 
 class FlutterDataWedge {
-  String profileName;
+  final String profileName;
+  final bool listenToScannerStatus;
+
   late StreamSplitter<String> _sourceStream;
   late Stream<ScanResult> _scanResultStream;
-  late Stream<ScannerStatus> _scannerStatusStream;
+  Stream<ScannerStatus>? _scannerStatusStream;
 
   final EventChannel _eventChannel = EventChannel('channels/scan');
-
   final MethodChannel _methodChannel = MethodChannel('channels/command');
 
   /// profileName: name of the DatawedgeProfile, that will be created or used
-  FlutterDataWedge({required this.profileName}) {
+  FlutterDataWedge({required this.profileName, this.listenToScannerStatus = false}) {
     _createProfile(profileName);
+    listenScannerStatus();
     setUpStreams();
   }
 
@@ -38,12 +40,13 @@ class FlutterDataWedge {
         .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scanResult)
         .map((event) => Json(event).asMap())
         .map(ScanResult.fromEventPayload);
-    _scannerStatusStream = _sourceStream
-        .split()
-        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scannerStatus)
-        .map((event) => Json(event).asMap())
-        .map(ScannerStatus.fromEventPayload);
-    _sourceStream.split().forEach(print);
+    if (listenToScannerStatus) {
+      _scannerStatusStream = _sourceStream
+          .split()
+          .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scannerStatus)
+          .map((event) => Json(event).asMap())
+          .map(ScannerStatus.fromEventPayload);
+    }
     // Closing the source stream indicates, that no new streams will be created and buffer is released
     // important for memory management
     _sourceStream.close();
@@ -51,7 +54,13 @@ class FlutterDataWedge {
 
   Stream<ScanResult> get onScanResult => _scanResultStream;
 
-  Stream<ScannerStatus> get onScannerStatus => _scannerStatusStream;
+  Stream<ScannerStatus> get onScannerStatus {
+    if (!listenToScannerStatus) {
+      throw FlutterDatawedgeException(
+          'FlutterDatawedge was created with listenToScannerStatus set to false. To list set it to true in the constructor');
+    }
+    return _scannerStatusStream!;
+  }
 
   Future<void> _createProfile(String profileName) => _methodChannel.invokeMethod<String>(
         MethodChannelMethods.createDataWedgeProfile.value,
@@ -60,6 +69,10 @@ class FlutterDataWedge {
 
   Future<String?> platformVersion() => _methodChannel.invokeMethod<String>(
         MethodChannelMethods.getPlatformVersion.value,
+      );
+
+  Future<void> listenScannerStatus() => _methodChannel.invokeMethod<String>(
+        MethodChannelMethods.listenScannerStatus.value,
       );
 
   /// Allows user to manually control scanner

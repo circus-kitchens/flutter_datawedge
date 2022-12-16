@@ -33,5 +33,6 @@ enum ScannerStatusType {
 
   const ScannerStatusType(this.value);
 
-  static ScannerStatusType fromString(String value) => ScannerStatusType.values.firstWhere((e) => e.value == value);
+  static ScannerStatusType fromString(String value) =>
+      ScannerStatusType.values.firstWhere((e) => e.value == value);
 }

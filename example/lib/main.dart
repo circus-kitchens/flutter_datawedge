@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
 
   void initScanner() {
     if (Platform.isAndroid) {
-      fdw = FlutterDataWedge(profileName: 'FlutterDataWedge');
+      fdw = FlutterDataWedge(profileName: 'FlutterDataWedge', listenToScannerStatus: true);
       onScanResultListener = fdw.onScanResult.listen((result) => setState(() => scanResults.add(result)));
       onScannerStatusListener =
           fdw.onScannerStatus.listen((status) => setState(() => _lastStatus = status.status.value));
