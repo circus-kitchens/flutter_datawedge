@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:strict_json/strict_json.dart';
 
 class ScanResult {
   String data;
@@ -12,10 +12,12 @@ class ScanResult {
     this.source = '',
   });
 
-  factory ScanResult.fromEvent(dynamic event) {
-    Map eventObj = jsonDecode(event as String);
-    ScanResult scanResult =
-        ScanResult(data: eventObj['scanData'], labelType: eventObj['labelType'], source: eventObj['source']);
-    return scanResult;
+  factory ScanResult.fromEvent(String event) {
+    JsonMap eventObj = Json(event).asMap();
+    return ScanResult(
+      data: eventObj.getString('scanData'),
+      labelType: eventObj.getString('labelType'),
+      source: eventObj.getString('source'),
+    );
   }
 }

@@ -7,13 +7,14 @@ import 'package:flutter_datawedge/consts/datawedge_events.dart';
 import 'package:flutter_datawedge/consts/method_channel_methods.dart';
 import 'package:flutter_datawedge/consts/scanner_control_states.dart';
 import 'package:flutter_datawedge/models/scan_result.dart';
+import 'package:strict_json/strict_json.dart';
 
 import 'consts/scanner_plugin_command.dart';
 import 'models/flutter_datawedge_exception.dart';
 
 class FlutterDataWedge {
   String profileName;
-  late Stream _scanResultStream;
+  late Stream<String> _scanResultStream;
 
   final EventChannel _eventChannel = EventChannel('channels/scan');
 
@@ -22,12 +23,12 @@ class FlutterDataWedge {
   /// profileName: name of the DatawedgeProfile, that will be created or used
   FlutterDataWedge({required this.profileName}) {
     createProfile(profileName);
-    _scanResultStream = _eventChannel.receiveBroadcastStream();
+    _scanResultStream = _eventChannel.receiveBroadcastStream().cast<String>();
   }
 
   Stream<ScanResult> get onScanResult => _scanResultStream.map((event) {
-        Map eventObj = jsonDecode(event as String);
-        String type = eventObj['EVENT_NAME'];
+        JsonMap eventObj = Json(event).asMap();
+        String type = eventObj.getString('EVENT_NAME');
         return (type == SCAN_RESULT) ? ScanResult.fromEvent(event) : ScanResult();
       });
 

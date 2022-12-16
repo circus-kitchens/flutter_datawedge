@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:strict_json/strict_json.dart';
 
 const String EVENT_NAME = 'EVENT_NAME';
 const String SCANNER_STATUS = 'SCANNER_STATUS';
@@ -11,9 +11,10 @@ class DataWedgeEvent {
 
   DataWedgeEvent();
 
-  factory DataWedgeEvent.fromEvent(dynamic event) {
-    Map eventObj = jsonDecode(event as String);
-    String type = eventObj[EVENT_NAME];
+  factory DataWedgeEvent.fromEvent(String event) {
+    //TODO
+    JsonMap eventObj = Json(event).asMap();
+    String type = eventObj.getString(EVENT_NAME);
 
     switch (type) {
       case SCANNER_STATUS:

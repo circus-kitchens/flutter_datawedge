@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:strict_json/strict_json.dart';
 
 class ScannerStatus {
   ScannerStatusType status = ScannerStatusType.IDLE;
@@ -8,13 +8,12 @@ class ScannerStatus {
     this.status = ScannerStatusType.fromString(status);
   }
 
-  factory ScannerStatus.fromEvent(dynamic event) {
-    Map eventObj = jsonDecode(event as String);
-    ScannerStatus scanResult = ScannerStatus(
-      status: eventObj['status'],
-      profile: eventObj['profile'],
+  factory ScannerStatus.fromEvent(String event) {
+    JsonMap eventObj = Json(event).asMap();
+    return ScannerStatus(
+      status: eventObj.getString('status'),
+      profile: eventObj.getString('profile'),
     );
-    return scanResult;
   }
 }
 

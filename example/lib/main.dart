@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
+import 'package:flutter_datawedge/models/scan_result.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamSubscription? fdwListener;
+  StreamSubscription<ScanResult>? fdwListener;
   String _lastCode = '';
 
   @override
@@ -26,8 +27,7 @@ class _MyAppState extends State<MyApp> {
   void initScanner() {
     if (Platform.isAndroid) {
       var fdw = FlutterDataWedge(profileName: 'FlutterDataWedge');
-      fdwListener = fdw.onScanResult
-          .listen((code) => setState(() => _lastCode = code.data));
+      fdwListener = fdw.onScanResult.listen((code) => setState(() => _lastCode = code.data));
     }
   }
 

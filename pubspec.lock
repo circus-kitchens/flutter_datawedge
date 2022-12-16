@@ -114,6 +114,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  strict_json:
+    dependency: "direct main"
+    description:
+      name: strict_json
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6"
   string_scanner:
     dependency: transitive
     description:

@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  strict_json: ^2.0.6
 
 dev_dependencies:
   flutter_test:
