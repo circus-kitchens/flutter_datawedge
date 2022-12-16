@@ -26,7 +26,8 @@ class FlutterDataWedge {
   final MethodChannel _methodChannel = MethodChannel('channels/command');
 
   /// profileName: name of the DatawedgeProfile, that will be created or used
-  FlutterDataWedge({required this.profileName, this.listenToScannerStatus = false}) {
+  FlutterDataWedge(
+      {required this.profileName, this.listenToScannerStatus = false}) {
     _createProfile(profileName);
     listenScannerStatus();
     setUpStreams();
@@ -34,16 +35,21 @@ class FlutterDataWedge {
 
   void setUpStreams() {
     // Create two streams based on the source stream to individually handle  scan_results and  scanner_status events
-    _sourceStream = StreamSplitter<String>(_eventChannel.receiveBroadcastStream().cast<String>());
+    _sourceStream = StreamSplitter<String>(
+        _eventChannel.receiveBroadcastStream().cast<String>());
     _scanResultStream = _sourceStream
         .split()
-        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scanResult)
+        .where((event) =>
+            DataWedgeConstants.fromRawScannerJsonString(event) ==
+            DataWedgeConstants.scanResult)
         .map((event) => Json(event).asMap())
         .map(ScanResult.fromEventPayload);
     if (listenToScannerStatus) {
       _scannerStatusStream = _sourceStream
           .split()
-          .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scannerStatus)
+          .where((event) =>
+              DataWedgeConstants.fromRawScannerJsonString(event) ==
+              DataWedgeConstants.scannerStatus)
           .map((event) => Json(event).asMap())
           .map(ScannerStatus.fromEventPayload);
     }
@@ -62,7 +68,8 @@ class FlutterDataWedge {
     return _scannerStatusStream!;
   }
 
-  Future<void> _createProfile(String profileName) => _methodChannel.invokeMethod<String>(
+  Future<void> _createProfile(String profileName) =>
+      _methodChannel.invokeMethod<String>(
         MethodChannelMethods.createDataWedgeProfile.value,
         profileName,
       );
@@ -80,26 +87,35 @@ class FlutterDataWedge {
   /// Triggering means here that the scanner is active, the red scanner light is visible and the scanner will recognize barcodes
   Future<void> scannerControl(bool activate) => _sendDataWedgeCommand(
         DatawedgeApiTargets.softScanTrigger.value,
-        activate ? ScannerControlStates.startScanning.value : ScannerControlStates.stopScanning.value,
+        activate
+            ? ScannerControlStates.startScanning.value
+            : ScannerControlStates.stopScanning.value,
       );
 
   Future<void> enableScanner(bool enable) => _sendDataWedgeCommand(
         DatawedgeApiTargets.scannerPlugin.value,
-        enable ? ScannerPluginCommand.enablePlugin.value : ScannerPluginCommand.disablePlugin.value,
+        enable
+            ? ScannerPluginCommand.enablePlugin.value
+            : ScannerPluginCommand.disablePlugin.value,
       );
 
   Future<void> activateScanner(bool activate) => _sendDataWedgeCommand(
         DatawedgeApiTargets.scannerPlugin.value,
-        activate ? ScannerPluginCommand.resumePlugin.value : ScannerPluginCommand.suspendPlugin.value,
+        activate
+            ? ScannerPluginCommand.resumePlugin.value
+            : ScannerPluginCommand.suspendPlugin.value,
       );
 
   Future<void> _sendDataWedgeCommand(String command, String parameter) async {
     try {
-      String argumentAsJson = jsonEncode({"command": command, "parameter": parameter});
+      String argumentAsJson =
+          jsonEncode({"command": command, "parameter": parameter});
       await _methodChannel.invokeMethod<String>(
-          MethodChannelMethods.sendDataWedgeCommandStringParameter.value, argumentAsJson);
+          MethodChannelMethods.sendDataWedgeCommandStringParameter.value,
+          argumentAsJson);
     } catch (e) {
-      throw FlutterDatawedgeException("Error while sending command to DataWedge. caused by: $e");
+      throw FlutterDatawedgeException(
+          "Error while sending command to DataWedge. caused by: $e");
     }
   }
 }
