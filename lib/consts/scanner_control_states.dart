@@ -5,7 +5,4 @@ enum ScannerControlStates {
   final String value;
 
   const ScannerControlStates(this.value);
-
-  @override
-  String toString() => value;
 }

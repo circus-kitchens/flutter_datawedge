@@ -8,11 +8,10 @@ class ScannerStatus {
     this.status = ScannerStatusType.fromString(status);
   }
 
-  factory ScannerStatus.fromEvent(String event) {
-    JsonMap eventObj = Json(event).asMap();
+  factory ScannerStatus.fromEventPayload(JsonMap jsonMap) {
     return ScannerStatus(
-      status: eventObj.getString('status'),
-      profile: eventObj.getString('profile'),
+      status: jsonMap.getString('status'),
+      profile: jsonMap.getString('profile'),
     );
   }
 }
@@ -33,9 +32,6 @@ enum ScannerStatusType {
   final String value;
 
   const ScannerStatusType(this.value);
-
-  @override
-  String toString() => value;
 
   static ScannerStatusType fromString(String value) => ScannerStatusType.values.firstWhere((e) => e.value == value);
 }

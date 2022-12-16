@@ -5,7 +5,4 @@ enum DatawedgeApiTargets {
   final String value;
 
   const DatawedgeApiTargets(this.value);
-
-  @override
-  String toString() => value;
 }

@@ -25,7 +25,4 @@ enum ScannerPluginCommand {
   static ScannerPluginCommand fromString(String value) {
     return ScannerPluginCommand.values.firstWhere((e) => e.value == value);
   }
-
-  @override
-  String toString() => value;
 }

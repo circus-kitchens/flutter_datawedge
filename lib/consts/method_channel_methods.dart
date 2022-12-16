@@ -6,7 +6,4 @@ enum MethodChannelMethods {
   final String value;
 
   const MethodChannelMethods(this.value);
-
-  @override
-  String toString() => value;
 }

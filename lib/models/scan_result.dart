@@ -12,12 +12,11 @@ class ScanResult {
     this.source = '',
   });
 
-  factory ScanResult.fromEvent(String event) {
-    JsonMap eventObj = Json(event).asMap();
+  factory ScanResult.fromEventPayload(JsonMap jsonMap) {
     return ScanResult(
-      data: eventObj.getString('scanData'),
-      labelType: eventObj.getString('labelType'),
-      source: eventObj.getString('source'),
+      data: jsonMap.getString('scanData'),
+      labelType: jsonMap.getString('labelType'),
+      source: jsonMap.getString('source'),
     );
   }
 }
