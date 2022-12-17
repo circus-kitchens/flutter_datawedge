@@ -7,3 +7,5 @@
 build/
 flutter_datawedge.iml
 Dart_packages.xml
+
+*.idea/
