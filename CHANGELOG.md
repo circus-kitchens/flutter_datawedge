@@ -1,3 +1,9 @@
+# 1.1.0
+
+* Add documentation for `enableScanner(bool)`,`activateScanner(bool)`,`startScanning(bool)`
+* Add stream to listen to `ScannerStatus` changes
+* Refactor code, emphasizing use of enums of strings etc.
+
 # 1.0.1
 
 * Fix wrongly named class
