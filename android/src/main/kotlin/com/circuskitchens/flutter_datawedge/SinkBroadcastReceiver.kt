@@ -24,7 +24,7 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
     }*/
 
     when {
-      action.equals(SCAN_EVENT_INTENT_ACTION) -> {
+      action.equals(context.packageName + SCAN_EVENT_INTENT_ACTION) -> {
         //  A barcode has been scanned
         val source = intent.getStringExtra(DWInterface.DATAWEDGE_SCAN_EXTRA_SOURCE) ?: ""
         val scanData = intent.getStringExtra(DWInterface.DATAWEDGE_SCAN_EXTRA_DATA_STRING) ?: ""
