@@ -38,12 +38,10 @@ class _MyAppState extends State<MyApp> {
 
   void initScanner() {
     if (Platform.isAndroid) {
-      fdw = FlutterDataWedge(
-          profileName: 'FlutterDataWedge', listenToScannerStatus: true);
-      onScanResultListener = fdw.onScanResult
-          .listen((result) => setState(() => scanResults.add(result)));
-      onScannerStatusListener = fdw.onScannerStatus.listen(
-          (status) => setState(() => _lastStatus = status.status.value));
+      fdw = FlutterDataWedge(profileName: 'FlutterDataWedge');
+      onScanResultListener = fdw.onScanResult.listen((result) => setState(() => scanResults.add(result)));
+      onScannerStatusListener =
+          fdw.onScannerStatus.listen((status) => setState(() => _lastStatus = status.status.value));
     }
   }
 
@@ -66,8 +64,7 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text('Last codes:',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            Text('Last codes:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.4,
@@ -83,13 +80,10 @@ class _MyAppState extends State<MyApp> {
             Row(
               children: [
                 Expanded(
-                  child: Text('Last status:',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  child: Text('Last status:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
                 Expanded(
-                  child: Text(_lastStatus,
-                      style: Theme.of(context).textTheme.headline5),
+                  child: Text(_lastStatus, style: Theme.of(context).textTheme.headline5),
                 ),
               ],
             ),
