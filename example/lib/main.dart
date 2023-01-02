@@ -7,12 +7,15 @@ import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_datawedge/models/scanner_status.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       title: 'Flutter DataWedge Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyApp()));
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -53,97 +56,92 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter DataWedge Example'),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter DataWedge Example'),
-        ),
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text('Last codes:',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              SizedBox(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.4,
-                child: ListView.separated(
-                  reverse: true,
-                  itemCount: scanResults.length,
-                  itemBuilder: (context, index) => ListTile(
-                    title: Text('$index: ${scanResults[index].data}'),
-                  ),
-                  separatorBuilder: (context, index) => const Divider(),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text('Last codes:',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: ListView.separated(
+                reverse: true,
+                itemCount: scanResults.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text('$index: ${scanResults[index].data}'),
                 ),
+                separatorBuilder: (context, index) => const Divider(),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text('Last status:',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text('Last status:',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                ),
+                Expanded(
+                  child: Text(_lastStatus,
+                      style: Theme.of(context).textTheme.headline5),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => fdw.enableScanner(true),
+                    child: Text('Enable Scanner'),
                   ),
-                  Expanded(
-                    child: Text(_lastStatus,
-                        style: Theme.of(context).textTheme.headline5),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => fdw.enableScanner(false),
+                    child: Text('Disable Scanner'),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => fdw.enableScanner(true),
-                      child: Text('Enable Scanner'),
-                    ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => fdw.activateScanner(true),
+                    child: Text('Activate Scanner'),
                   ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => fdw.enableScanner(false),
-                      child: Text('Disable Scanner'),
-                    ),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => fdw.activateScanner(false),
+                    child: Text('Deactivate Scanner'),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => fdw.activateScanner(true),
-                      child: Text('Activate Scanner'),
-                    ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => fdw.scannerControl(true),
+                    child: Text('Scanner Control Activate'),
                   ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => fdw.activateScanner(false),
-                      child: Text('Deactivate Scanner'),
-                    ),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => fdw.scannerControl(false),
+                    child: Text('Scanner Control DeActivate'),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => fdw.scannerControl(true),
-                      child: Text('Scanner Control Activate'),
-                    ),
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => fdw.scannerControl(false),
-                      child: Text('Scanner Control DeActivate'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
