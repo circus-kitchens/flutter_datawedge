@@ -28,41 +28,12 @@ class FlutterDataWedge {
   }) {
     _createProfile(profileName);
     _enableListeningScannerStatus();
-    setUpStreams();
-  }
-
-  void setUpStreams() {
-    // Create two streams based on the source stream to individually handle
-    // scan_results and scanner_status events
-    final sourceStream = _eventChannel.receiveBroadcastStream().where((event) => event is String).cast<String>();
-
-    _scanResultStream = sourceStream
-        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scanResult)
-        .map((event) => Json(event).asMap())
-        .map(ScanResult.fromEventPayload);
-
-    _scannerStatusStream = sourceStream
-        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scannerStatus)
-        .map((event) => Json(event).asMap())
-        .map(ScannerStatus.fromEventPayload);
+    _setUpStreams();
   }
 
   Stream<ScanResult> get onScanResult => _scanResultStream;
 
   Stream<ScannerStatus> get onScannerStatus => _scannerStatusStream!;
-
-  Future<void> _createProfile(String profileName) => _methodChannel.invokeMethod<String>(
-        MethodChannelMethods.createDataWedgeProfile.value,
-        profileName,
-      );
-
-  Future<String?> platformVersion() => _methodChannel.invokeMethod<String>(
-        MethodChannelMethods.getPlatformVersion.value,
-      );
-
-  Future<void> _enableListeningScannerStatus() => _methodChannel.invokeMethod<String>(
-        MethodChannelMethods.listenScannerStatus.value,
-      );
 
   /// Manually trigger scanning or stop scanning
   /// activate: true to trigger scanner, false to stop
@@ -87,6 +58,35 @@ class FlutterDataWedge {
         DatawedgeApiTargets.scannerPlugin.value,
         activate ? ScannerPluginCommand.resumePlugin.value : ScannerPluginCommand.suspendPlugin.value,
       );
+
+  Future<String?> platformVersion() => _methodChannel.invokeMethod<String>(
+        MethodChannelMethods.getPlatformVersion.value,
+      );
+
+  Future<void> _createProfile(String profileName) => _methodChannel.invokeMethod<String>(
+        MethodChannelMethods.createDataWedgeProfile.value,
+        profileName,
+      );
+
+  Future<void> _enableListeningScannerStatus() => _methodChannel.invokeMethod<String>(
+        MethodChannelMethods.listenScannerStatus.value,
+      );
+
+  void _setUpStreams() {
+    // Create two streams based on the source stream to individually handle
+    // scan_results and scanner_status events
+    final sourceStream = _eventChannel.receiveBroadcastStream().where((event) => event is String).cast<String>();
+
+    _scanResultStream = sourceStream
+        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scanResult)
+        .map((event) => Json(event).asMap())
+        .map(ScanResult.fromEventPayload);
+
+    _scannerStatusStream = sourceStream
+        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scannerStatus)
+        .map((event) => Json(event).asMap())
+        .map(ScannerStatus.fromEventPayload);
+  }
 
   Future<void> _sendDataWedgeCommand(String command, String parameter) async {
     try {
