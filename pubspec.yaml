@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   strict_json: ^2.0.6
-  async: ^2.9.0
 
 dev_dependencies:
   flutter_test:

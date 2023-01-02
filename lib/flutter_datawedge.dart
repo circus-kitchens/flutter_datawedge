@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:async/async.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datawedge/consts/datawedge_api_targets.dart';
 import 'package:flutter_datawedge/consts/datawedge_constants.dart';
@@ -18,44 +17,45 @@ class FlutterDataWedge {
   final String profileName;
   final bool listenToScannerStatus;
 
-  late StreamSplitter<String> _sourceStream;
-  late Stream<ScanResult> _scanResultStream;
-  Stream<ScannerStatus>? _scannerStatusStream;
+  late final Stream<ScanResult> _scanResultStream;
+  late final Stream<ScannerStatus>? _scannerStatusStream;
 
   final EventChannel _eventChannel = EventChannel('channels/scan');
   final MethodChannel _methodChannel = MethodChannel('channels/command');
 
   /// profileName: name of the DatawedgeProfile, that will be created or used
-  FlutterDataWedge(
-      {required this.profileName, this.listenToScannerStatus = false}) {
+  FlutterDataWedge({
+    required this.profileName,
+    this.listenToScannerStatus = false,
+  }) {
     _createProfile(profileName);
     listenScannerStatus();
     setUpStreams();
   }
 
   void setUpStreams() {
-    // Create two streams based on the source stream to individually handle  scan_results and  scanner_status events
-    _sourceStream = StreamSplitter<String>(
-        _eventChannel.receiveBroadcastStream().cast<String>());
-    _scanResultStream = _sourceStream
-        .split()
+    // Create two streams based on the source stream to individually handle
+    // scan_results and scanner_status events
+    final sourceStream = _eventChannel
+        .receiveBroadcastStream()
+        .where((event) => event is String)
+        .cast<String>();
+
+    _scanResultStream = sourceStream
         .where((event) =>
             DataWedgeConstants.fromRawScannerJsonString(event) ==
             DataWedgeConstants.scanResult)
         .map((event) => Json(event).asMap())
         .map(ScanResult.fromEventPayload);
+
     if (listenToScannerStatus) {
-      _scannerStatusStream = _sourceStream
-          .split()
+      _scannerStatusStream = sourceStream
           .where((event) =>
               DataWedgeConstants.fromRawScannerJsonString(event) ==
               DataWedgeConstants.scannerStatus)
           .map((event) => Json(event).asMap())
           .map(ScannerStatus.fromEventPayload);
     }
-    // Closing the source stream indicates, that no new streams will be created and buffer is released
-    // important for memory management
-    _sourceStream.close();
   }
 
   Stream<ScanResult> get onScanResult => _scanResultStream;
@@ -63,7 +63,9 @@ class FlutterDataWedge {
   Stream<ScannerStatus> get onScannerStatus {
     if (!listenToScannerStatus) {
       throw FlutterDatawedgeException(
-          'FlutterDatawedge was created with listenToScannerStatus set to false. To list set it to true in the constructor');
+        'FlutterDatawedge was created with listenToScannerStatus set to false. '
+        'To list set it to true in the constructor',
+      );
     }
     return _scannerStatusStream!;
   }
