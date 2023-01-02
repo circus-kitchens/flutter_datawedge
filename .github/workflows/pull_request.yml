@@ -1,0 +1,35 @@
+name: Pull Request
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+permissions:
+  checks: write
+  contents: read
+env:
+  FLUTTER_VERSION: "3.3.8"
+  FLUTTER_CHANNEL: "stable"
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Flutter Checkout
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - name: Dependencies
+        run: flutter pub get
+      - name: Dart Analyze
+        uses: invertase/github-action-dart-analyzer@v1
+        with:
+          fatal-infos: true
+          fatal-warnings: true
+          annotate: true
+      - name: Check Formatting
+        run: flutter format --set-exit-if-changed --output none $(find lib test -name "*.dart" -not \( -name "*.*mocks.dart" \))
