@@ -43,7 +43,7 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
     context = flutterPluginBinding.applicationContext
 
     intentFilter = IntentFilter()
-    intentFilter.addAction(MyIntents.SCAN_EVENT_INTENT_ACTION)
+    intentFilter.addAction(context.packageName + MyIntents.SCAN_EVENT_INTENT_ACTION)
     intentFilter.addAction(DWInterface.ACTION_RESULT)
     intentFilter.addAction(DWInterface.ACTION_RESULT_NOTIFICATION)
     intentFilter.addCategory(Intent.CATEGORY_DEFAULT)
@@ -126,7 +126,7 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
 
     val intentProps = Bundle()
     intentProps.putString("intent_output_enabled", "true")
-    intentProps.putString("intent_action", MyIntents.SCAN_EVENT_INTENT_ACTION)
+    intentProps.putString("intent_action", context.packageName + MyIntents.SCAN_EVENT_INTENT_ACTION)
     intentProps.putString("intent_delivery", profileIntentBroadcast)  //  "2"
     intentConfig.putBundle("PARAM_LIST", intentProps)
     profileConfig.putBundle("PLUGIN_CONFIG", intentConfig)
