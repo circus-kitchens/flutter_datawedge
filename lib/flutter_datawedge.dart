@@ -15,7 +15,6 @@ import 'models/flutter_datawedge_exception.dart';
 
 class FlutterDataWedge {
   final String profileName;
-  final bool listenToScannerStatus;
 
   late final Stream<ScanResult> _scanResultStream;
   late final Stream<ScannerStatus>? _scannerStatusStream;
@@ -26,52 +25,33 @@ class FlutterDataWedge {
   /// profileName: name of the DatawedgeProfile, that will be created or used
   FlutterDataWedge({
     required this.profileName,
-    this.listenToScannerStatus = false,
   }) {
     _createProfile(profileName);
-    listenScannerStatus();
+    _enableListeningScannerStatus();
     setUpStreams();
   }
 
   void setUpStreams() {
     // Create two streams based on the source stream to individually handle
     // scan_results and scanner_status events
-    final sourceStream = _eventChannel
-        .receiveBroadcastStream()
-        .where((event) => event is String)
-        .cast<String>();
+    final sourceStream = _eventChannel.receiveBroadcastStream().where((event) => event is String).cast<String>();
 
     _scanResultStream = sourceStream
-        .where((event) =>
-            DataWedgeConstants.fromRawScannerJsonString(event) ==
-            DataWedgeConstants.scanResult)
+        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scanResult)
         .map((event) => Json(event).asMap())
         .map(ScanResult.fromEventPayload);
 
-    if (listenToScannerStatus) {
-      _scannerStatusStream = sourceStream
-          .where((event) =>
-              DataWedgeConstants.fromRawScannerJsonString(event) ==
-              DataWedgeConstants.scannerStatus)
-          .map((event) => Json(event).asMap())
-          .map(ScannerStatus.fromEventPayload);
-    }
+    _scannerStatusStream = sourceStream
+        .where((event) => DataWedgeConstants.fromRawScannerJsonString(event) == DataWedgeConstants.scannerStatus)
+        .map((event) => Json(event).asMap())
+        .map(ScannerStatus.fromEventPayload);
   }
 
   Stream<ScanResult> get onScanResult => _scanResultStream;
 
-  Stream<ScannerStatus> get onScannerStatus {
-    if (!listenToScannerStatus) {
-      throw FlutterDatawedgeException(
-        'FlutterDatawedge was created with listenToScannerStatus set to false. '
-        'To list set it to true in the constructor',
-      );
-    }
-    return _scannerStatusStream!;
-  }
+  Stream<ScannerStatus> get onScannerStatus => _scannerStatusStream!;
 
-  Future<void> _createProfile(String profileName) =>
-      _methodChannel.invokeMethod<String>(
+  Future<void> _createProfile(String profileName) => _methodChannel.invokeMethod<String>(
         MethodChannelMethods.createDataWedgeProfile.value,
         profileName,
       );
@@ -80,7 +60,7 @@ class FlutterDataWedge {
         MethodChannelMethods.getPlatformVersion.value,
       );
 
-  Future<void> listenScannerStatus() => _methodChannel.invokeMethod<String>(
+  Future<void> _enableListeningScannerStatus() => _methodChannel.invokeMethod<String>(
         MethodChannelMethods.listenScannerStatus.value,
       );
 
@@ -88,9 +68,7 @@ class FlutterDataWedge {
   /// activate: true to trigger scanner, false to stop
   Future<void> scannerControl(bool activate) => _sendDataWedgeCommand(
         DatawedgeApiTargets.softScanTrigger.value,
-        activate
-            ? ScannerControlStates.startScanning.value
-            : ScannerControlStates.stopScanning.value,
+        activate ? ScannerControlStates.startScanning.value : ScannerControlStates.stopScanning.value,
       );
 
   /// Enable or Disable the scanner temporarily
@@ -98,9 +76,7 @@ class FlutterDataWedge {
   /// see also: [activateScanner], Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/scannerinputplugin/
   Future<void> enableScanner(bool enable) => _sendDataWedgeCommand(
         DatawedgeApiTargets.scannerPlugin.value,
-        enable
-            ? ScannerPluginCommand.enablePlugin.value
-            : ScannerPluginCommand.disablePlugin.value,
+        enable ? ScannerPluginCommand.enablePlugin.value : ScannerPluginCommand.disablePlugin.value,
       );
 
   /// Enable or Disable the scanner temporarily
@@ -109,21 +85,16 @@ class FlutterDataWedge {
   /// see also: [enableScanner], Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/scannerinputplugin/
   Future<void> activateScanner(bool activate) => _sendDataWedgeCommand(
         DatawedgeApiTargets.scannerPlugin.value,
-        activate
-            ? ScannerPluginCommand.resumePlugin.value
-            : ScannerPluginCommand.suspendPlugin.value,
+        activate ? ScannerPluginCommand.resumePlugin.value : ScannerPluginCommand.suspendPlugin.value,
       );
 
   Future<void> _sendDataWedgeCommand(String command, String parameter) async {
     try {
-      String argumentAsJson =
-          jsonEncode({"command": command, "parameter": parameter});
+      String argumentAsJson = jsonEncode({"command": command, "parameter": parameter});
       await _methodChannel.invokeMethod<String>(
-          MethodChannelMethods.sendDataWedgeCommandStringParameter.value,
-          argumentAsJson);
+          MethodChannelMethods.sendDataWedgeCommandStringParameter.value, argumentAsJson);
     } catch (e) {
-      throw FlutterDatawedgeException(
-          "Error while sending command to DataWedge. caused by: $e");
+      throw FlutterDatawedgeException("Error while sending command to DataWedge. caused by: $e");
     }
   }
 }
