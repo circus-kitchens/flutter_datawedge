@@ -2,18 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_datawedge/consts/datawedge_api_targets.dart';
-import 'package:flutter_datawedge/consts/datawedge_constants.dart';
-import 'package:flutter_datawedge/consts/method_channel_methods.dart';
-import 'package:flutter_datawedge/consts/scanner_control_states.dart';
+import 'package:flutter_datawedge/models/flutter_datawedge_exception.dart';
 import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_datawedge/models/scanner_status.dart';
+import 'package:flutter_datawedge/src/consts/datawedge_api_targets.dart';
+import 'package:flutter_datawedge/src/consts/datawedge_constants.dart';
+import 'package:flutter_datawedge/src/consts/method_channel_methods.dart';
+import 'package:flutter_datawedge/src/consts/scanner_control_states.dart';
+import 'package:flutter_datawedge/src/consts/scanner_plugin_command.dart';
 import 'package:strict_json/strict_json.dart';
 
-import 'consts/scanner_plugin_command.dart';
-import 'models/flutter_datawedge_exception.dart';
-
 class FlutterDataWedge {
+  /// Name of the DatawedgeProfile, that will be created or used
   final String profileName;
 
   late final Stream<ScanResult> _scanResultStream;
@@ -22,7 +22,6 @@ class FlutterDataWedge {
   final EventChannel _eventChannel = EventChannel('channels/scan');
   final MethodChannel _methodChannel = MethodChannel('channels/command');
 
-  /// profileName: name of the DatawedgeProfile, that will be created or used
   FlutterDataWedge({
     required this.profileName,
   }) {
@@ -31,8 +30,10 @@ class FlutterDataWedge {
     _setUpStreams();
   }
 
+  /// Subscribe to a stream of [ScanResult]s
   Stream<ScanResult> get onScanResult => _scanResultStream;
 
+  /// Subscribe to a stream of [ScannerStatus]s
   Stream<ScannerStatus> get onScannerStatus => _scannerStatusStream!;
 
   /// Manually trigger scanning or stop scanning
@@ -65,6 +66,9 @@ class FlutterDataWedge {
             : ScannerPluginCommand.suspendPlugin.value,
       );
 
+  /// Returns the version of the Android OS
+  /// example: Android 4.4, Android 10
+  /// see also: https://developer.android.com/reference/android/os/Build.VERSION#RELEASE
   Future<String?> platformVersion() => _methodChannel.invokeMethod<String>(
         MethodChannelMethods.getPlatformVersion.value,
       );
