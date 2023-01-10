@@ -1,3 +1,9 @@
+# 1.2.0
+
+* Include changes from [LenhartStephan](https://github.com/LenhartStephan) to prevent crosstalk when several instances of package are running on one system
+* Change signature of `FlutterDataWedge` constructor to always enable listening ot ScannerStatus
+* Remove pubspec.lock files to match [recommendations](https://dart.dev/guides/libraries/private-files#pubspeclock)
+
 # 1.1.0
 
 * Add documentation for `enableScanner(bool)`,`activateScanner(bool)`,`startScanning(bool)`
