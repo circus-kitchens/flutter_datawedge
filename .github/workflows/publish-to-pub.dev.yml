@@ -2,9 +2,6 @@ name: Publish to pub.dev
 on:
   release:
     types: [ published ]
-  pull_request:
-    branches:
-      - main
 
 jobs:
   package-publishing:
