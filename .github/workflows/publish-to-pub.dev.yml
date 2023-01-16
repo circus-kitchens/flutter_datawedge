@@ -16,3 +16,5 @@ jobs:
           refreshToken: ${{ secrets.PUB_DEV_OAUTH_REFRESH_TOKEN }}
           format: true
           flutter: true
+          flutterBranch: 'stable'
+          skipTests: true
