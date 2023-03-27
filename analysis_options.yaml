@@ -1,7 +1,11 @@
 include: package:lints/core.yaml
 
 analyzer:
-  exclude: [ build/** ]
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
+    - "build/**"
   language:
     strict-casts: true
     strict-raw-types: true

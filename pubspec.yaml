@@ -9,13 +9,21 @@ environment:
   flutter: '>=2.5.0'
 
 dependencies:
+  async: ^2.10.0
   flutter:
     sdk: flutter
+  freezed_annotation: ^2.2.0
+  stream_transform: ^2.1.0
+  json_annotation: ^4.8.0
   strict_json: ^2.0.6
+  freezed_result: ^1.0.3+1
 
 dev_dependencies:
+  build_runner: ^2.3.3
   flutter_test:
     sdk: flutter
+  freezed: ^2.3.2
+  json_serializable: ^6.6.1
   lints: ^2.0.1
 
 

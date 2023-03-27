@@ -3,3 +3,7 @@ class FlutterDatawedgeException implements Exception {
 
   FlutterDatawedgeException(this.message);
 }
+
+class NotInitializedException extends FlutterDatawedgeException {
+  NotInitializedException() : super('FlutterDataWedgePlus is not initialized. Call FlutterDataWedgePlus.initialize() first.');
+}

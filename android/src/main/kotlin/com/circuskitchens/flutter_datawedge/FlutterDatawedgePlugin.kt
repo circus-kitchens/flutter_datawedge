@@ -45,6 +45,7 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
     intentFilter = IntentFilter()
     intentFilter.addAction(context.packageName + MyIntents.SCAN_EVENT_INTENT_ACTION)
     intentFilter.addAction(DWInterface.ACTION_RESULT)
+    intentFilter.addAction(DWInterface.ACTION_DATAWEDGE)
     intentFilter.addAction(DWInterface.ACTION_RESULT_NOTIFICATION)
     intentFilter.addCategory(Intent.CATEGORY_DEFAULT)
 
@@ -66,14 +67,16 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
         val arguments = JSONObject(call.arguments.toString())
         val command: String = arguments.get("command") as String
         val parameter: String = arguments.get("parameter") as String
-        dwInterface.sendCommandString(context, command, parameter)
-        //  result.success(0);  //  DataWedge does not return responses
+        dwInterface.sendCommandString(context, command, parameter,"${command}_$parameter")
+        result.success(null);  //  DataWedge does not return responses
       }
       MyMethods.createDataWedgeProfile -> {
         createDataWedgeProfile(call.arguments.toString())
+        result.success(null);  //  DataWedge does not return responses
       }
       MyMethods.listenScannerStatus -> {
         listenScannerStatus()
+        result.success(null);  //  DataWedge does not return responses
       }
       else -> {
         result.notImplemented()
@@ -92,10 +95,9 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
   }
 
   private fun createDataWedgeProfile(profileName: String) {
-
-
     //https://techdocs.zebra.com/datawedge/latest/guide/api/createprofile/
-    dwInterface.sendCommandString(context, DWInterface.EXTRA_CREATE_PROFILE, profileName)
+    dwInterface.sendCommandString(context, DWInterface.EXTRA_CREATE_PROFILE, profileName,"create_profile_$profileName")
+
     val profileConfig = Bundle()
     profileConfig.putString(DWInterface.EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME, profileName)
     profileConfig.putString("PROFILE_ENABLED", "true") //  These are all strings
@@ -116,7 +118,8 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
     appConfig.putStringArray("ACTIVITY_LIST", arrayOf("*"))
     profileConfig.putParcelableArray("APP_LIST", arrayOf(appConfig))
 
-    dwInterface.sendCommandBundle(context, DWInterface.ACTION_SET_CONFIG, profileConfig)
+    // https://techdocs.zebra.com/datawedge/latest/guide/api/setconfig/
+    dwInterface.sendCommandBundle(context, DWInterface.ACTION_SET_CONFIG, profileConfig, "set_config_associate_profile_$profileName")
     //  You can only configure one plugin at a time in some versions of DW, now do the intent output
     profileConfig.remove("PLUGIN_CONFIG")
 
@@ -131,7 +134,8 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
     intentConfig.putBundle("PARAM_LIST", intentProps)
     profileConfig.putBundle("PLUGIN_CONFIG", intentConfig)
 
-    dwInterface.sendCommandBundle(context, DWInterface.ACTION_SET_CONFIG, profileConfig)
+    // https://techdocs.zebra.com/datawedge/latest/guide/api/setconfig/
+    dwInterface.sendCommandBundle(context, DWInterface.ACTION_SET_CONFIG, profileConfig, "set_config_intent_output_$profileName")
   }
 
   private fun listenScannerStatus(){
@@ -141,7 +145,7 @@ class FlutterDatawedgePlugin: FlutterPlugin, MethodCallHandler, StreamHandler {
     b.putString(DWInterface.EXTRA_KEY_NOTIFICATION_TYPE, DWInterface.EXTRA_KEY_VALUE_SCANNER_STATUS)
 
     //https://techdocs.zebra.com/datawedge/latest/guide/api/setconfig/
-    dwInterface.sendCommandBundle(context, DWInterface.EXTRA_REGISTER_NOTIFICATION, b)
+    dwInterface.sendCommandBundle(context, DWInterface.EXTRA_REGISTER_NOTIFICATION, b, "register_notification_scanner_status")
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
