@@ -16,13 +16,9 @@ import 'package:flutter_datawedge/src/consts/method_channel_methods.dart';
 import 'package:flutter_datawedge/src/consts/scanner_control_states.dart';
 import 'package:flutter_datawedge/src/consts/scanner_plugin_command.dart';
 
-// TODO: Remove the pattern matching etc to a kitchen-apps
-// TODO: Enable possibility to provide command identifiers
-// TODO: check Initilization
 // TODO: add example of awaiting to README
 // TODO: write tests
 class FlutterDataWedge {
-  /// Name of the DatawedgeProfile, that will be created or used
   final String profileName;
 
   late final Stream<ScanResult> _scanResultStream;
@@ -34,18 +30,6 @@ class FlutterDataWedge {
 
   bool _isInitialized = false;
 
-  FlutterDataWedge({
-    required this.profileName,
-  }) {
-    _setUpStreams();
-  }
-
-  Future<void> initialize() async {
-    await _enableListeningScannerStatus();
-    await _createProfile();
-    _isInitialized = true;
-  }
-
   /// Subscribe to a stream of [ScanResult]s
   Stream<ScanResult> get onScanResult => _scanResultStream;
 
@@ -55,47 +39,61 @@ class FlutterDataWedge {
   /// Subscribe to a stream of [EventName]s
   Stream<ActionResult> get onScannerEvent => _scannerEventStream!;
 
+  /// Create a new instance of [FlutterDataWedge]
+  /// [profileName] is the name of the profile which will be created
+  FlutterDataWedge({
+    required this.profileName,
+  }) {
+    _setUpStreams();
+  }
+
+  /// Initialize the plugin
+  /// This will create a new profile with the given [profileName]
+  /// and enable onScannerStatus stream
+  Future<void> initialize() async {
+    await _enableListeningScannerStatus();
+    await _createProfile();
+    _isInitialized = true;
+  }
+
   /// Manually trigger scanning or stop scanning
   /// activate: true to trigger scanner, false to stop
-  Future<Result<void, FlutterDatawedgeException>> scannerControl(bool activate) async {
-    if (!_isInitialized) {
-      return Result.failure(NotInitializedException());
-    }
-
-    return _sendDataWedgeCommand(
-      DatawedgeApiTargets.softScanTrigger,
-      activate ? ScannerControlStates.startScanning : ScannerControlStates.stopScanning,
-    );
-  }
+  ///  Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/softscantrigger/
+  Future<Result<void, FlutterDatawedgeException>> scannerControl(bool activate, {String? commandIdentifier}) =>
+      _sendDataWedgeCommand(
+        DatawedgeApiTargets.softScanTrigger,
+        activate ? ScannerControlStates.startScanning : ScannerControlStates.stopScanning,
+        commandIdentifier: commandIdentifier,
+      );
 
   /// Enable or Disable the scanner temporarily
   /// Can be called anytime, but slower than [activateScanner]
-  /// see also: [activateScanner], Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/scannerinputplugin/
-  Future<Result<void, FlutterDatawedgeException>> enableScanner(bool enable) async {
-    if (!_isInitialized) {
-      return Result.failure(NotInitializedException());
-    }
-
-    return _sendDataWedgeCommand(
-      DatawedgeApiTargets.scannerPlugin,
-      enable ? ScannerPluginCommand.enablePlugin : ScannerPluginCommand.disablePlugin,
-    );
-  }
+  /// see also: [activateScanner]
+  /// Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/scannerinputplugin/
+  Future<Result<void, FlutterDatawedgeException>> enableScanner(
+    bool enable, {
+    String? commandIdentifier,
+  }) =>
+      _sendDataWedgeCommand(
+        DatawedgeApiTargets.scannerPlugin,
+        enable ? ScannerPluginCommand.enablePlugin : ScannerPluginCommand.disablePlugin,
+        commandIdentifier: commandIdentifier,
+      );
 
   /// Enable or Disable the scanner temporarily
   /// Way quicker then [enableScanner] but can only be called when ScannerStatus in SCANNING or WAITING state
   /// Use [onScannerStatus] to listen to the current state
-  /// see also: [enableScanner], Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/scannerinputplugin/
-  Future<Result<void, FlutterDatawedgeException>> activateScanner(bool activate) async {
-    if (!_isInitialized) {
-      return Result.failure(NotInitializedException());
-    }
-
-    return _sendDataWedgeCommand(
-      DatawedgeApiTargets.scannerPlugin,
-      activate ? ScannerPluginCommand.resumePlugin : ScannerPluginCommand.suspendPlugin,
-    );
-  }
+  /// see also: [enableScanner]
+  /// Zebra API Doc: https://zebra-techdocs-archive.netlify.app/datawedge/11-3/guide/api/scannerinputplugin/
+  Future<Result<void, FlutterDatawedgeException>> activateScanner(
+    bool activate, {
+    String? commandIdentifier,
+  }) =>
+      _sendDataWedgeCommand(
+        DatawedgeApiTargets.scannerPlugin,
+        activate ? ScannerPluginCommand.resumePlugin : ScannerPluginCommand.suspendPlugin,
+        commandIdentifier: commandIdentifier,
+      );
 
   /// Returns the version of the Android OS
   /// example: Android 4.4, Android 10
@@ -107,9 +105,9 @@ class FlutterDataWedge {
   /// Create and configure a Datawedge profile with the given name
   /// Returns when the Command is executed NOT when DataWedge is ready to be operated again
   /// For that use [onScannerEvent] to listen for the Result of the Command
-  Future<void> _createProfile() async => _methodChannel.invokeMethod<void>(
+  Future<void> _createProfile({String? commandIdentifier}) async => _methodChannel.invokeMethod<void>(
         MethodChannelMethods.createDataWedgeProfile.value,
-        profileName,
+        jsonEncode({"name": profileName, 'commandIdentifier': commandIdentifier ?? 'createProfile_$profileName'}),
       );
 
   Future<void> _enableListeningScannerStatus() => _methodChannel.invokeMethod<void>(
@@ -136,11 +134,23 @@ class FlutterDataWedge {
         .map(ScannerStatus.fromJson);
   }
 
-  Future<Result<void, FlutterDatawedgeException>> _sendDataWedgeCommand(ValueEnum command, ValueEnum parameter) async {
+  Future<Result<void, FlutterDatawedgeException>> _sendDataWedgeCommand(
+    ValueEnum command,
+    ValueEnum parameter, {
+    String? commandIdentifier,
+  }) async {
     try {
+      if (!_isInitialized) {
+        return Result.failure(NotInitializedException());
+      }
+
       await _methodChannel.invokeMethod<void>(
         MethodChannelMethods.sendDataWedgeCommandStringParameter.value,
-        jsonEncode({"command": command.value, "parameter": parameter.value}),
+        jsonEncode({
+          "command": command.value,
+          "parameter": parameter.value,
+          'commandIdentifier': commandIdentifier ?? '${command.value}_$profileName'
+        }),
       );
       return Result.success(null);
     } catch (e) {
