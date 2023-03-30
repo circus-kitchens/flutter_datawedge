@@ -108,7 +108,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             context,
             DWInterface.EXTRA_CREATE_PROFILE,
             profileName,
-            commandIdentifier
+            "createProfile_$commandIdentifier"
         )
 
         val profileConfig = Bundle()
@@ -136,7 +136,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             context,
             DWInterface.ACTION_SET_CONFIG,
             profileConfig,
-            commandIdentifier
+            "profileConfig_$commandIdentifier"
         )
 
         /// You can only configure one plugin at a time in some versions of DW, now do the intent output
@@ -161,7 +161,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             context,
             DWInterface.ACTION_SET_CONFIG,
             profileConfig,
-            commandIdentifier
+            "intentOutputConfig_$commandIdentifier"
         )
 
     }
@@ -181,7 +181,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             context,
             DWInterface.EXTRA_REGISTER_NOTIFICATION,
             b,
-            commandIdentifier
+            "listenScannerStatus_$commandIdentifier"
         )
     }
 

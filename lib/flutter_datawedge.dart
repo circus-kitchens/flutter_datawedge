@@ -16,8 +16,6 @@ import 'package:flutter_datawedge/src/consts/method_channel_methods.dart';
 import 'package:flutter_datawedge/src/consts/scanner_control_states.dart';
 import 'package:flutter_datawedge/src/consts/scanner_plugin_command.dart';
 
-// TODO: add example of awaiting to README
-// TODO: write tests
 class FlutterDataWedge {
   final String profileName;
 
@@ -50,9 +48,9 @@ class FlutterDataWedge {
   /// Initialize the plugin
   /// This will create a new profile with the given [profileName]
   /// and enable onScannerStatus stream
-  Future<void> initialize() async {
-    await _enableListeningScannerStatus();
-    await _createProfile();
+  Future<void> initialize({String? commandIdentifier}) async {
+    await _enableListeningScannerStatus(commandIdentifier: commandIdentifier);
+    await _createProfile(commandIdentifier: commandIdentifier);
     _isInitialized = true;
   }
 
@@ -110,8 +108,9 @@ class FlutterDataWedge {
         jsonEncode({"name": profileName, 'commandIdentifier': commandIdentifier ?? 'createProfile_$profileName'}),
       );
 
-  Future<void> _enableListeningScannerStatus() => _methodChannel.invokeMethod<void>(
+  Future<void> _enableListeningScannerStatus({String? commandIdentifier}) => _methodChannel.invokeMethod<void>(
         MethodChannelMethods.listenScannerStatus.value,
+        jsonEncode({'commandIdentifier': commandIdentifier ?? 'enableListeningStatus_$profileName'}),
       );
 
   void _setUpStreams() {
