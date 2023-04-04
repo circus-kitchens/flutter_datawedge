@@ -12,5 +12,6 @@ class ScanResult with _$ScanResult {
     required String source,
   }) = _ScanResult;
 
-  factory ScanResult.fromJson(Map<String, dynamic> json) => _$ScanResultFromJson(json);
+  factory ScanResult.fromJson(Map<String, dynamic> json) =>
+      _$ScanResultFromJson(json);
 }

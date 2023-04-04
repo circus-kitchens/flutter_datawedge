@@ -1,6 +1,6 @@
 import 'package:flutter_datawedge/src/consts/value_enum.dart';
 
-enum ScannerControlStates with ValueEnum{
+enum ScannerControlStates with ValueEnum {
   startScanning("START_SCANNING"),
   stopScanning("STOP_SCANNING");
 

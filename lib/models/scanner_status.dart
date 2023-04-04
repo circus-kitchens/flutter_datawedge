@@ -6,13 +6,13 @@ part 'scanner_status.freezed.dart';
 
 @freezed
 class ScannerStatus with _$ScannerStatus {
-
   const factory ScannerStatus({
     required ScannerStatusType status,
     required String profile,
   }) = _ScannerStatus;
 
-  factory ScannerStatus.fromJson(Map<String, dynamic> json) => _$ScannerStatusFromJson(json);
+  factory ScannerStatus.fromJson(Map<String, dynamic> json) =>
+      _$ScannerStatusFromJson(json);
 }
 
 enum ScannerStatusType {

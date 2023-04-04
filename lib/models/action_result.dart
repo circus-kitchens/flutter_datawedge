@@ -10,12 +10,13 @@ class ActionResult with _$ActionResult {
     required String result,
     required String command,
     required String commandIdentifier,
-    required Map<String,dynamic>? resultInfo,
+    required Map<String, dynamic>? resultInfo,
   }) = _ActionResult;
 
   const ActionResult._();
 
   bool get success => result == 'SUCCESS';
 
-  factory ActionResult.fromJson(Map<String, dynamic> json) => _$ActionResultFromJson(json);
+  factory ActionResult.fromJson(Map<String, dynamic> json) =>
+      _$ActionResultFromJson(json);
 }

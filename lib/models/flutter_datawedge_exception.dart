@@ -5,5 +5,7 @@ class FlutterDatawedgeException implements Exception {
 }
 
 class NotInitializedException extends FlutterDatawedgeException {
-  NotInitializedException() : super('FlutterDataWedgePlus is not initialized. Call FlutterDataWedgePlus.initialize() first.');
+  NotInitializedException()
+      : super(
+            'FlutterDataWedgePlus is not initialized. Call FlutterDataWedgePlus.initialize() first.');
 }

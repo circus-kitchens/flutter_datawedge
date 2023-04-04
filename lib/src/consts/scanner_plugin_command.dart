@@ -1,6 +1,6 @@
 import 'package:flutter_datawedge/src/consts/value_enum.dart';
 
-enum ScannerPluginCommand with ValueEnum{
+enum ScannerPluginCommand with ValueEnum {
   ///RESUME_PLUGIN:  resumes the scanner when changing from the SUSPEND_PLUGIN suspended state.
   ///SCANNER_STATUS notification broadcasts WAITING and SCANNING states, rotating between each depending on
   ///whether scanning is taking place. In the WAITING state it is expecting an action from the user such as a trigger

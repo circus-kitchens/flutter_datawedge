@@ -1,4 +1,3 @@
-
 enum DataWedgeEventType {
   eventName('EVENT_NAME'),
   scannerStatus('SCANNER_STATUS'),
@@ -9,6 +8,7 @@ enum DataWedgeEventType {
 
   const DataWedgeEventType(this.value);
 
-  static DataWedgeEventType fromMap(Map<String,dynamic> event) =>
-      DataWedgeEventType.values.firstWhere((type) => type.value == event['EVENT_NAME']);
+  static DataWedgeEventType fromMap(Map<String, dynamic> event) =>
+      DataWedgeEventType.values
+          .firstWhere((type) => type.value == event['EVENT_NAME']);
 }
