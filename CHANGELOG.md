@@ -1,3 +1,8 @@
+
+# 2.0.0-dev.1
+
+* Prerelease with breaking API changes. It enables the user to properly await until a command was send to the underlying Zebra API as well as specifying command identifiers to listen on the result of any action. 
+
 # 1.2.0
 
 * Include changes from [LenhartStephan](https://github.com/LenhartStephan) to prevent crosstalk when several instances of package are running on one system
