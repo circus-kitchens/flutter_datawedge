@@ -90,7 +90,17 @@ class _MyAppState extends State<MyApp> {
         scan.dataString,
         maxLines: 2,
       ),
-      subtitle: Text(scan.labelType.toString()),
+      subtitle: Wrap(spacing: 4, children: [
+        Chip(
+            visualDensity: VisualDensity.compact,
+            label: Text(scan.labelType.name.toString())),
+        Chip(
+            visualDensity: VisualDensity.compact,
+            label: Text(scan.decodeMode.name.toString())),
+        Chip(
+            visualDensity: VisualDensity.compact,
+            label: Text(scan.source.name.toString()))
+      ]),
     );
   }
 
@@ -100,8 +110,10 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: const Text('🦓 Flutter DataWedge Example'),
       ),
-      bottomNavigationBar: Material(
-        elevation: 5,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(color: Colors.grey.shade200, boxShadow: [
+          BoxShadow(color: Colors.grey.shade400, blurRadius: 10)
+        ]),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -109,13 +121,12 @@ class _MyAppState extends State<MyApp> {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                        "Scanner status: " +
-                            (_status?.newState.toString() ?? "Unknown"),
-                        style: Theme.of(context).textTheme.bodyMedium),
-                  ),
+                  Text((_status?.newState.toString() ?? "Unknown"),
+                      style: Theme.of(context).textTheme.labelLarge),
                 ],
+              ),
+              SizedBox(
+                height: 8,
               ),
               Row(
                 children: [
@@ -170,6 +181,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       body: ListView.separated(
+        padding: EdgeInsets.only(top: 8),
         separatorBuilder: (context, n) => Divider(),
         itemBuilder: _buildScan,
         itemCount: _scans.length,
