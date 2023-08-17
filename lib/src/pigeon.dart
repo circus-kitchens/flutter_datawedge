@@ -322,6 +322,15 @@ enum DecodeMode {
   single,
 }
 
+enum ScannerState {
+  waiting,
+  scanning,
+  idle,
+  connected,
+  disconnected,
+  disabled,
+}
+
 /// Result when creating a profile
 class CreateProfileResponse {
   CreateProfileResponse({
@@ -1066,12 +1075,36 @@ class ScanEvent {
   }
 }
 
+class StatusChangeEvent {
+  StatusChangeEvent({
+    required this.newState,
+  });
+
+  ScannerState newState;
+
+  Object encode() {
+    return <Object?>[
+      newState.index,
+    ];
+  }
+
+  static StatusChangeEvent decode(Object result) {
+    result as List<Object?>;
+    return StatusChangeEvent(
+      newState: ScannerState.values[result[0]! as int],
+    );
+  }
+}
+
 class _DataWedgeFlutterApiCodec extends StandardMessageCodec {
   const _DataWedgeFlutterApiCodec();
   @override
   void writeValue(WriteBuffer buffer, Object? value) {
     if (value is ScanEvent) {
       buffer.putUint8(128);
+      writeValue(buffer, value.encode());
+    } else if (value is StatusChangeEvent) {
+      buffer.putUint8(129);
       writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
@@ -1083,6 +1116,8 @@ class _DataWedgeFlutterApiCodec extends StandardMessageCodec {
     switch (type) {
       case 128: 
         return ScanEvent.decode(readValue(buffer)!);
+      case 129: 
+        return StatusChangeEvent.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }
@@ -1092,11 +1127,13 @@ class _DataWedgeFlutterApiCodec extends StandardMessageCodec {
 abstract class DataWedgeFlutterApi {
   static const MessageCodec<Object?> codec = _DataWedgeFlutterApiCodec();
 
-  void onScannerStatusChanged();
+  void onScannerStatusChanged(StatusChangeEvent statusEvent);
 
   void onScanResult(ScanEvent scanEvent);
 
   void onProfileChange();
+
+  void onConfigUpdate();
 
   static void setup(DataWedgeFlutterApi? api, {BinaryMessenger? binaryMessenger}) {
     {
@@ -1107,8 +1144,13 @@ abstract class DataWedgeFlutterApi {
         channel.setMessageHandler(null);
       } else {
         channel.setMessageHandler((Object? message) async {
-          // ignore message
-          api.onScannerStatusChanged();
+          assert(message != null,
+          'Argument for dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScannerStatusChanged was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final StatusChangeEvent? arg_statusEvent = (args[0] as StatusChangeEvent?);
+          assert(arg_statusEvent != null,
+              'Argument for dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScannerStatusChanged was null, expected non-null StatusChangeEvent.');
+          api.onScannerStatusChanged(arg_statusEvent!);
           return;
         });
       }
@@ -1142,6 +1184,20 @@ abstract class DataWedgeFlutterApi {
         channel.setMessageHandler((Object? message) async {
           // ignore message
           api.onProfileChange();
+          return;
+        });
+      }
+    }
+    {
+      final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onConfigUpdate', codec,
+          binaryMessenger: binaryMessenger);
+      if (api == null) {
+        channel.setMessageHandler(null);
+      } else {
+        channel.setMessageHandler((Object? message) async {
+          // ignore message
+          api.onConfigUpdate();
           return;
         });
       }
@@ -1262,28 +1318,6 @@ class DataWedgeHostApi {
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(<Object?>[arg_config]) as List<Object?>?;
-    if (replyList == null) {
-      throw PlatformException(
-        code: 'channel-error',
-        message: 'Unable to establish connection on channel.',
-      );
-    } else if (replyList.length > 1) {
-      throw PlatformException(
-        code: replyList[0]! as String,
-        message: replyList[1] as String?,
-        details: replyList[2],
-      );
-    } else {
-      return;
-    }
-  }
-
-  Future<void> listenScannerStatus() async {
-    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.listenScannerStatus', codec,
-        binaryMessenger: _binaryMessenger);
-    final List<Object?>? replyList =
-        await channel.send(null) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',
