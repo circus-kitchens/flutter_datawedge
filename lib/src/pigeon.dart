@@ -106,6 +106,48 @@ enum DpmMode {
   mode2,
 }
 
+enum BeamWidth {
+  narrow,
+  normal,
+  wide,
+}
+
+enum PowerMode {
+  low,
+  high,
+  alwaysOn,
+  optimized,
+}
+
+enum MpdMode {
+  display_off,
+  display_on,
+}
+
+enum PicklistMode {
+  disabled,
+  hardware,
+  software,
+}
+
+enum ReaderMode {
+  triggered,
+  presentation,
+}
+
+enum TriggerSource {
+  left,
+  right,
+  center,
+  gun,
+  proximity,
+  keyMapperScan,
+  keyMapperL1,
+  keyMapperR1,
+  wiredLeft,
+  wiredRight,
+}
+
 enum DpmIlluminationControl {
   direct,
   indirect,
@@ -276,7 +318,7 @@ class PluginBarcodeParamters {
     this.ocrMinChars,
     this.ocrMaxChars,
     this.ocrSubset,
-    this.ocrSubset,
+    this.ocrQuietZone,
     this.ocrTemplate,
     this.ocrCheckDigitModulus,
     this.ocrCheckDigitMultiplier,
@@ -289,6 +331,7 @@ class PluginBarcodeParamters {
     this.multiBarcodeCount,
     this.enableInstantReporting,
     this.reportDecodedBarcodes,
+    this.scannerTriggerResource,
     this.scannerInputEnabled,
     this.scannerSelection,
     this.configureAllScanners,
@@ -296,7 +339,12 @@ class PluginBarcodeParamters {
     this.enableAimMode,
     this.beamTimer,
     this.enableAdaptiveScanning,
-    this.enablePicklist,
+    this.beamWidth,
+    this.powerMode,
+    this.mpdMode,
+    this.readerMode,
+    this.linearSecurityLevel,
+    this.picklist,
     this.aimType,
     this.sceneDetectQualifier,
     this.aimTimer,
@@ -327,7 +375,7 @@ class PluginBarcodeParamters {
     this.establishConnectionTime,
     this.remoteScannerAudioFeedbackMode,
     this.remoteScannerLedFeedbackMode,
-    this.distplayBtAddressBarcode,
+    this.displayBtAddressBarcode,
     this.goodDecodeLedTimer,
     this.decodingLedFeedback,
     this.decoderUsPlanetReportCheckDigit,
@@ -340,6 +388,7 @@ class PluginBarcodeParamters {
     this.qrLaunchEnable,
     this.qrLaunchEnableQrDecoder,
     this.qrLaunchShowConfirmationDialog,
+    this.noDecodeTime,
   });
 
   bool? dataBarToUpcEan;
@@ -372,7 +421,7 @@ class PluginBarcodeParamters {
 
   String? docCaptureTemplate;
 
-  String? commonBarcodeDynamicQuantity;
+  int? commonBarcodeDynamicQuantity;
 
   bool? barcodeHighlightingEnabled;
 
@@ -394,7 +443,7 @@ class PluginBarcodeParamters {
 
   String? ocrSubset;
 
-  int? ocrSubset;
+  int? ocrQuietZone;
 
   String? ocrTemplate;
 
@@ -420,6 +469,8 @@ class PluginBarcodeParamters {
 
   bool? reportDecodedBarcodes;
 
+  TriggerSource? scannerTriggerResource;
+
   bool? scannerInputEnabled;
 
   ScannerIdentifer? scannerSelection;
@@ -434,7 +485,17 @@ class PluginBarcodeParamters {
 
   bool? enableAdaptiveScanning;
 
-  bool? enablePicklist;
+  BeamWidth? beamWidth;
+
+  PowerMode? powerMode;
+
+  MpdMode? mpdMode;
+
+  ReaderMode? readerMode;
+
+  int? linearSecurityLevel;
+
+  PicklistMode? picklist;
 
   AimType? aimType;
 
@@ -496,7 +557,7 @@ class PluginBarcodeParamters {
 
   int? remoteScannerLedFeedbackMode;
 
-  bool? distplayBtAddressBarcode;
+  bool? displayBtAddressBarcode;
 
   int? goodDecodeLedTimer;
 
@@ -521,6 +582,8 @@ class PluginBarcodeParamters {
   bool? qrLaunchEnableQrDecoder;
 
   bool? qrLaunchShowConfirmationDialog;
+
+  int? noDecodeTime;
 
   Object encode() {
     return <Object?>[
@@ -550,7 +613,7 @@ class PluginBarcodeParamters {
       ocrMinChars,
       ocrMaxChars,
       ocrSubset,
-      ocrSubset,
+      ocrQuietZone,
       ocrTemplate,
       ocrCheckDigitModulus,
       ocrCheckDigitMultiplier,
@@ -563,6 +626,7 @@ class PluginBarcodeParamters {
       multiBarcodeCount,
       enableInstantReporting,
       reportDecodedBarcodes,
+      scannerTriggerResource?.index,
       scannerInputEnabled,
       scannerSelection?.index,
       configureAllScanners,
@@ -570,7 +634,12 @@ class PluginBarcodeParamters {
       enableAimMode,
       beamTimer,
       enableAdaptiveScanning,
-      enablePicklist,
+      beamWidth?.index,
+      powerMode?.index,
+      mpdMode?.index,
+      readerMode?.index,
+      linearSecurityLevel,
+      picklist?.index,
       aimType?.index,
       sceneDetectQualifier?.index,
       aimTimer,
@@ -601,7 +670,7 @@ class PluginBarcodeParamters {
       establishConnectionTime,
       remoteScannerAudioFeedbackMode,
       remoteScannerLedFeedbackMode,
-      distplayBtAddressBarcode,
+      displayBtAddressBarcode,
       goodDecodeLedTimer,
       decodingLedFeedback,
       decoderUsPlanetReportCheckDigit,
@@ -614,6 +683,7 @@ class PluginBarcodeParamters {
       qrLaunchEnable,
       qrLaunchEnableQrDecoder,
       qrLaunchShowConfirmationDialog,
+      noDecodeTime,
     ];
   }
 
@@ -643,7 +713,7 @@ class PluginBarcodeParamters {
           ? ScanningMode.values[result[13]! as int]
           : null,
       docCaptureTemplate: result[14] as String?,
-      commonBarcodeDynamicQuantity: result[15] as String?,
+      commonBarcodeDynamicQuantity: result[15] as int?,
       barcodeHighlightingEnabled: result[16] as bool?,
       ruleName: result[17] as String?,
       enableUdiGs1: result[18] as bool?,
@@ -656,7 +726,7 @@ class PluginBarcodeParamters {
       ocrMinChars: result[23] as int?,
       ocrMaxChars: result[24] as int?,
       ocrSubset: result[25] as String?,
-      ocrSubset: result[26] as int?,
+      ocrQuietZone: result[26] as int?,
       ocrTemplate: result[27] as String?,
       ocrCheckDigitModulus: result[28] as int?,
       ocrCheckDigitMultiplier: result[29] as int?,
@@ -675,89 +745,108 @@ class PluginBarcodeParamters {
       multiBarcodeCount: result[36] as int?,
       enableInstantReporting: result[37] as bool?,
       reportDecodedBarcodes: result[38] as bool?,
-      scannerInputEnabled: result[39] as bool?,
-      scannerSelection: result[40] != null
-          ? ScannerIdentifer.values[result[40]! as int]
+      scannerTriggerResource: result[39] != null
+          ? TriggerSource.values[result[39]! as int]
           : null,
-      configureAllScanners: result[41] as bool?,
-      scannerSelectionByIdentifier: result[42] as String?,
-      enableAimMode: result[43] as bool?,
-      beamTimer: result[44] as int?,
-      enableAdaptiveScanning: result[45] as bool?,
-      enablePicklist: result[46] as bool?,
-      aimType: result[47] != null
-          ? AimType.values[result[47]! as int]
+      scannerInputEnabled: result[40] as bool?,
+      scannerSelection: result[41] != null
+          ? ScannerIdentifer.values[result[41]! as int]
           : null,
-      sceneDetectQualifier: result[48] != null
-          ? SceneDetectQualifier.values[result[48]! as int]
+      configureAllScanners: result[42] as bool?,
+      scannerSelectionByIdentifier: result[43] as String?,
+      enableAimMode: result[44] as bool?,
+      beamTimer: result[45] as int?,
+      enableAdaptiveScanning: result[46] as bool?,
+      beamWidth: result[47] != null
+          ? BeamWidth.values[result[47]! as int]
           : null,
-      aimTimer: result[49] as int?,
-      sameBarcodeTimeout: result[50] as int?,
-      triggerWakeupScan: result[51] as bool?,
-      differentBarcodeTimeout: result[52] as int?,
-      illuminationMode: result[53] != null
-          ? IlluminationMode.values[result[53]! as int]
+      powerMode: result[48] != null
+          ? PowerMode.values[result[48]! as int]
           : null,
-      illuminationBrightness: result[54] as int?,
-      lcdMode: result[55] != null
-          ? LcdMode.values[result[55]! as int]
+      mpdMode: result[49] != null
+          ? MpdMode.values[result[49]! as int]
           : null,
-      lowPowerTimeout: result[56] as int?,
-      delayToLowPowerMode: result[57] != null
-          ? DelayToLowPowerMode.values[result[57]! as int]
+      readerMode: result[50] != null
+          ? ReaderMode.values[result[50]! as int]
           : null,
-      inverse1dMode: result[58] != null
-          ? Inverse1dMode.values[result[58]! as int]
+      linearSecurityLevel: result[51] as int?,
+      picklist: result[52] != null
+          ? PicklistMode.values[result[52]! as int]
           : null,
-      viewFinderSize: result[59] as int?,
-      viewFinderPosX: result[60] as int?,
-      viewFinderPosY: result[61] as int?,
-      marginlessEffortLevel1d: result[62] != null
-          ? EffortLevel.values[result[62]! as int]
+      aimType: result[53] != null
+          ? AimType.values[result[53]! as int]
           : null,
-      poorQualityBcDecodeEffortLevel: result[63] != null
-          ? EffortLevel.values[result[63]! as int]
+      sceneDetectQualifier: result[54] != null
+          ? SceneDetectQualifier.values[result[54]! as int]
           : null,
-      charsetName: result[64] != null
-          ? Charset.values[result[64]! as int]
+      aimTimer: result[55] as int?,
+      sameBarcodeTimeout: result[56] as int?,
+      triggerWakeupScan: result[57] as bool?,
+      differentBarcodeTimeout: result[58] as int?,
+      illuminationMode: result[59] != null
+          ? IlluminationMode.values[result[59]! as int]
           : null,
-      autoCharsetPrefferedOrder: (result[65] as List<Object?>?)?.cast<String?>(),
-      autoCharsetFallback: result[66] != null
-          ? Charset.values[result[66]! as int]
+      illuminationBrightness: result[60] as int?,
+      lcdMode: result[61] != null
+          ? LcdMode.values[result[61]! as int]
           : null,
-      viewFinderMode: result[67] != null
-          ? ViewFinderMode.values[result[67]! as int]
+      lowPowerTimeout: result[62] as int?,
+      delayToLowPowerMode: result[63] != null
+          ? DelayToLowPowerMode.values[result[63]! as int]
           : null,
-      codeIdType: result[68] != null
-          ? CodeIdType.values[result[68]! as int]
+      inverse1dMode: result[64] != null
+          ? Inverse1dMode.values[result[64]! as int]
           : null,
-      volumeSliderType: result[69] != null
-          ? VolumeSliderType.values[result[69]! as int]
+      viewFinderSize: result[65] as int?,
+      viewFinderPosX: result[66] as int?,
+      viewFinderPosY: result[67] as int?,
+      marginlessEffortLevel1d: result[68] != null
+          ? EffortLevel.values[result[68]! as int]
           : null,
-      decodeAudioFeedbackUri: result[70] as String?,
-      decodeHapticFeedback: result[71] as bool?,
-      btDisconnectOnExit: result[72] as bool?,
-      connectionIdleTime: result[73] as int?,
-      establishConnectionTime: result[74] as int?,
-      remoteScannerAudioFeedbackMode: result[75] as int?,
-      remoteScannerLedFeedbackMode: result[76] as int?,
-      distplayBtAddressBarcode: result[77] as bool?,
-      goodDecodeLedTimer: result[78] as int?,
-      decodingLedFeedback: result[79] as bool?,
-      decoderUsPlanetReportCheckDigit: result[80] as bool?,
-      decodeScreenNotification: result[81] as bool?,
-      decodeScreenTime: result[82] as int?,
-      decodeScreenTranslucency: result[83] as int?,
-      keepParingInfoAfterReboot: result[84] as bool?,
-      dpmIlluminationControl: result[85] != null
-          ? DpmIlluminationControl.values[result[85]! as int]
+      poorQualityBcDecodeEffortLevel: result[69] != null
+          ? EffortLevel.values[result[69]! as int]
           : null,
-      dpmMode: result[86] != null
-          ? DpmMode.values[result[86]! as int]
+      charsetName: result[70] != null
+          ? Charset.values[result[70]! as int]
           : null,
-      qrLaunchEnable: result[87] as bool?,
-      qrLaunchEnableQrDecoder: result[88] as bool?,
-      qrLaunchShowConfirmationDialog: result[89] as bool?,
+      autoCharsetPrefferedOrder: (result[71] as List<Object?>?)?.cast<String?>(),
+      autoCharsetFallback: result[72] != null
+          ? Charset.values[result[72]! as int]
+          : null,
+      viewFinderMode: result[73] != null
+          ? ViewFinderMode.values[result[73]! as int]
+          : null,
+      codeIdType: result[74] != null
+          ? CodeIdType.values[result[74]! as int]
+          : null,
+      volumeSliderType: result[75] != null
+          ? VolumeSliderType.values[result[75]! as int]
+          : null,
+      decodeAudioFeedbackUri: result[76] as String?,
+      decodeHapticFeedback: result[77] as bool?,
+      btDisconnectOnExit: result[78] as bool?,
+      connectionIdleTime: result[79] as int?,
+      establishConnectionTime: result[80] as int?,
+      remoteScannerAudioFeedbackMode: result[81] as int?,
+      remoteScannerLedFeedbackMode: result[82] as int?,
+      displayBtAddressBarcode: result[83] as bool?,
+      goodDecodeLedTimer: result[84] as int?,
+      decodingLedFeedback: result[85] as bool?,
+      decoderUsPlanetReportCheckDigit: result[86] as bool?,
+      decodeScreenNotification: result[87] as bool?,
+      decodeScreenTime: result[88] as int?,
+      decodeScreenTranslucency: result[89] as int?,
+      keepParingInfoAfterReboot: result[90] as bool?,
+      dpmIlluminationControl: result[91] != null
+          ? DpmIlluminationControl.values[result[91]! as int]
+          : null,
+      dpmMode: result[92] != null
+          ? DpmMode.values[result[92]! as int]
+          : null,
+      qrLaunchEnable: result[93] as bool?,
+      qrLaunchEnableQrDecoder: result[94] as bool?,
+      qrLaunchShowConfirmationDialog: result[95] as bool?,
+      noDecodeTime: result[96] as int?,
     );
   }
 }

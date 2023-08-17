@@ -129,7 +129,7 @@ class PluginBarcodeParamters {
   //? General parameters
   ScanningMode? scanningMode;
   String? docCaptureTemplate;
-  String? commonBarcodeDynamicQuantity;
+  int? commonBarcodeDynamicQuantity;
 
   bool? barcodeHighlightingEnabled;
   String? ruleName;
@@ -163,7 +163,7 @@ class PluginBarcodeParamters {
   bool? enableInstantReporting;
   bool? reportDecodedBarcodes;
 
-  //?TriggerSource scannerTriggerResource ;
+  TriggerSource? scannerTriggerResource;
   bool? scannerInputEnabled;
 
   ScannerIdentifer? scannerSelection;
@@ -176,7 +176,17 @@ class PluginBarcodeParamters {
   int? beamTimer;
   bool? enableAdaptiveScanning;
 
-  bool? enablePicklist;
+  BeamWidth? beamWidth;
+
+  PowerMode? powerMode;
+
+  MpdMode? mpdMode;
+
+  ReaderMode? readerMode;
+
+  int? linearSecurityLevel;
+
+  PicklistMode? picklist;
 
   AimType? aimType;
 
@@ -237,7 +247,7 @@ class PluginBarcodeParamters {
   //? 1-3
   int? remoteScannerLedFeedbackMode;
 
-  bool? distplayBtAddressBarcode;
+  bool? displayBtAddressBarcode;
 
   //? 0 - 1000
   int? goodDecodeLedTimer;
@@ -264,6 +274,8 @@ class PluginBarcodeParamters {
 
   bool? qrLaunchShowConfirmationDialog;
 
+  int? noDecodeTime;
+
   // in 1000 increments, 0 180000
 }
 
@@ -271,6 +283,37 @@ enum DpmMode {
   disabled,
   mode1,
   mode2,
+}
+
+enum BeamWidth { narrow, normal, wide }
+
+enum PowerMode {
+  low,
+  high,
+  alwaysOn,
+  optimized,
+}
+
+enum MpdMode {
+  display_off,
+  display_on,
+}
+
+enum PicklistMode { disabled, hardware, software }
+
+enum ReaderMode { triggered, presentation }
+
+enum TriggerSource {
+  left,
+  right,
+  center,
+  gun,
+  proximity,
+  keyMapperScan,
+  keyMapperL1,
+  keyMapperR1,
+  wiredLeft,
+  wiredRight,
 }
 
 enum DpmIlluminationControl { direct, indirect, cycle }

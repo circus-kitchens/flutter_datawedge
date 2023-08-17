@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
-import 'package:flutter_datawedge/models/action_result.dart';
-import 'package:flutter_datawedge/models/scan_result.dart';
-import 'package:flutter_datawedge/models/scanner_status.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +33,8 @@ Future<void> dwTest() async {
       barcodeParamters: PluginBarcodeParamters(
           //configureAllScanners: true,
           scannerSelection: ScannerIdentifer.auto,
-          enableHardwareTrigger: false,
+          enableHardwareTrigger: true,
+          enableAimMode: false,
           upcEeanLinearDecode: true,
           dataBarToUpcEan: true));
 
