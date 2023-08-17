@@ -299,8 +299,6 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
                 callback(Result.success(CreateProfileResponse(CreateProfileResponseType.PROFILECREATED)))
             }
         }
-
-
     }
 
     override fun suspendPlugin(callback: (Result<Unit>) -> Unit) {

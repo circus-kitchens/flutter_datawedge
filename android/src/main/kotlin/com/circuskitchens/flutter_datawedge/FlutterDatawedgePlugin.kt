@@ -16,13 +16,9 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 class FlutterDatawedgePlugin : FlutterPlugin {
 
     private val profileIntentBroadcast = "2"
-
-
-    
     private var flutter: FlutterPlugin.FlutterPluginBinding? = null
     private var flutterApi: DataWedgeFlutterApi? = null
     private var dwInterface: DWInterface? = null
-
     private lateinit var intentFilter: IntentFilter
 
     @RequiresApi(LOLLIPOP)
@@ -40,8 +36,5 @@ class FlutterDatawedgePlugin : FlutterPlugin {
         DataWedgeHostApi.setUp(binding.binaryMessenger,null)
         flutterApi = null
     }
-
-
-
 
 }
