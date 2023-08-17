@@ -1,63 +1,48 @@
 package com.circuskitchens.flutter_datawedge
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Bundle
-import com.circuskitchens.flutter_datawedge.consts.MyChannels
-import com.circuskitchens.flutter_datawedge.consts.MyIntents
-import src.main.kotlin.com.circuskitchens.flutter_datawedge.consts.MyMethods
-import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.EventChannel
-import io.flutter.plugin.common.EventChannel.EventSink
-import io.flutter.plugin.common.EventChannel.StreamHandler
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import org.json.JSONObject
 
-class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
+
+import android.content.Context
+import android.content.IntentFilter
+import android.os.Build.*
+import android.os.Build.VERSION_CODES.*
+import android.util.Log
+import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
+import com.circuskitchens.flutter_datawedge.pigeon.DataWedgeFlutterApi
+import com.circuskitchens.flutter_datawedge.pigeon.DataWedgeHostApi
+import io.flutter.embedding.engine.plugins.FlutterPlugin
+
+class FlutterDatawedgePlugin : FlutterPlugin {
 
     private val profileIntentBroadcast = "2"
 
-    private lateinit var scanEventChannel: EventChannel
 
-    private lateinit var commandMethodChannel: MethodChannel
-
-    /**
-     * Used to save BroadcastReceiver to be able unregister them.
-     */
-    private val registeredReceivers: ArrayList<SinkBroadcastReceiver> = ArrayList()
-
-    private val dwInterface = DWInterface()
-
-    private lateinit var context: Context
+    
+    private var flutter: FlutterPlugin.FlutterPluginBinding? = null
+    private var flutterApi: DataWedgeFlutterApi? = null
+    private var dwInterface: DWInterface? = null
 
     private lateinit var intentFilter: IntentFilter
 
-    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-
-        context = flutterPluginBinding.applicationContext
-
-        intentFilter = IntentFilter()
-        intentFilter.addAction(context.packageName + MyIntents.SCAN_EVENT_INTENT_ACTION)
-        intentFilter.addAction(DWInterface.ACTION_RESULT)
-        intentFilter.addAction(DWInterface.ACTION_DATAWEDGE)
-        intentFilter.addAction(DWInterface.ACTION_RESULT_NOTIFICATION)
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT)
-
-        scanEventChannel =
-            EventChannel(flutterPluginBinding.binaryMessenger, MyChannels.scanChannel)
-        scanEventChannel.setStreamHandler(this)
-
-        commandMethodChannel =
-            MethodChannel(flutterPluginBinding.binaryMessenger, MyChannels.commandChannel)
-        commandMethodChannel.setMethodCallHandler(this)
-
+    @RequiresApi(LOLLIPOP)
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        Log.d("FlutterDataWedgeFlugin","Attaching to engine...")
+        flutterApi = DataWedgeFlutterApi(flutterPluginBinding.binaryMessenger)
+        dwInterface = DWInterface(flutterPluginBinding.applicationContext)
+        DataWedgeHostApi.setUp(flutterPluginBinding.binaryMessenger,dwInterface)
+        dwInterface?.setupBroadcastReceiver()
     }
 
-    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        dwInterface?.dispose()
+        DataWedgeHostApi.setUp(binding.binaryMessenger,null)
+        flutterApi = null
+    }
+
+
+/*
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
 
         when (call.method) {
             MyMethods.sendDataWedgeCommandStringParameter -> {
@@ -180,14 +165,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             b,
             "listenScannerStatus_$commandIdentifier"
         )
-    }
+    }*/
 
-    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        for (receiver in registeredReceivers) {
-            context.unregisterReceiver(receiver)
-        }
-        commandMethodChannel.setMethodCallHandler(null)
-        scanEventChannel.setStreamHandler(null)
-    }
 
 }

@@ -8,17 +8,43 @@ import 'package:flutter_datawedge_example/button_tab_view.dart';
 import 'log_tab_view.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  dwTest();
+
   runApp(
     MaterialApp(
       title: 'Flutter DataWedge Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyApp(),
+      home: Container(),
     ),
   );
 }
 
+Future<void> dwTest() async {
+  var dataWedge = FlutterDataWedge.instance;
+
+  print("Creating profile...");
+  await dataWedge.createProfile("TestFlutter");
+  print("Created profiele...");
+
+  var config = ProfileConfig(
+      profileName: "TestFlutter",
+      profileEnabled: true,
+      configMode: ConfigMode.update,
+      barcodeParamters: PluginBarcodeParamters(
+          //configureAllScanners: true,
+          scannerSelection: ScannerIdentifer.auto,
+          enableHardwareTrigger: false,
+          upcEeanLinearDecode: true,
+          dataBarToUpcEan: true));
+
+  await dataWedge.setConfig(config);
+}
+
+/*
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -75,4 +101,4 @@ class _MyAppState extends State<MyApp> {
           );
         });
   }
-}
+}*/

@@ -9,7 +9,7 @@ import com.circuskitchens.flutter_datawedge.consts.MyEvents
 import com.circuskitchens.flutter_datawedge.consts.MyIntents.Companion.SCAN_EVENT_INTENT_ACTION
 import io.flutter.plugin.common.EventChannel.EventSink
 import org.json.JSONObject
-
+/*
 class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -200,3 +200,4 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
 
 
 }
+*/
