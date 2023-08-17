@@ -8,17 +8,43 @@ import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_datawedge/models/scanner_status.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  dwTest();
+
   runApp(
     MaterialApp(
       title: 'Flutter DataWedge Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyApp(),
+      home: Container(),
     ),
   );
 }
 
+Future<void> dwTest() async {
+  var dataWedge = FlutterDataWedge.instance;
+
+  print("Creating profile...");
+  await dataWedge.createProfile("TestFlutter");
+  print("Created profiele...");
+
+  var config = ProfileConfig(
+      profileName: "TestFlutter",
+      profileEnabled: true,
+      configMode: ConfigMode.update,
+      barcodeParamters: PluginBarcodeParamters(
+          //configureAllScanners: true,
+          scannerSelection: ScannerIdentifer.auto,
+          enableHardwareTrigger: false,
+          upcEeanLinearDecode: true,
+          dataBarToUpcEan: true));
+
+  await dataWedge.setConfig(config);
+}
+
+/*
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -161,4 +187,4 @@ Future<void>? initScannerResult;
       ),
     );
   }
-}
+}*/

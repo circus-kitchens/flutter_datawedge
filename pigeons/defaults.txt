@@ -1,0 +1,154 @@
+// All default parameters are taken from data wedge
+
+  // UPC Parameters below
+  bool dataBarToUpcEan = false;
+  bool upcEnableMarginlessDecode = false;
+  int upcEanSecurityLevel = 1;
+  bool upcEanSupplemental2 = true;
+  bool upcEanSupplemental5 = true;
+  UpcSupplementalMode upcEanSupplementalMode = UpcSupplementalMode.none;
+  int upcEanRetryCount = 10;
+  bool upcEeanLinearDecode = true;
+  bool upcEanBookland = false;
+  bool upcEanCoupon = false;
+  UpcEanCouponReport upcEanCouponReport = UpcEanCouponReport.both;
+  bool upcEanZeroExtend = false;
+  UpcEanBooklandFormat upceanBooklandFormat = UpcEanBooklandFormat.isbn10;
+
+  // General parameters
+  ScanningMode scanningMode = ScanningMode.documentCapture;
+  String? docCaptureTemplate;
+  String? commonBarcodeDynamicQuantity;
+
+  bool barcodeHighlightingEnabled = false;
+  String? ruleName;
+
+  bool enableUdiGs1 = true;
+  bool enableUdiHibcc = true;
+  bool enableUdiIccbba = true;
+
+  OcrOrientation ocrOrientation = OcrOrientation.degree_0;
+  int ocrLines = 1;
+  int ocrMinChars = 3;
+  int ocrMaxChars = 100;
+  String? ocrSubset;
+  String ocrTemplate = "99999999";
+  int ocrCheckDigitModulus = 0;
+  int ocrCheckDigitMultiplier = 121212121212;
+  int ocrCheckDigitValidation = 0;
+  InverseOcr inverseOcr = InverseOcr.regular;
+
+  PresentationModeSensitivity presentationModeSensitivity =
+      PresentationModeSensitivity.medium;
+
+  // barcode_trigger_mode
+  bool enableHardwareTrigger = true;
+
+  SwitchOnEvent autoSwitchToDefaultOnEvent = SwitchOnEvent.disabled;
+
+  bool digimarcDecoding = true;
+  // Multi barcode parameters
+  int multiBarcodeCount = 5;
+  bool enableInstantReporting = false;
+  bool reportDecodedBarcodes = false;
+
+  //TriggerSource scannerTriggerResource = TriggerSource.
+  bool scannerInputEnabled = true;
+
+  ScannerIdentifer scannerSelection = ScannerIdentifer.auto;
+
+  bool configureAllScanners = false;
+
+  String? scannerSelectionByIdentifier;
+
+  bool enableAimMode = true;
+  int beamTimer = 5000;
+  bool enableAdaptiveScanning = true;
+
+  bool enablePicklist = false;
+
+  AimType aimType = AimType.trigger;
+
+  SceneDetectQualifier sceneDetectQualifier = SceneDetectQualifier.none;
+
+  int aimTimer = 500;
+  int sameBarcodeTimeout = 0;
+  bool triggerWakeupScan = true;
+  int differentBarcodeTimeout = 5000;
+
+  IlluminationMode illuminationMode = IlluminationMode.off;
+
+  int illuminationBrightness = 10;
+
+  LcdMode lcdMode = LcdMode.disabled;
+
+  int lowPowerTimeout = 0;
+
+  DelayToLowPowerMode delayToLowPowerMode = DelayToLowPowerMode.seconds_1;
+
+  Inverse1dMode inverse1dMode = Inverse1dMode.disable;
+
+  int viewFinderSize = 100;
+  int viewFinderPosX = 0;
+  int viewFinderPosY = 0;
+
+  EffortLevel marginlessEffortLevel1d = EffortLevel.level_0;
+
+  EffortLevel poorQualityBcDecodeEffortLevel = EffortLevel.level_0;
+
+  Charset charsetName = Charset.auto;
+
+  List<Charset?> autoCharsetPrefferedOrder = [];
+
+  Charset autoCharsetFallback = Charset.utf8;
+
+  ViewFinderMode viewFinderMode = ViewFinderMode.staticReticle;
+
+  CodeIdType codeIdType = CodeIdType.aim;
+
+  VolumeSliderType volumeSliderType = VolumeSliderType.notification;
+
+  String? decodeAudioFeedbackUri;
+
+  bool decodeHapticFeedback = false;
+
+  bool btDisconnectOnExit = true;
+
+  // 0 - 1800
+  int? connectionIdleTime;
+
+  // 30-60
+  int? establishConnectionTime;
+
+  // 1-3
+  int remoteScannerAudioFeedbackMode = 1;
+
+  // 1-3
+  int remoteScannerLedFeedbackMode = 1;
+
+  bool distplayBtAddressBarcode = true;
+
+  // 0 - 1000
+  int? goodDecodeLedTimer;
+
+  bool? decodingLedFeedback = true;
+
+  bool decoderUsPlanetReportCheckDigit = true;
+  bool decodeScreenNotification = false;
+  // 500-1500
+  int decodeScreenTime = 1000;
+
+  // 20 - 50 in 5 increments
+  int decodeScreenTranslucency = 35;
+
+  bool keepParingInfoAfterReboot = true;
+
+  DpmIlluminationControl dpmIlluminationControl = DpmIlluminationControl.cycle;
+
+  DpmMode dpmMode = DpmMode.mode2;
+
+  bool qrLaunchEnable = false;
+
+  bool qrLaunchEnableQrDecoder = false;
+
+  bool qrLaunchShowConfirmationDialog = true;
