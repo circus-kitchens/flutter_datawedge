@@ -28,8 +28,9 @@ class FlutterDatawedgePlugin : FlutterPlugin {
     @RequiresApi(LOLLIPOP)
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         Log.d("FlutterDataWedgeFlugin","Attaching to engine...")
-        flutterApi = DataWedgeFlutterApi(flutterPluginBinding.binaryMessenger)
-        dwInterface = DWInterface(flutterPluginBinding.applicationContext)
+        val api = DataWedgeFlutterApi(flutterPluginBinding.binaryMessenger)
+        dwInterface = DWInterface(flutterPluginBinding.applicationContext,api)
+        flutterApi = api
         DataWedgeHostApi.setUp(flutterPluginBinding.binaryMessenger,dwInterface)
         dwInterface?.setupBroadcastReceiver()
     }

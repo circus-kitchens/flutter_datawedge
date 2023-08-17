@@ -195,6 +195,18 @@ enum class OcrOrientation(val raw: Int) {
   }
 }
 
+enum class IntentDelivery(val raw: Int) {
+  STARTACTIVITY(0),
+  STARTSERVICE(1),
+  BROADCAST(2);
+
+  companion object {
+    fun ofRaw(raw: Int): IntentDelivery? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
 enum class DpmMode(val raw: Int) {
   DISABLED(0),
   MODE1(1),
@@ -462,6 +474,99 @@ enum class PresentationModeSensitivity(val raw: Int) {
   }
 }
 
+enum class LabelType(val raw: Int) {
+  CODE39(0),
+  CODABAR(1),
+  CODE128(2),
+  D2OF5(3),
+  IATA2OF5(4),
+  I2OF5(5),
+  CODE93(6),
+  UPCA(7),
+  UPCE0(8),
+  UPCE1(9),
+  EAN8(10),
+  EAN13(11),
+  MSI(12),
+  EAN128(13),
+  TRIOPTIC39(14),
+  BOOKLAND(15),
+  COUPON(16),
+  DATABARCOUPON(17),
+  ISBT128(18),
+  CODE32(19),
+  PDF417(20),
+  MICROPDF(21),
+  TLC39(22),
+  CODE11(23),
+  MAXICODE(24),
+  DATAMATRIX(25),
+  QRCODE(26),
+  GS1DATABAR(27),
+  GS1DATABARLIM(28),
+  GS1DATABAREXP(29),
+  USPOSTNET(30),
+  USPLANET(31),
+  UKPOSTAL(32),
+  JAPPOSTAL(33),
+  AUSPOSTAL(34),
+  DUTCHPOSTAL(35),
+  FINNISHPOSTAL4S(36),
+  CANPOSTAL(37),
+  CHINESE2OF5(38),
+  AZTEC(39),
+  MICROQR(40),
+  US4STATE(41),
+  US4STATEFICS(42),
+  COMPOSITEAB(43),
+  COMPOSITEC(44),
+  WEBCODE(45),
+  SIGNATURE(46),
+  KOREAN3OF5(47),
+  MATRIX2OF5(48),
+  OCR(49),
+  HANXIN(50),
+  MAILMARK(51),
+  FORMAT(52),
+  GS1DATAMATRIX(53),
+  GS1QRCODE(54),
+  DOTCODE(55),
+  GRIDMATRIX(56),
+  UNDEFINED(57);
+
+  companion object {
+    fun ofRaw(raw: Int): LabelType? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
+enum class ScanSource(val raw: Int) {
+  MSR(0),
+  SCANNER(1),
+  SIMULSCAN(2),
+  SERIAL(3),
+  VOICE(4),
+  RFID(5);
+
+  companion object {
+    fun ofRaw(raw: Int): ScanSource? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
+enum class DecodeMode(val raw: Int) {
+  MULTIPLE(0),
+  SINGLE(1);
+
+  companion object {
+    fun ofRaw(raw: Int): DecodeMode? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
 /**
  * Result when creating a profile
  *
@@ -507,6 +612,39 @@ data class AppEntry (
     return listOf<Any?>(
       packageName,
       activityList,
+    )
+  }
+}
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class PluginIntentParamters (
+  val intentOutputEnabled: Boolean? = null,
+  val intentAction: String? = null,
+  val intentCategory: String? = null,
+  val intentDelivery: IntentDelivery? = null,
+  val intentUseContentProvider: Boolean? = null
+
+) {
+  companion object {
+    @Suppress("UNCHECKED_CAST")
+    fun fromList(list: List<Any?>): PluginIntentParamters {
+      val intentOutputEnabled = list[0] as Boolean?
+      val intentAction = list[1] as String?
+      val intentCategory = list[2] as String?
+      val intentDelivery: IntentDelivery? = (list[3] as Int?)?.let {
+        IntentDelivery.ofRaw(it)
+      }
+      val intentUseContentProvider = list[4] as Boolean?
+      return PluginIntentParamters(intentOutputEnabled, intentAction, intentCategory, intentDelivery, intentUseContentProvider)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf<Any?>(
+      intentOutputEnabled,
+      intentAction,
+      intentCategory,
+      intentDelivery?.raw,
+      intentUseContentProvider,
     )
   }
 }
@@ -883,6 +1021,7 @@ data class ProfileConfig (
   val profileName: String,
   val configMode: ConfigMode,
   val barcodeParamters: PluginBarcodeParamters? = null,
+  val intentParamters: PluginIntentParamters? = null,
   val profileEnabled: Boolean,
   val appList: List<AppEntry?>? = null
 
@@ -895,9 +1034,12 @@ data class ProfileConfig (
       val barcodeParamters: PluginBarcodeParamters? = (list[2] as List<Any?>?)?.let {
         PluginBarcodeParamters.fromList(it)
       }
-      val profileEnabled = list[3] as Boolean
-      val appList = list[4] as List<AppEntry?>?
-      return ProfileConfig(profileName, configMode, barcodeParamters, profileEnabled, appList)
+      val intentParamters: PluginIntentParamters? = (list[3] as List<Any?>?)?.let {
+        PluginIntentParamters.fromList(it)
+      }
+      val profileEnabled = list[4] as Boolean
+      val appList = list[5] as List<AppEntry?>?
+      return ProfileConfig(profileName, configMode, barcodeParamters, intentParamters, profileEnabled, appList)
     }
   }
   fun toList(): List<Any?> {
@@ -905,9 +1047,64 @@ data class ProfileConfig (
       profileName,
       configMode.raw,
       barcodeParamters?.toList(),
+      intentParamters?.toList(),
       profileEnabled,
       appList,
     )
+  }
+}
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class ScanEvent (
+  val labelType: LabelType,
+  val source: ScanSource,
+  val dataString: String,
+  val decodeData: List<ByteArray?>,
+  val decodeMode: DecodeMode
+
+) {
+  companion object {
+    @Suppress("UNCHECKED_CAST")
+    fun fromList(list: List<Any?>): ScanEvent {
+      val labelType = LabelType.ofRaw(list[0] as Int)!!
+      val source = ScanSource.ofRaw(list[1] as Int)!!
+      val dataString = list[2] as String
+      val decodeData = list[3] as List<ByteArray?>
+      val decodeMode = DecodeMode.ofRaw(list[4] as Int)!!
+      return ScanEvent(labelType, source, dataString, decodeData, decodeMode)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf<Any?>(
+      labelType.raw,
+      source.raw,
+      dataString,
+      decodeData,
+      decodeMode.raw,
+    )
+  }
+}
+
+@Suppress("UNCHECKED_CAST")
+private object DataWedgeFlutterApiCodec : StandardMessageCodec() {
+  override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
+    return when (type) {
+      128.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
+          ScanEvent.fromList(it)
+        }
+      }
+      else -> super.readValueOfType(type, buffer)
+    }
+  }
+  override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
+    when (value) {
+      is ScanEvent -> {
+        stream.write(128)
+        writeValue(stream, value.toList())
+      }
+      else -> super.writeValue(stream, value)
+    }
   }
 }
 
@@ -917,7 +1114,7 @@ class DataWedgeFlutterApi(private val binaryMessenger: BinaryMessenger) {
   companion object {
     /** The codec used by DataWedgeFlutterApi. */
     val codec: MessageCodec<Any?> by lazy {
-      StandardMessageCodec()
+      DataWedgeFlutterApiCodec
     }
   }
   fun onScannerStatusChanged(callback: () -> Unit) {
@@ -926,9 +1123,9 @@ class DataWedgeFlutterApi(private val binaryMessenger: BinaryMessenger) {
       callback()
     }
   }
-  fun onScanResult(callback: () -> Unit) {
+  fun onScanResult(scanEventArg: ScanEvent, callback: () -> Unit) {
     val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScanResult", codec)
-    channel.send(null) {
+    channel.send(listOf(scanEventArg)) {
       callback()
     }
   }
@@ -960,6 +1157,11 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
       }
       131.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
+          PluginIntentParamters.fromList(it)
+        }
+      }
+      132.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
           ProfileConfig.fromList(it)
         }
       }
@@ -980,8 +1182,12 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
         stream.write(130)
         writeValue(stream, value.toList())
       }
-      is ProfileConfig -> {
+      is PluginIntentParamters -> {
         stream.write(131)
+        writeValue(stream, value.toList())
+      }
+      is ProfileConfig -> {
+        stream.write(132)
         writeValue(stream, value.toList())
       }
       else -> super.writeValue(stream, value)

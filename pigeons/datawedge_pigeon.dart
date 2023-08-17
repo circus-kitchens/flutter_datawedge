@@ -108,6 +108,16 @@ enum OcrOrientation {
   omnidirectional
 }
 
+class PluginIntentParamters {
+  bool? intentOutputEnabled;
+  String? intentAction;
+  String? intentCategory;
+  IntentDelivery? intentDelivery;
+  bool? intentUseContentProvider;
+}
+
+enum IntentDelivery { startActivity, startService, broadcast }
+
 class PluginBarcodeParamters {
   // All default parameters are taken from data wedge
 
@@ -392,15 +402,31 @@ class ProfileConfig {
   ConfigMode configMode;
 
   PluginBarcodeParamters? barcodeParamters;
+  PluginIntentParamters? intentParamters;
 
   bool profileEnabled;
   List<AppEntry?>? appList;
 }
 
+class ScanEvent {
+  ScanEvent({
+    required this.labelType,
+    required this.source,
+    required this.dataString,
+    required this.decodeData,
+    required this.decodeMode,
+  });
+  LabelType labelType;
+  ScanSource source;
+  String dataString;
+  List<Uint8List?> decodeData;
+  DecodeMode decodeMode;
+}
+
 @FlutterApi()
 abstract class DataWedgeFlutterApi {
   void onScannerStatusChanged();
-  void onScanResult();
+  void onScanResult(ScanEvent scanEvent);
   void onProfileChange();
 }
 
@@ -418,3 +444,75 @@ abstract class DataWedgeHostApi {
   @async
   void listenScannerStatus();
 }
+
+enum LabelType {
+  code39,
+  codabar,
+  code128,
+  d2of5,
+  iata2of5,
+  i2of5,
+  code93,
+  upca,
+  upce0,
+  upce1,
+  ean8,
+  ean13,
+  msi,
+  ean128,
+  trioptic39,
+  bookland,
+  coupon,
+  databarCoupon,
+  isbt128,
+  code32,
+  pdf417,
+  micropdf,
+  tlc39,
+  code11,
+  maxicode,
+  datamatrix,
+  qrcode,
+  gs1Databar,
+  gs1DatabarLim,
+  gs1DatabarExp,
+  uspostnet,
+  usplanet,
+  ukpostal,
+  jappostal,
+  auspostal,
+  dutchpostal,
+  finnishpostal4s,
+  canpostal,
+  chinese2of5,
+  aztec,
+  microqr,
+  us4state,
+  us4stateFics,
+  compositeAb,
+  compositeC,
+  webcode,
+  signature,
+  korean3of5,
+  matrix2of5,
+  ocr,
+  hanxin,
+  mailmark,
+  format,
+  gs1Datamatrix,
+  gs1Qrcode,
+  dotcode,
+  gridmatrix,
+  undefined,
+}
+
+enum ScanSource {
+  msr,
+  scanner,
+  simulscan,
+  serial,
+  voice,
+  rfid,
+}
+
+enum DecodeMode { multiple, single }
