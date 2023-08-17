@@ -38,7 +38,6 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     intentBool(bParams, "configure_all_scanners", params.configureAllScanners)
 
     // UPC EAN Parameters below in order of documentation
-
     intentBool(bParams, "databar_to_upc_ean", params.dataBarToUpcEan)
     intentBool(bParams, "upcean_linear_decode", params.upcEeanLinearDecode)
     intentNr(bParams, "upcean_security_level", params.upcEanSecurityLevel?.toInt())
@@ -62,7 +61,6 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     }
 
     intentNr(bParams, "upcean_retry_count", params.upcEanRetryCount?.toInt())
-
     intentBool(bParams, "upcean_linear_decode", params.upcEeanLinearDecode)
     intentBool(bParams, "upcean_bookland", params.upcEanBookland)
     intentBool(bParams, "upcean_coupon", params.upcEanCoupon)
@@ -136,17 +134,12 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     }
 
     intentNr(bParams, "ocr_lines", params.ocrLines?.toInt())
-
     intentNr(bParams, "ocr_min_chars", params.ocrMinChars?.toInt())
     intentNr(bParams, "ocr_max_chars", params.ocrMaxChars?.toInt())
-
     intentString(bParams, "ocr_subset", params.ocrSubset)
     intentNr(bParams, "ocr_quiet_zone", params.ocrQuietZone?.toInt())
-
     intentNr(bParams, "ocr_check_digit_modulus", params.ocrCheckDigitModulus?.toInt())
-
     intentNr(bParams, "ocr_check_digit_multiplier", params.ocrCheckDigitMultiplier?.toInt())
-
     intentNr(bParams, "ocr_check_digit_validation", params.ocrCheckDigitValidation?.toInt())
 
     if (params.inverseOcr != null) {
@@ -189,11 +182,8 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     }
 
     intentBool(bParams, "digimarc_decoding", params.digimarcDecoding)
-
     // scaning mode see above
-
     intentNr(bParams, "multi_barcode_count", params.multiBarcodeCount?.toInt())
-
     intentBool(bParams, "instant_reporting_enable", params.enableInstantReporting)
     intentBool(bParams, "report_decoded_barcodes", params.reportDecodedBarcodes)
 
@@ -277,7 +267,6 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
 
     intentNr(bParams, "linear_security_level", params.linearSecurityLevel?.toInt())
 
-
     if (params.picklist != null) {
         bParams.putString(
             "picklist", when (params.picklist) {
@@ -353,7 +342,6 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         )
     }
 
-
     if (params.inverse1dMode != null) {
         bParams.putString(
             "inverse_1d_mode", when (params.inverse1dMode) {
@@ -365,11 +353,9 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         )
     }
 
-
     intentNr(bParams, "viewfinder_size", params.viewFinderSize?.toInt())
     intentNr(bParams, "viewfinder_posx", params.viewFinderPosX?.toInt())
     intentNr(bParams, "viewfinder_posy", params.viewFinderPosY?.toInt())
-
 
     if (params.marginlessEffortLevel1d != null) {
         bParams.putString(
@@ -465,15 +451,10 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     }
 
     intentString(bParams, "decode_audio_feedback_uri", params.decodeAudioFeedbackUri)
-
     intentBool(bParams, "decode_haptic_feedback", params.decodeHapticFeedback)
-
     intentBool(bParams, "bt_disconnect_on_exit", params.btDisconnectOnExit)
-
-
     intentNr(bParams, "connection_idle_time", params.connectionIdleTime?.toInt())
     intentNr(bParams, "establish_connection_time", params.establishConnectionTime?.toInt())
-
     intentNr(
         bParams,
         "remote_scanner_audio_feedback_mode",
@@ -484,13 +465,9 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         "remote_scanner_led_feedback_mode",
         params.remoteScannerLedFeedbackMode?.toInt()
     )
-
     intentBool(bParams, "display_bt_address_barcode", params.displayBtAddressBarcode)
-
     intentNr(bParams, "good_decode_led_timer", params.goodDecodeLedTimer?.toInt())
-
     intentBool(bParams, "decoding_led_feedback", params.decodingLedFeedback)
-
 
     intentBool(
         bParams,
@@ -545,13 +522,9 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     )
     intentNr(bParams, "nodecode_time", params.noDecodeTime?.toInt())
 
-
-
     if (params.configureAllScanners != null) {
         bParams.putString("configure_all_scanners", params.configureAllScanners.toString())
     }
-
-
 
     bConfig.putBundle("PARAM_LIST", bParams)
 
