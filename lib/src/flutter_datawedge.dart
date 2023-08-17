@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter_datawedge/src/pigeon.dart';
 
@@ -80,6 +80,15 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
     await _hostApi.setProfileConfig(config);
   }
 
+  final _scanEvents = StreamController<ScanEvent>.broadcast();
+  final _statusChangeEvents = StreamController<StatusChangeEvent>.broadcast();
+
+  /// The stream of [ScanEvent]s that are produced by DataWedge
+  Stream<ScanEvent> get scans => _scanEvents.stream;
+
+  /// The stream of [StatusChangeEvent]s that are produced by DataWedge
+  Stream<StatusChangeEvent> get status => _statusChangeEvents.stream;
+
   @override
   void onProfileChange() {
     print('Profile has changed');
@@ -92,16 +101,35 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
 
   @override
   void onScanResult(ScanEvent scanEvent) {
-    print('Flutter got a barcode');
-    print(scanEvent);
-    print(scanEvent.dataString);
-    print(scanEvent.labelType);
-    print(scanEvent.decodeData.map((e) => utf8.decode(e!)));
-    print(scanEvent.decodeMode);
+    print("GOt a scan");
+    _scanEvents.add(scanEvent);
   }
 
   @override
   void onScannerStatusChanged(StatusChangeEvent statusEvent) {
-    print('Scanner status has changed ${statusEvent.newState}');
+    print("Status changed");
+    _statusChangeEvents.add(statusEvent);
+  }
+
+  // Plugin controls
+
+  /// Resumes the scanning from suspended state
+  Future<void> resumePlugin() async {
+    await _hostApi.resumePlugin();
+  }
+
+  /// Suspends scanning temporarily
+  Future<void> suspendPlugin() async {
+    await _hostApi.suspendPlugin();
+  }
+
+  /// Disables scanning
+  Future<void> disablePlugin() async {
+    await _hostApi.disablePlugin();
+  }
+
+  /// Enables scanning
+  Future<void> enablePlugin() async {
+    await _hostApi.enablePlugin();
   }
 }

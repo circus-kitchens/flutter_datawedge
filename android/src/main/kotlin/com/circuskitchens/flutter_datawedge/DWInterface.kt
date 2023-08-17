@@ -13,7 +13,8 @@ import java.util.function.IntConsumer
 
 enum class DWCommand(val cmd: String) {
     CreateProfile("com.symbol.datawedge.api.CREATE_PROFILE"),
-    SetConfig("com.symbol.datawedge.api.SET_CONFIG")
+    SetConfig("com.symbol.datawedge.api.SET_CONFIG"),
+    SetPluginState("com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN")
 }
 
 enum class DWEvent(val value: String) {
@@ -301,6 +302,34 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
 
     }
+
+    override fun suspendPlugin(callback: (Result<Unit>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState,"SUSPEND_PLUGIN"){ err, _  ->
+            callback(Result.success(Unit))
+        }
+    }
+
+    override fun resumePlugin(callback: (Result<Unit>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState,"RESUME_PLUGIN"){ err, _  ->
+            callback(Result.success(Unit))
+        }
+    }
+
+    override fun enablePlugin(callback: (Result<Unit>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState,"ENABLE_PLUGIN"){ err, _  ->
+            callback(Result.success(Unit))
+        }
+    }
+
+
+
+    override fun disablePlugin(callback: (Result<Unit>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState,"DISABLE_PLUGIN"){ err, _  ->
+            callback(Result.success(Unit))
+        }
+    }
+
+
 
     override fun getPackageIdentifer(): String {
         return context.applicationInfo.packageName
