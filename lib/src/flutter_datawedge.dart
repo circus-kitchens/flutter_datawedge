@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_datawedge/src/pigeon.dart';
 
 /// Thrown if the profile we try to create already exists
@@ -16,6 +19,7 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
           'Dont construct this class. Use .instance instead',
         ) {
     _instCount++;
+    DataWedgeFlutterApi.setup(this);
   }
   final DataWedgeHostApi _hostApi = DataWedgeHostApi();
 
@@ -56,6 +60,11 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
                 activityList: ['*'],
               ),
             ],
+            intentParamters: PluginIntentParamters(
+              intentOutputEnabled: true,
+              intentAction: '$packageName.SCAN_EVENT',
+              intentDelivery: IntentDelivery.broadcast,
+            ),
           );
 
           await setConfig(config);
@@ -76,7 +85,14 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   void onProfileChange() {}
 
   @override
-  void onScanResult() {}
+  void onScanResult(ScanEvent scanEvent) {
+    print('Flutter got a barcode');
+    print(scanEvent);
+    print(scanEvent.dataString);
+    print(scanEvent.labelType);
+    print(scanEvent.decodeData.map((e) => utf8.decode(e!)));
+    print(scanEvent.decodeMode);
+  }
 
   @override
   void onScannerStatusChanged() {}

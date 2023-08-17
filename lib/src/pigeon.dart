@@ -100,6 +100,12 @@ enum OcrOrientation {
   omnidirectional,
 }
 
+enum IntentDelivery {
+  startActivity,
+  startService,
+  broadcast,
+}
+
 enum DpmMode {
   disabled,
   mode1,
@@ -241,6 +247,81 @@ enum PresentationModeSensitivity {
   low,
 }
 
+enum LabelType {
+  code39,
+  codabar,
+  code128,
+  d2of5,
+  iata2of5,
+  i2of5,
+  code93,
+  upca,
+  upce0,
+  upce1,
+  ean8,
+  ean13,
+  msi,
+  ean128,
+  trioptic39,
+  bookland,
+  coupon,
+  databarCoupon,
+  isbt128,
+  code32,
+  pdf417,
+  micropdf,
+  tlc39,
+  code11,
+  maxicode,
+  datamatrix,
+  qrcode,
+  gs1Databar,
+  gs1DatabarLim,
+  gs1DatabarExp,
+  uspostnet,
+  usplanet,
+  ukpostal,
+  jappostal,
+  auspostal,
+  dutchpostal,
+  finnishpostal4s,
+  canpostal,
+  chinese2of5,
+  aztec,
+  microqr,
+  us4state,
+  us4stateFics,
+  compositeAb,
+  compositeC,
+  webcode,
+  signature,
+  korean3of5,
+  matrix2of5,
+  ocr,
+  hanxin,
+  mailmark,
+  format,
+  gs1Datamatrix,
+  gs1Qrcode,
+  dotcode,
+  gridmatrix,
+  undefined,
+}
+
+enum ScanSource {
+  msr,
+  scanner,
+  simulscan,
+  serial,
+  voice,
+  rfid,
+}
+
+enum DecodeMode {
+  multiple,
+  single,
+}
+
 /// Result when creating a profile
 class CreateProfileResponse {
   CreateProfileResponse({
@@ -286,6 +367,49 @@ class AppEntry {
     return AppEntry(
       packageName: result[0]! as String,
       activityList: (result[1] as List<Object?>?)!.cast<String?>(),
+    );
+  }
+}
+
+class PluginIntentParamters {
+  PluginIntentParamters({
+    this.intentOutputEnabled,
+    this.intentAction,
+    this.intentCategory,
+    this.intentDelivery,
+    this.intentUseContentProvider,
+  });
+
+  bool? intentOutputEnabled;
+
+  String? intentAction;
+
+  String? intentCategory;
+
+  IntentDelivery? intentDelivery;
+
+  bool? intentUseContentProvider;
+
+  Object encode() {
+    return <Object?>[
+      intentOutputEnabled,
+      intentAction,
+      intentCategory,
+      intentDelivery?.index,
+      intentUseContentProvider,
+    ];
+  }
+
+  static PluginIntentParamters decode(Object result) {
+    result as List<Object?>;
+    return PluginIntentParamters(
+      intentOutputEnabled: result[0] as bool?,
+      intentAction: result[1] as String?,
+      intentCategory: result[2] as String?,
+      intentDelivery: result[3] != null
+          ? IntentDelivery.values[result[3]! as int]
+          : null,
+      intentUseContentProvider: result[4] as bool?,
     );
   }
 }
@@ -856,6 +980,7 @@ class ProfileConfig {
     required this.profileName,
     required this.configMode,
     this.barcodeParamters,
+    this.intentParamters,
     required this.profileEnabled,
     this.appList,
   });
@@ -866,6 +991,8 @@ class ProfileConfig {
 
   PluginBarcodeParamters? barcodeParamters;
 
+  PluginIntentParamters? intentParamters;
+
   bool profileEnabled;
 
   List<AppEntry?>? appList;
@@ -875,6 +1002,7 @@ class ProfileConfig {
       profileName,
       configMode.index,
       barcodeParamters?.encode(),
+      intentParamters?.encode(),
       profileEnabled,
       appList,
     ];
@@ -888,18 +1016,85 @@ class ProfileConfig {
       barcodeParamters: result[2] != null
           ? PluginBarcodeParamters.decode(result[2]! as List<Object?>)
           : null,
-      profileEnabled: result[3]! as bool,
-      appList: (result[4] as List<Object?>?)?.cast<AppEntry?>(),
+      intentParamters: result[3] != null
+          ? PluginIntentParamters.decode(result[3]! as List<Object?>)
+          : null,
+      profileEnabled: result[4]! as bool,
+      appList: (result[5] as List<Object?>?)?.cast<AppEntry?>(),
     );
   }
 }
 
+class ScanEvent {
+  ScanEvent({
+    required this.labelType,
+    required this.source,
+    required this.dataString,
+    required this.decodeData,
+    required this.decodeMode,
+  });
+
+  LabelType labelType;
+
+  ScanSource source;
+
+  String dataString;
+
+  List<Uint8List?> decodeData;
+
+  DecodeMode decodeMode;
+
+  Object encode() {
+    return <Object?>[
+      labelType.index,
+      source.index,
+      dataString,
+      decodeData,
+      decodeMode.index,
+    ];
+  }
+
+  static ScanEvent decode(Object result) {
+    result as List<Object?>;
+    return ScanEvent(
+      labelType: LabelType.values[result[0]! as int],
+      source: ScanSource.values[result[1]! as int],
+      dataString: result[2]! as String,
+      decodeData: (result[3] as List<Object?>?)!.cast<Uint8List?>(),
+      decodeMode: DecodeMode.values[result[4]! as int],
+    );
+  }
+}
+
+class _DataWedgeFlutterApiCodec extends StandardMessageCodec {
+  const _DataWedgeFlutterApiCodec();
+  @override
+  void writeValue(WriteBuffer buffer, Object? value) {
+    if (value is ScanEvent) {
+      buffer.putUint8(128);
+      writeValue(buffer, value.encode());
+    } else {
+      super.writeValue(buffer, value);
+    }
+  }
+
+  @override
+  Object? readValueOfType(int type, ReadBuffer buffer) {
+    switch (type) {
+      case 128: 
+        return ScanEvent.decode(readValue(buffer)!);
+      default:
+        return super.readValueOfType(type, buffer);
+    }
+  }
+}
+
 abstract class DataWedgeFlutterApi {
-  static const MessageCodec<Object?> codec = StandardMessageCodec();
+  static const MessageCodec<Object?> codec = _DataWedgeFlutterApiCodec();
 
   void onScannerStatusChanged();
 
-  void onScanResult();
+  void onScanResult(ScanEvent scanEvent);
 
   void onProfileChange();
 
@@ -926,8 +1121,13 @@ abstract class DataWedgeFlutterApi {
         channel.setMessageHandler(null);
       } else {
         channel.setMessageHandler((Object? message) async {
-          // ignore message
-          api.onScanResult();
+          assert(message != null,
+          'Argument for dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScanResult was null.');
+          final List<Object?> args = (message as List<Object?>?)!;
+          final ScanEvent? arg_scanEvent = (args[0] as ScanEvent?);
+          assert(arg_scanEvent != null,
+              'Argument for dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScanResult was null, expected non-null ScanEvent.');
+          api.onScanResult(arg_scanEvent!);
           return;
         });
       }
@@ -962,8 +1162,11 @@ class _DataWedgeHostApiCodec extends StandardMessageCodec {
     } else if (value is PluginBarcodeParamters) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
-    } else if (value is ProfileConfig) {
+    } else if (value is PluginIntentParamters) {
       buffer.putUint8(131);
+      writeValue(buffer, value.encode());
+    } else if (value is ProfileConfig) {
+      buffer.putUint8(132);
       writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
@@ -980,6 +1183,8 @@ class _DataWedgeHostApiCodec extends StandardMessageCodec {
       case 130: 
         return PluginBarcodeParamters.decode(readValue(buffer)!);
       case 131: 
+        return PluginIntentParamters.decode(readValue(buffer)!);
+      case 132: 
         return ProfileConfig.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
