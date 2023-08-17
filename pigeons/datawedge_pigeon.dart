@@ -1,4 +1,5 @@
 //ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:pigeon/pigeon.dart';
 
 /// Result when creating a profile
@@ -119,8 +120,6 @@ class PluginIntentParamters {
 enum IntentDelivery { startActivity, startService, broadcast }
 
 class PluginBarcodeParamters {
-  // All default parameters are taken from data wedge
-
   // UPC Parameters below
   bool? dataBarToUpcEan;
   bool? upcEnableMarginlessDecode;
@@ -135,19 +134,15 @@ class PluginBarcodeParamters {
   UpcEanCouponReport? upcEanCouponReport;
   bool? upcEanZeroExtend;
   UpcEanBooklandFormat? upceanBooklandFormat;
-
   //? General parameters
   ScanningMode? scanningMode;
   String? docCaptureTemplate;
   int? commonBarcodeDynamicQuantity;
-
   bool? barcodeHighlightingEnabled;
   String? ruleName;
-
   bool? enableUdiGs1;
   bool? enableUdiHibcc;
   bool? enableUdiIccbba;
-
   OcrOrientation? ocrOrientation;
   int? ocrLines;
   int? ocrMinChars;
@@ -159,133 +154,80 @@ class PluginBarcodeParamters {
   int? ocrCheckDigitMultiplier;
   int? ocrCheckDigitValidation;
   InverseOcr? inverseOcr;
-
   PresentationModeSensitivity? presentationModeSensitivity;
-
   //? barcode_trigger_mode
   bool? enableHardwareTrigger;
-
   SwitchOnEvent? autoSwitchToDefaultOnEvent;
-
   bool? digimarcDecoding;
   //? Multi barcode parameters
   int? multiBarcodeCount;
   bool? enableInstantReporting;
   bool? reportDecodedBarcodes;
-
   TriggerSource? scannerTriggerResource;
   bool? scannerInputEnabled;
-
   ScannerIdentifer? scannerSelection;
-
   bool? configureAllScanners;
-
   String? scannerSelectionByIdentifier;
-
   bool? enableAimMode;
   int? beamTimer;
   bool? enableAdaptiveScanning;
-
   BeamWidth? beamWidth;
-
   PowerMode? powerMode;
-
   MpdMode? mpdMode;
-
   ReaderMode? readerMode;
-
   int? linearSecurityLevel;
-
   PicklistMode? picklist;
-
   AimType? aimType;
-
   SceneDetectQualifier? sceneDetectQualifier;
-
   int? aimTimer;
   int? sameBarcodeTimeout;
   bool? triggerWakeupScan;
   int? differentBarcodeTimeout;
-
   IlluminationMode? illuminationMode;
-
   int? illuminationBrightness;
-
   LcdMode? lcdMode;
-
   int? lowPowerTimeout;
-
   DelayToLowPowerMode? delayToLowPowerMode;
-
   Inverse1dMode? inverse1dMode;
-
   int? viewFinderSize;
   int? viewFinderPosX;
   int? viewFinderPosY;
-
   EffortLevel? marginlessEffortLevel1d;
-
   EffortLevel? poorQualityBcDecodeEffortLevel;
-
   Charset? charsetName;
-
   List<String?>? autoCharsetPrefferedOrder;
-
   Charset? autoCharsetFallback;
-
   ViewFinderMode? viewFinderMode;
-
   CodeIdType? codeIdType;
-
   VolumeSliderType? volumeSliderType;
-
   String? decodeAudioFeedbackUri;
-
   bool? decodeHapticFeedback;
-
   bool? btDisconnectOnExit;
-
   //? 0 - 1800
   int? connectionIdleTime;
-
   //? 30-60
   int? establishConnectionTime;
-
   //? 1-3
   int? remoteScannerAudioFeedbackMode;
-
   //? 1-3
   int? remoteScannerLedFeedbackMode;
-
   bool? displayBtAddressBarcode;
-
   //? 0 - 1000
   int? goodDecodeLedTimer;
-
   bool? decodingLedFeedback;
-
   bool? decoderUsPlanetReportCheckDigit;
   bool? decodeScreenNotification;
   //? 500-1500
   int? decodeScreenTime;
-
   //? 20 - 50 in 5 increments
   int? decodeScreenTranslucency;
-
   bool? keepParingInfoAfterReboot;
-
   DpmIlluminationControl? dpmIlluminationControl;
-
   DpmMode? dpmMode;
-
   bool? qrLaunchEnable;
-
   bool? qrLaunchEnableQrDecoder;
-
   bool? qrLaunchShowConfirmationDialog;
-
   int? noDecodeTime;
-
   // in 1000 increments, 0 180000
 }
 
@@ -423,11 +365,17 @@ class ScanEvent {
   DecodeMode decodeMode;
 }
 
+class StatusChangeEvent {
+  StatusChangeEvent({required this.newState});
+  ScannerState newState;
+}
+
 @FlutterApi()
 abstract class DataWedgeFlutterApi {
-  void onScannerStatusChanged();
+  void onScannerStatusChanged(StatusChangeEvent statusEvent);
   void onScanResult(ScanEvent scanEvent);
   void onProfileChange();
+  void onConfigUpdate();
 }
 
 @HostApi()
@@ -441,8 +389,6 @@ abstract class DataWedgeHostApi {
 
   @async
   void setProfileConfig(ProfileConfig config);
-  @async
-  void listenScannerStatus();
 }
 
 enum LabelType {
@@ -516,3 +462,12 @@ enum ScanSource {
 }
 
 enum DecodeMode { multiple, single }
+
+enum ScannerState {
+  waiting,
+  scanning,
+  idle,
+  connected,
+  disconnected,
+  disabled,
+}

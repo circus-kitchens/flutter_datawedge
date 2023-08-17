@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter_datawedge/models/scan_result.dart';
 import 'package:flutter_datawedge/src/pigeon.dart';
 
 /// Thrown if the profile we try to create already exists
@@ -82,7 +81,14 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   }
 
   @override
-  void onProfileChange() {}
+  void onProfileChange() {
+    print('Profile has changed');
+  }
+
+  @override
+  void onConfigUpdate() {
+    print('Data wedge notified of configuration change');
+  }
 
   @override
   void onScanResult(ScanEvent scanEvent) {
@@ -95,5 +101,7 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   }
 
   @override
-  void onScannerStatusChanged() {}
+  void onScannerStatusChanged(StatusChangeEvent statusEvent) {
+    print('Scanner status has changed ${statusEvent.newState}');
+  }
 }

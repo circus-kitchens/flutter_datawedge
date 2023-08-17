@@ -567,6 +567,21 @@ enum class DecodeMode(val raw: Int) {
   }
 }
 
+enum class ScannerState(val raw: Int) {
+  WAITING(0),
+  SCANNING(1),
+  IDLE(2),
+  CONNECTED(3),
+  DISCONNECTED(4),
+  DISABLED(5);
+
+  companion object {
+    fun ofRaw(raw: Int): ScannerState? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
 /**
  * Result when creating a profile
  *
@@ -1085,6 +1100,25 @@ data class ScanEvent (
   }
 }
 
+/** Generated class from Pigeon that represents data sent in messages. */
+data class StatusChangeEvent (
+  val newState: ScannerState
+
+) {
+  companion object {
+    @Suppress("UNCHECKED_CAST")
+    fun fromList(list: List<Any?>): StatusChangeEvent {
+      val newState = ScannerState.ofRaw(list[0] as Int)!!
+      return StatusChangeEvent(newState)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf<Any?>(
+      newState.raw,
+    )
+  }
+}
+
 @Suppress("UNCHECKED_CAST")
 private object DataWedgeFlutterApiCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
@@ -1094,6 +1128,11 @@ private object DataWedgeFlutterApiCodec : StandardMessageCodec() {
           ScanEvent.fromList(it)
         }
       }
+      129.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
+          StatusChangeEvent.fromList(it)
+        }
+      }
       else -> super.readValueOfType(type, buffer)
     }
   }
@@ -1101,6 +1140,10 @@ private object DataWedgeFlutterApiCodec : StandardMessageCodec() {
     when (value) {
       is ScanEvent -> {
         stream.write(128)
+        writeValue(stream, value.toList())
+      }
+      is StatusChangeEvent -> {
+        stream.write(129)
         writeValue(stream, value.toList())
       }
       else -> super.writeValue(stream, value)
@@ -1117,9 +1160,9 @@ class DataWedgeFlutterApi(private val binaryMessenger: BinaryMessenger) {
       DataWedgeFlutterApiCodec
     }
   }
-  fun onScannerStatusChanged(callback: () -> Unit) {
+  fun onScannerStatusChanged(statusEventArg: StatusChangeEvent, callback: () -> Unit) {
     val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScannerStatusChanged", codec)
-    channel.send(null) {
+    channel.send(listOf(statusEventArg)) {
       callback()
     }
   }
@@ -1131,6 +1174,12 @@ class DataWedgeFlutterApi(private val binaryMessenger: BinaryMessenger) {
   }
   fun onProfileChange(callback: () -> Unit) {
     val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onProfileChange", codec)
+    channel.send(null) {
+      callback()
+    }
+  }
+  fun onConfigUpdate(callback: () -> Unit) {
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onConfigUpdate", codec)
     channel.send(null) {
       callback()
     }
@@ -1200,7 +1249,6 @@ interface DataWedgeHostApi {
   fun createProfile(profileName: String, callback: (Result<CreateProfileResponse>) -> Unit)
   fun getPackageIdentifer(): String
   fun setProfileConfig(config: ProfileConfig, callback: (Result<Unit>) -> Unit)
-  fun listenScannerStatus(callback: (Result<Unit>) -> Unit)
 
   companion object {
     /** The codec used by DataWedgeHostApi. */
@@ -1253,23 +1301,6 @@ interface DataWedgeHostApi {
             val args = message as List<Any?>
             val configArg = args[0] as ProfileConfig
             api.setProfileConfig(configArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(wrapError(error))
-              } else {
-                reply.reply(wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.listenScannerStatus", codec)
-        if (api != null) {
-          channel.setMessageHandler { _, reply ->
-            api.listenScannerStatus() { result: Result<Unit> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
