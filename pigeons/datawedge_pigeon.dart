@@ -385,6 +385,18 @@ abstract class DataWedgeHostApi {
     String profileName,
   );
 
+  @async
+  void suspendPlugin();
+
+  @async
+  void resumePlugin();
+
+  @async
+  void enablePlugin();
+
+  @async
+  void disablePlugin();
+
   String getPackageIdentifer();
 
   @async

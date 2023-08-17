@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
@@ -12,9 +13,9 @@ void main() {
     MaterialApp(
       title: 'Flutter DataWedge Example',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
       ),
-      home: Container(),
+      home: MyApp(),
     ),
   );
 }
@@ -41,61 +42,138 @@ Future<void> dwTest() async {
   await dataWedge.setConfig(config);
 }
 
-/*
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  late FlutterDataWedge fdw;
-  Future<void>? initScannerResult;
+  late StreamSubscription<ScanEvent> scanSub;
+
+  List<ScanEvent> _scans = [];
+
+  StatusChangeEvent? _status;
+
+  late StreamSubscription<StatusChangeEvent> statusSub;
 
   @override
   void initState() {
+    setupListeners();
     super.initState();
-    initScannerResult = initScanner();
   }
 
-  Future<void> initScanner() async {
-    if (Platform.isAndroid) {
-      fdw = FlutterDataWedge();
-      await fdw.initialize();
-      await fdw.createDefaultProfile(profileName: "Example app profile");
-    }
+  void setupListeners() {
+    scanSub = FlutterDataWedge.instance.scans.listen((event) {
+      setState(() {
+        _scans.add(event);
+      });
+    });
+    statusSub = FlutterDataWedge.instance.status.listen((event) {
+      setState(() {
+        _status = event;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    statusSub.cancel();
+    scanSub.cancel();
+    super.dispose();
+  }
+
+  Widget _buildScan(BuildContext context, int index) {
+    final scan = _scans[index];
+
+    return ListTile(
+      title: Text(
+        scan.dataString,
+        maxLines: 2,
+      ),
+      subtitle: Text(scan.labelType.toString()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: initScannerResult,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          return DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Flutter DataWedge Example'),
-                bottom: TabBar(
-                  tabs: [
-                    Tab(text: 'Scan'),
-                    Tab(text: 'Event Log'),
-                  ],
-                ),
-              ),
-              body: TabBarView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('🦓 Flutter DataWedge Example'),
+      ),
+      bottomNavigationBar: Material(
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
                 children: [
-                  ButtonTabView(this.fdw),
-                  LogTabView(this.fdw),
+                  Expanded(
+                    child: Text(
+                        "Scanner status: " +
+                            (_status?.newState.toString() ?? "Unknown"),
+                        style: Theme.of(context).textTheme.bodyMedium),
+                  ),
                 ],
               ),
-            ),
-          );
-        });
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _status?.newState != ScannerState.disabled
+                          ? null
+                          : () async =>
+                              FlutterDataWedge.instance.enablePlugin(),
+                      child: Text('Enable Scanner'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _status?.newState == ScannerState.disabled
+                          ? null
+                          : () async =>
+                              FlutterDataWedge.instance.disablePlugin(),
+                      child: Text('Disable Scanner'),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (_status?.newState == ScannerState.idle)
+                          ? () => FlutterDataWedge.instance.resumePlugin()
+                          : null,
+                      child: Text('Activate Scanner'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (_status?.newState == ScannerState.waiting)
+                          ? () => FlutterDataWedge.instance.suspendPlugin()
+                          : null,
+                      child: Text('Deactivate Scanner'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: ListView.separated(
+        separatorBuilder: (context, n) => Divider(),
+        itemBuilder: _buildScan,
+        itemCount: _scans.length,
+      ),
+    );
   }
-}*/
+}
