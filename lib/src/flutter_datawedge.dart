@@ -115,6 +115,10 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
     await _hostApi.registerForNotifications();
   }
 
+  Future<void> softScanTrigger(bool on) async {
+    await _hostApi.softScanTrigger(on);
+  }
+
   // Plugin controls
 
   /// Resumes the scanning from suspended state
