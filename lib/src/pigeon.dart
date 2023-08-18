@@ -1285,7 +1285,7 @@ class DataWedgeHostApi {
     }
   }
 
-  Future<String> registerForNotifications() async {
+  Future<void> registerForNotifications() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.registerForNotifications', codec,
         binaryMessenger: _binaryMessenger);
@@ -1302,17 +1302,12 @@ class DataWedgeHostApi {
         message: replyList[1] as String?,
         details: replyList[2],
       );
-    } else if (replyList[0] == null) {
-      throw PlatformException(
-        code: 'null-error',
-        message: 'Host platform returned null value for non-null return value.',
-      );
     } else {
-      return (replyList[0] as String?)!;
+      return;
     }
   }
 
-  Future<String> unregisterForNotifications() async {
+  Future<void> unregisterForNotifications() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.unregisterForNotifications', codec,
         binaryMessenger: _binaryMessenger);
@@ -1329,13 +1324,8 @@ class DataWedgeHostApi {
         message: replyList[1] as String?,
         details: replyList[2],
       );
-    } else if (replyList[0] == null) {
-      throw PlatformException(
-        code: 'null-error',
-        message: 'Host platform returned null value for non-null return value.',
-      );
     } else {
-      return (replyList[0] as String?)!;
+      return;
     }
   }
 
@@ -1426,6 +1416,33 @@ class DataWedgeHostApi {
         binaryMessenger: _binaryMessenger);
     final List<Object?>? replyList =
         await channel.send(null) as List<Object?>?;
+    if (replyList == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyList.length > 1) {
+      throw PlatformException(
+        code: replyList[0]! as String,
+        message: replyList[1] as String?,
+        details: replyList[2],
+      );
+    } else if (replyList[0] == null) {
+      throw PlatformException(
+        code: 'null-error',
+        message: 'Host platform returned null value for non-null return value.',
+      );
+    } else {
+      return (replyList[0] as String?)!;
+    }
+  }
+
+  Future<String> softScanTrigger(bool arg_on) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.softScanTrigger', codec,
+        binaryMessenger: _binaryMessenger);
+    final List<Object?>? replyList =
+        await channel.send(<Object?>[arg_on]) as List<Object?>?;
     if (replyList == null) {
       throw PlatformException(
         code: 'channel-error',

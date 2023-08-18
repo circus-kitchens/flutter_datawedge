@@ -16,7 +16,8 @@ enum class DWCommand(val cmd: String) {
     SetConfig("com.symbol.datawedge.api.SET_CONFIG"),
     SetPluginState("com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN"),
     RegisterForNotification("com.symbol.datawedge.api.REGISTER_FOR_NOTIFICATION"),
-    UnregisterForNotification("com.symbol.datawedge.api.UNREGISTER_FOR_NOTIFICATION")
+    UnregisterForNotification("com.symbol.datawedge.api.UNREGISTER_FOR_NOTIFICATION"),
+    SoftScanTrigger("com.symbol.datawedge.api.SOFT_SCAN_TRIGGER"),
 }
 
 
@@ -35,7 +36,8 @@ enum class DWKeys(val value: String ){
     NotificationType("com.symbol.datawedge.api.NOTIFICATION_TYPE"),
     ScannerStatus("SCANNER_STATUS"),
 
-
+    SoftScanTriggerStart("START_SCANNING"),
+    SoftScanTriggerStop("STOP_SCANNING")
 }
 
 class CommandResult(
@@ -423,7 +425,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         return context.applicationInfo.packageName
     }
 
-    override fun registerForNotifications(callback: (Result<String>) -> Unit) {
+    override fun registerForNotifications(): Unit {
 
         val params = Bundle()
 
@@ -434,14 +436,41 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         sendCommandBundle(DWCommand.RegisterForNotification,params){ res ->
     // This command never returns
         }
+    }
 
-        callback(Result.success(""))
+    override fun softScanTrigger(on: Boolean, callback: (Result<String>) -> Unit) {
+
+        var cmdValue = DWKeys.SoftScanTriggerStart.value
+
+        if(!on)
+            cmdValue = DWKeys.SoftScanTriggerStop.value
+
+
+
+        sendCommandString(DWCommand.SoftScanTrigger, cmdValue) { result ->
+            if (result.isFailure) {
+                callback(Result.failure(result.exceptionOrNull()!!))
+
+            } else {
+                val cmd = result.getOrThrow()
+                when (cmd.result) {
+                    "SCANNER_ALREADY_DISABLED" -> callback(Result.failure(Error(cmd.result)))
+                    "SCANNER_DISABLE_FAILED" -> callback(Result.failure(Error(cmd.result)))
+                    else -> callback(Result.success(cmd.result))
+                }
+            }
+        }
+
+
+
 
     }
 
-    override fun unregisterForNotifications(callback: (Result<String>) -> Unit) {
+    override fun unregisterForNotifications(): Unit {
         TODO("Not yet implemented")
     }
+
+
 
 
     override fun setProfileConfig(config: ProfileConfig, callback: (kotlin.Result<Unit>) -> Unit) {

@@ -385,11 +385,8 @@ abstract class DataWedgeHostApi {
     String profileName,
   );
 
-  @async
-  String registerForNotifications();
-
-  @async
-  String unregisterForNotifications();
+  void registerForNotifications();
+  void unregisterForNotifications();
 
   @async
   String suspendPlugin();
@@ -402,6 +399,9 @@ abstract class DataWedgeHostApi {
 
   @async
   String disablePlugin();
+
+  @async
+  String softScanTrigger(bool on);
 
   String getPackageIdentifer();
 
