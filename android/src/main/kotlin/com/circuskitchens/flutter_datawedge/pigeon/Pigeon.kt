@@ -1247,12 +1247,13 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface DataWedgeHostApi {
   fun createProfile(profileName: String, callback: (Result<CreateProfileResponse>) -> Unit)
-  fun registerForNotifications(callback: (Result<String>) -> Unit)
-  fun unregisterForNotifications(callback: (Result<String>) -> Unit)
+  fun registerForNotifications()
+  fun unregisterForNotifications()
   fun suspendPlugin(callback: (Result<String>) -> Unit)
   fun resumePlugin(callback: (Result<String>) -> Unit)
   fun enablePlugin(callback: (Result<String>) -> Unit)
   fun disablePlugin(callback: (Result<String>) -> Unit)
+  fun softScanTrigger(on: Boolean, callback: (Result<String>) -> Unit)
   fun getPackageIdentifer(): String
   fun setProfileConfig(config: ProfileConfig, callback: (Result<Unit>) -> Unit)
 
@@ -1288,15 +1289,14 @@ interface DataWedgeHostApi {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.registerForNotifications", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            api.registerForNotifications() { result: Result<String> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(wrapResult(data))
-              }
+            var wrapped: List<Any?>
+            try {
+              api.registerForNotifications()
+              wrapped = listOf<Any?>(null)
+            } catch (exception: Throwable) {
+              wrapped = wrapError(exception)
             }
+            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
@@ -1306,15 +1306,14 @@ interface DataWedgeHostApi {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.unregisterForNotifications", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            api.unregisterForNotifications() { result: Result<String> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(wrapResult(data))
-              }
+            var wrapped: List<Any?>
+            try {
+              api.unregisterForNotifications()
+              wrapped = listOf<Any?>(null)
+            } catch (exception: Throwable) {
+              wrapped = wrapError(exception)
             }
+            reply.reply(wrapped)
           }
         } else {
           channel.setMessageHandler(null)
@@ -1379,6 +1378,26 @@ interface DataWedgeHostApi {
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             api.disablePlugin() { result: Result<String> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.softScanTrigger", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val onArg = args[0] as Boolean
+            api.softScanTrigger(onArg) { result: Result<String> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))

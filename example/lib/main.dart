@@ -124,6 +124,22 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              GestureDetector(
+                onTapDown: (details) {
+                  FlutterDataWedge.instance.softScanTrigger(true);
+                },
+                onTapUp: (details) {
+                  FlutterDataWedge.instance.softScanTrigger(false);
+                },
+                onTapCancel: () {
+                  FlutterDataWedge.instance.softScanTrigger(false);
+                },
+                child: ElevatedButton(
+                  child: Text("Trigger"),
+                  onPressed:
+                      _status?.newState == ScannerState.waiting ? () {} : null,
+                ),
+              ),
               Row(
                 children: [
                   Text((_status?.newState.toString() ?? "Unknown"),
