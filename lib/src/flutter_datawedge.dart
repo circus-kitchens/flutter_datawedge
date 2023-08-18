@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_datawedge/src/pigeon.dart';
 
 /// Thrown if the profile we try to create already exists
@@ -90,24 +91,27 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   Stream<StatusChangeEvent> get status => _statusChangeEvents.stream;
 
   @override
+  @protected
   void onProfileChange() {
     print('Profile has changed');
   }
 
   @override
+  @protected
   void onConfigUpdate() {
     print('Data wedge notified of configuration change');
   }
 
   @override
+  @protected
   void onScanResult(ScanEvent scanEvent) {
     print('GOt a scan');
     _scanEvents.add(scanEvent);
   }
 
   @override
+  @protected
   void onScannerStatusChanged(StatusChangeEvent statusEvent) {
-    print('Status changed');
     _statusChangeEvents.add(statusEvent);
   }
 
@@ -122,6 +126,7 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   // Plugin controls
 
   /// Resumes the scanning from suspended state
+
   Future<void> resumePlugin() async {
     final resCode = await _hostApi.resumePlugin();
   }

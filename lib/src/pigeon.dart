@@ -423,6 +423,8 @@ class PluginIntentParamters {
   }
 }
 
+/// Used to configure the barcode plugin. Parameters can be found here
+/// https://techdocs.zebra.com/datawedge/13-0/guide/api/setconfig/
 class PluginBarcodeParamters {
   PluginBarcodeParamters({
     this.dataBarToUpcEan,
@@ -568,24 +570,50 @@ class PluginBarcodeParamters {
 
   OcrOrientation? ocrOrientation;
 
+  /// Set number of lines to scan during OCR reading:
   int? ocrLines;
 
+  /// Set minimum number of OCR characters (not including spaces) per line to
+  /// decode during OCR reading. Integer value 3-100
   int? ocrMinChars;
 
+  /// Set maximum number of OCR characters (not including spaces) per line to
+  /// decode during OCR reading. Integer value:
   int? ocrMaxChars;
 
+  /// Defines a custom group of characters in place of a preset font variant.
   String? ocrSubset;
 
+  /// Set field width of blank space to stop scanning during OCR reading.
+  /// The default is 50, indicating a six character width quiet zone. 20-99
   int? ocrQuietZone;
 
+  /// Creates a template for precisely matching scanned OCR characters to a
+  /// desired input format, which helps eliminate scanning errors. The template
+  /// expression is formed by numbers and letters. The default is 99999999 which
+  ///  accepts any alphanumeric character OCR string. If there are less than
+  ///  8 '9' characters, the '9' represents only digit values.
+  /// More info https://techdocs.zebra.com/datawedge/13-0/guide/input/barcode/#ocrparamsocraocrb
   String? ocrTemplate;
 
+  /// Sets the Check Digit Modulus value for OCR Check Digit Calculation.
   int? ocrCheckDigitModulus;
 
+  /// Sets OCR check digit multipliers for the character positions.
   int? ocrCheckDigitMultiplier;
 
+  /// None - 0 (default)
+  /// Product Add Left to Right - 3
+  /// Product Add Right to Left - 1
+  /// Digit Add Left to Right - 4
+  /// Digit Add Right to Left - 2
+  /// Product Add Right to Left Simple Remainder - 5
+  /// Digit Add Right to Left Simple Remainder - 6
+  /// Health Industry - HIBCC43 - 9
   int? ocrCheckDigitValidation;
 
+  /// White or light words on black or dark background. This option is used
+  /// to select normal, inverse or both OCR scanning.
   InverseOcr? inverseOcr;
 
   PresentationModeSensitivity? presentationModeSensitivity;
@@ -700,14 +728,25 @@ class PluginBarcodeParamters {
 
   bool? decodeScreenNotification;
 
+  /// / Length of time (in milliseconds) to display the screen notification
+  /// upon successful decode. 500-1500
   int? decodeScreenTime;
 
+  /// Sets the translucency value for the decode notification green screen -
+  /// higher values result to more translucency.
+  ///  Values range from 20 to 50 in increments of 5:
   int? decodeScreenTranslucency;
 
+  /// Enable/disable automatic re-connection to the connected Bluetooth scanner
+  ///  after device reboot. Applies only to connected Bluetooth scanners:
   bool? keepParingInfoAfterReboot;
 
+  /// Controls the illumination for decoding DPM barcodes.
+  /// Default value is cycle.
   DpmIlluminationControl? dpmIlluminationControl;
 
+  /// Optimize DPM barcode decoding performance based on the barcode size.
+  /// Default is Mode 2
   DpmMode? dpmMode;
 
   bool? qrLaunchEnable;
@@ -716,6 +755,7 @@ class PluginBarcodeParamters {
 
   bool? qrLaunchShowConfirmationDialog;
 
+  /// Integer from 0 to 180000 in 1000 increments
   int? noDecodeTime;
 
   Object encode() {

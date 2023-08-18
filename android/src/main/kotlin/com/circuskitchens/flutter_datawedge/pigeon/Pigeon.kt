@@ -664,7 +664,12 @@ data class PluginIntentParamters (
   }
 }
 
-/** Generated class from Pigeon that represents data sent in messages. */
+/**
+ * Used to configure the barcode plugin. Parameters can be found here
+ * https://techdocs.zebra.com/datawedge/13-0/guide/api/setconfig/
+ *
+ * Generated class from Pigeon that represents data sent in messages.
+ */
 data class PluginBarcodeParamters (
   val dataBarToUpcEan: Boolean? = null,
   val upcEnableMarginlessDecode: Boolean? = null,
@@ -688,15 +693,53 @@ data class PluginBarcodeParamters (
   val enableUdiHibcc: Boolean? = null,
   val enableUdiIccbba: Boolean? = null,
   val ocrOrientation: OcrOrientation? = null,
+  /** Set number of lines to scan during OCR reading: */
   val ocrLines: Long? = null,
+  /**
+   * Set minimum number of OCR characters (not including spaces) per line to
+   * decode during OCR reading. Integer value 3-100
+   */
   val ocrMinChars: Long? = null,
+  /**
+   * Set maximum number of OCR characters (not including spaces) per line to
+   * decode during OCR reading. Integer value:
+   */
   val ocrMaxChars: Long? = null,
+  /** Defines a custom group of characters in place of a preset font variant. */
   val ocrSubset: String? = null,
+  /**
+   * Set field width of blank space to stop scanning during OCR reading.
+   * The default is 50, indicating a six character width quiet zone. 20-99
+   */
   val ocrQuietZone: Long? = null,
+  /**
+   * Creates a template for precisely matching scanned OCR characters to a
+   * desired input format, which helps eliminate scanning errors. The template
+   * expression is formed by numbers and letters. The default is 99999999 which
+   *  accepts any alphanumeric character OCR string. If there are less than
+   *  8 '9' characters, the '9' represents only digit values.
+   * More info https://techdocs.zebra.com/datawedge/13-0/guide/input/barcode/#ocrparamsocraocrb
+   */
   val ocrTemplate: String? = null,
+  /** Sets the Check Digit Modulus value for OCR Check Digit Calculation. */
   val ocrCheckDigitModulus: Long? = null,
+  /** Sets OCR check digit multipliers for the character positions. */
   val ocrCheckDigitMultiplier: Long? = null,
+  /**
+   * None - 0 (default)
+   * Product Add Left to Right - 3
+   * Product Add Right to Left - 1
+   * Digit Add Left to Right - 4
+   * Digit Add Right to Left - 2
+   * Product Add Right to Left Simple Remainder - 5
+   * Digit Add Right to Left Simple Remainder - 6
+   * Health Industry - HIBCC43 - 9
+   */
   val ocrCheckDigitValidation: Long? = null,
+  /**
+   * White or light words on black or dark background. This option is used
+   * to select normal, inverse or both OCR scanning.
+   */
   val inverseOcr: InverseOcr? = null,
   val presentationModeSensitivity: PresentationModeSensitivity? = null,
   val enableHardwareTrigger: Boolean? = null,
@@ -754,14 +797,36 @@ data class PluginBarcodeParamters (
   val decodingLedFeedback: Boolean? = null,
   val decoderUsPlanetReportCheckDigit: Boolean? = null,
   val decodeScreenNotification: Boolean? = null,
+  /**
+   * / Length of time (in milliseconds) to display the screen notification
+   * upon successful decode. 500-1500
+   */
   val decodeScreenTime: Long? = null,
+  /**
+   * Sets the translucency value for the decode notification green screen -
+   * higher values result to more translucency.
+   *  Values range from 20 to 50 in increments of 5:
+   */
   val decodeScreenTranslucency: Long? = null,
+  /**
+   * Enable/disable automatic re-connection to the connected Bluetooth scanner
+   *  after device reboot. Applies only to connected Bluetooth scanners:
+   */
   val keepParingInfoAfterReboot: Boolean? = null,
+  /**
+   * Controls the illumination for decoding DPM barcodes.
+   * Default value is cycle.
+   */
   val dpmIlluminationControl: DpmIlluminationControl? = null,
+  /**
+   * Optimize DPM barcode decoding performance based on the barcode size.
+   * Default is Mode 2
+   */
   val dpmMode: DpmMode? = null,
   val qrLaunchEnable: Boolean? = null,
   val qrLaunchEnableQrDecoder: Boolean? = null,
   val qrLaunchShowConfirmationDialog: Boolean? = null,
+  /** Integer from 0 to 180000 in 1000 increments */
   val noDecodeTime: Long? = null
 
 ) {
