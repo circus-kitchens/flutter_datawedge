@@ -386,16 +386,22 @@ abstract class DataWedgeHostApi {
   );
 
   @async
-  void suspendPlugin();
+  String registerForNotifications();
 
   @async
-  void resumePlugin();
+  String unregisterForNotifications();
 
   @async
-  void enablePlugin();
+  String suspendPlugin();
 
   @async
-  void disablePlugin();
+  String resumePlugin();
+
+  @async
+  String enablePlugin();
+
+  @async
+  String disablePlugin();
 
   String getPackageIdentifer();
 

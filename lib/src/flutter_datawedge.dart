@@ -101,35 +101,39 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
 
   @override
   void onScanResult(ScanEvent scanEvent) {
-    print("GOt a scan");
+    print('GOt a scan');
     _scanEvents.add(scanEvent);
   }
 
   @override
   void onScannerStatusChanged(StatusChangeEvent statusEvent) {
-    print("Status changed");
+    print('Status changed');
     _statusChangeEvents.add(statusEvent);
+  }
+
+  Future<void> registerForNotifications() async {
+    await _hostApi.registerForNotifications();
   }
 
   // Plugin controls
 
   /// Resumes the scanning from suspended state
   Future<void> resumePlugin() async {
-    await _hostApi.resumePlugin();
+    final resCode = await _hostApi.resumePlugin();
   }
 
   /// Suspends scanning temporarily
   Future<void> suspendPlugin() async {
-    await _hostApi.suspendPlugin();
+    final resCode = await _hostApi.suspendPlugin();
   }
 
   /// Disables scanning
   Future<void> disablePlugin() async {
-    await _hostApi.disablePlugin();
+    final resCode = await _hostApi.disablePlugin();
   }
 
   /// Enables scanning
   Future<void> enablePlugin() async {
-    await _hostApi.enablePlugin();
+    final resCode = await _hostApi.enablePlugin();
   }
 }

@@ -24,8 +24,11 @@ Future<void> dwTest() async {
   var dataWedge = FlutterDataWedge.instance;
 
   print("Creating profile...");
-  await dataWedge.createProfile("TestFlutter");
-  print("Created profiele...");
+  try {
+    await dataWedge.createProfile("TestFlutter");
+  } catch (e) {
+    print("Creating failed...");
+  }
 
   var config = ProfileConfig(
       profileName: "TestFlutter",
@@ -62,7 +65,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  void setupListeners() {
+  void setupListeners() async {
+    await FlutterDataWedge.instance.registerForNotifications();
+
     scanSub = FlutterDataWedge.instance.scans.listen((event) {
       setState(() {
         _scans.add(event);
