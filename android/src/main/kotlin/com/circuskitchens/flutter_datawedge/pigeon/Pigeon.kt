@@ -1247,10 +1247,12 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface DataWedgeHostApi {
   fun createProfile(profileName: String, callback: (Result<CreateProfileResponse>) -> Unit)
-  fun suspendPlugin(callback: (Result<Unit>) -> Unit)
-  fun resumePlugin(callback: (Result<Unit>) -> Unit)
-  fun enablePlugin(callback: (Result<Unit>) -> Unit)
-  fun disablePlugin(callback: (Result<Unit>) -> Unit)
+  fun registerForNotifications(callback: (Result<String>) -> Unit)
+  fun unregisterForNotifications(callback: (Result<String>) -> Unit)
+  fun suspendPlugin(callback: (Result<String>) -> Unit)
+  fun resumePlugin(callback: (Result<String>) -> Unit)
+  fun enablePlugin(callback: (Result<String>) -> Unit)
+  fun disablePlugin(callback: (Result<String>) -> Unit)
   fun getPackageIdentifer(): String
   fun setProfileConfig(config: ProfileConfig, callback: (Result<Unit>) -> Unit)
 
@@ -1283,15 +1285,52 @@ interface DataWedgeHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.suspendPlugin", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.registerForNotifications", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            api.suspendPlugin() { result: Result<Unit> ->
+            api.registerForNotifications() { result: Result<String> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
               } else {
-                reply.reply(wrapResult(null))
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.unregisterForNotifications", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            api.unregisterForNotifications() { result: Result<String> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.suspendPlugin", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            api.suspendPlugin() { result: Result<String> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
               }
             }
           }
@@ -1303,12 +1342,13 @@ interface DataWedgeHostApi {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.resumePlugin", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            api.resumePlugin() { result: Result<Unit> ->
+            api.resumePlugin() { result: Result<String> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
               } else {
-                reply.reply(wrapResult(null))
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
               }
             }
           }
@@ -1320,12 +1360,13 @@ interface DataWedgeHostApi {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.enablePlugin", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            api.enablePlugin() { result: Result<Unit> ->
+            api.enablePlugin() { result: Result<String> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
               } else {
-                reply.reply(wrapResult(null))
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
               }
             }
           }
@@ -1337,12 +1378,13 @@ interface DataWedgeHostApi {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.disablePlugin", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
-            api.disablePlugin() { result: Result<Unit> ->
+            api.disablePlugin() { result: Result<String> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
               } else {
-                reply.reply(wrapResult(null))
+                val data = result.getOrNull()
+                reply.reply(wrapResult(data))
               }
             }
           }

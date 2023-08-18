@@ -14,13 +14,36 @@ import java.util.function.IntConsumer
 enum class DWCommand(val cmd: String) {
     CreateProfile("com.symbol.datawedge.api.CREATE_PROFILE"),
     SetConfig("com.symbol.datawedge.api.SET_CONFIG"),
-    SetPluginState("com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN")
+    SetPluginState("com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN"),
+    RegisterForNotification("com.symbol.datawedge.api.REGISTER_FOR_NOTIFICATION"),
+    UnregisterForNotification("com.symbol.datawedge.api.UNREGISTER_FOR_NOTIFICATION")
 }
+
+
 
 enum class DWEvent(val value: String) {
     ResultAction("com.symbol.datawedge.api.RESULT_ACTION"),
     Action("com.symbol.datawedge.api.ACTION"),
     ResultNotification("com.symbol.datawedge.api.NOTIFICATION_ACTION")
+
+}
+
+enum class DWKeys(val value: String ){
+
+
+    ApplicationName("com.symbol.datawedge.api.APPLICATION_NAME"),
+    NotificationType("com.symbol.datawedge.api.NOTIFICATION_TYPE"),
+    ScannerStatus("SCANNER_STATUS"),
+
+
+}
+
+class CommandResult(
+    val command: String,
+    val commandIdentifier: String,
+    val extras: Bundle,
+    val result: String
+) {
 
 }
 
@@ -41,7 +64,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
 
     // A map that contains the callbacks that are associated to the command identifier
-    val callbacks = HashMap<String, (Error?, Bundle?) -> Unit>()
+    val callbacks = HashMap<String, (Result<CommandResult>) -> Unit>()
 
 
     companion object {
@@ -118,6 +141,8 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         when (action) {
             (DWEvent.ResultAction.value) -> {
 
+
+
                 val result = intent.getStringExtra(DWInterface.EXTRA_RESULT) ?: ""
                 val command = intent.getStringExtra(DWInterface.EXTRA_COMMAND) ?: ""
                 val commandIdentifier =
@@ -125,7 +150,18 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
                 // Callback the function we have stored in our hashmap
                 if (callbacks.containsKey(commandIdentifier)) {
-                    callbacks[commandIdentifier]?.let { it(null, intent.extras) }
+                    callbacks[commandIdentifier]?.let {
+                        it(
+                            Result.success(
+                                CommandResult(
+                                    command = command,
+                                    result = result,
+                                    commandIdentifier = commandIdentifier,
+                                    extras = intent.extras!!
+                                )
+                            )
+                        )
+                    }
                     // Remove the pending command as it is resolved now
                     callbacks.remove(commandIdentifier)
                 } else {
@@ -164,23 +200,29 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
                             "single_decode" -> DecodeMode.SINGLE
                             else -> throw Error("Unknown decode mode")
                         }
-                    ), { ->
-                        Log.d("DwInterface", "Submitted scan")
-                    })
+                    )
+                ) { ->
+
+                }
 
 
             }
 
             (DWEvent.ResultNotification.value) -> {
 
+
                 if (!intent.hasExtra(EXTRA_RESULT_NOTIFICATION)) {
                     return
                 }
                 val notification = intent.getBundleExtra(EXTRA_RESULT_NOTIFICATION) ?: return
 
+
+
                 val keys = notification.keySet()
 
                 val notificationType = notification.getString(EXTRA_KEY_NOTIFICATION_TYPE) ?: return
+
+                Log.d("Notification",notificationType)
 
                 when (notificationType) {
                     EXTRA_KEY_VALUE_SCANNER_STATUS -> {
@@ -224,7 +266,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
     // Clear all callbacks to prevent holding unresolvable references and unregister the broadcast receiver
     fun dispose() {
         for (callback in callbacks) {
-            callback.value(Error("DataWedge interface was disposed"), null)
+            callback.value(Result.failure(Error("DataWedge interface was disposed")))
         }
 
         context.unregisterReceiver(this)
@@ -242,7 +284,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
     fun sendCommandString(
         command: DWCommand,
         parameter: String,
-        callback: (Error?, Bundle?) -> Unit
+        callback: (Result<CommandResult>) -> Unit
     ) {
         sendCommand(command, parameter, callback)
     }
@@ -251,7 +293,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
         command: DWCommand,
         parameter: Bundle,
-        callback: (Error?, Bundle?) -> Unit
+        callback: (Result<CommandResult>) -> Unit
     ) {
         sendCommand(command, parameter, callback)
     }
@@ -259,7 +301,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
     private fun sendCommand(
         command: DWCommand,
         parameter: Any,
-        callback: (Error?, Bundle?) -> Unit
+        callback: (Result<CommandResult>) -> Unit
     ) {
         // Generate a random command identifier
         val commandIdentifier = getRandomString(10)
@@ -276,7 +318,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         } else if (parameter is Bundle) {
             dwIntent.putExtra(command.cmd, parameter)
         } else {
-            callback(Error("Unsupported payload type"), null)
+            callback(Result.failure(Error("Unsupported payload type")))
             return
         }
 
@@ -292,38 +334,86 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         profileName: String,
         callback: (kotlin.Result<CreateProfileResponse>) -> Unit
     ) {
-        sendCommand(DWCommand.CreateProfile, profileName) { error, result ->
-            if (error != null) {
-                callback(Result.failure(error))
+        sendCommand(DWCommand.CreateProfile, profileName) { result ->
+            if (result.isFailure) {
+                callback(Result.failure(result.exceptionOrNull()!!))
             } else {
-                callback(Result.success(CreateProfileResponse(CreateProfileResponseType.PROFILECREATED)))
+                val cmd = result.getOrThrow()
+                when (cmd.result) {
+                    "PROFILE_ALREADY_EXIST" -> callback(Result.failure(Error(cmd.result)))
+                    "PROFILE_NAME_EMPTY" -> callback(Result.failure(Error(cmd.result)))
+                    else -> callback(Result.success(CreateProfileResponse(responseType = CreateProfileResponseType.PROFILECREATED)))
+                }
             }
         }
     }
 
-    override fun suspendPlugin(callback: (Result<Unit>) -> Unit) {
-        sendCommandString(DWCommand.SetPluginState,"SUSPEND_PLUGIN"){ err, _  ->
-            callback(Result.success(Unit))
+    override fun suspendPlugin(callback: (Result<String>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState, "SUSPEND_PLUGIN") { result ->
+            if (result.isFailure) {
+                callback(Result.failure(result.exceptionOrNull()!!))
+
+            } else {
+                val cmd = result.getOrThrow()
+                when (cmd.result) {
+                    // Unsure whether this exists, not in the docs
+                    "SCANNER_SUSPEND_FAILED" -> callback(Result.failure(Error(cmd.result)))
+                    "SCANNER_ALREADY_SUSPENDED" -> callback(Result.failure(Error(cmd.result)))
+                    "PLUGIN_DISABLED" -> callback(Result.failure(Error(cmd.result)))
+                    else -> callback(Result.success(cmd.result))
+                }
+            }
+
         }
     }
 
-    override fun resumePlugin(callback: (Result<Unit>) -> Unit) {
-        sendCommandString(DWCommand.SetPluginState,"RESUME_PLUGIN"){ err, _  ->
-            callback(Result.success(Unit))
+    override fun resumePlugin(callback: (Result<String>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState, "RESUME_PLUGIN") { result ->
+            if (result.isFailure) {
+                callback(Result.failure(result.exceptionOrNull()!!))
+
+            } else {
+                val cmd = result.getOrThrow()
+                when (cmd.result) {
+                    "SCANNER_RESUME_FAILED" -> callback(Result.failure(Error(cmd.result)))
+                    "SCANNER_ALREADY_RESUMED" -> callback(Result.failure(Error(cmd.result)))
+                    "PLUGIN_DISABLED" -> callback(Result.failure(Error(cmd.result)))
+                    else -> callback(Result.success(cmd.result))
+                }
+            }
         }
     }
 
-    override fun enablePlugin(callback: (Result<Unit>) -> Unit) {
-        sendCommandString(DWCommand.SetPluginState,"ENABLE_PLUGIN"){ err, _  ->
-            callback(Result.success(Unit))
+    override fun enablePlugin(callback: (Result<String>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState, "ENABLE_PLUGIN") { result ->
+            if (result.isFailure) {
+                callback(Result.failure(result.exceptionOrNull()!!))
+
+            } else {
+                val cmd = result.getOrThrow()
+                when (cmd.result) {
+                    "SCANNER_ALREADY_ENABLED" -> callback(Result.failure(Error(cmd.result)))
+                    "SCANNER_ENABLE_FAILED" -> callback(Result.failure(Error(cmd.result)))
+                    else -> callback(Result.success(cmd.result))
+                }
+            }
         }
     }
 
 
+    override fun disablePlugin(callback: (Result<String>) -> Unit) {
+        sendCommandString(DWCommand.SetPluginState, "DISABLE_PLUGIN") { result ->
+            if (result.isFailure) {
+                callback(Result.failure(result.exceptionOrNull()!!))
 
-    override fun disablePlugin(callback: (Result<Unit>) -> Unit) {
-        sendCommandString(DWCommand.SetPluginState,"DISABLE_PLUGIN"){ err, _  ->
-            callback(Result.success(Unit))
+            } else {
+                val cmd = result.getOrThrow()
+                when (cmd.result) {
+                    "SCANNER_ALREADY_DISABLED" -> callback(Result.failure(Error(cmd.result)))
+                    "SCANNER_DISABLE_FAILED" -> callback(Result.failure(Error(cmd.result)))
+                    else -> callback(Result.success(cmd.result))
+                }
+            }
         }
     }
 
@@ -331,6 +421,26 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
     override fun getPackageIdentifer(): String {
         return context.applicationInfo.packageName
+    }
+
+    override fun registerForNotifications(callback: (Result<String>) -> Unit) {
+
+        val params = Bundle()
+
+        params.putString(DWKeys.ApplicationName.value,getPackageIdentifer())
+        params.putString(DWKeys.NotificationType.value,DWKeys.ScannerStatus.value)
+
+
+        sendCommandBundle(DWCommand.RegisterForNotification,params){ res ->
+    // This command never returns
+        }
+
+        callback(Result.success(""))
+
+    }
+
+    override fun unregisterForNotifications(callback: (Result<String>) -> Unit) {
+        TODO("Not yet implemented")
     }
 
 
@@ -385,11 +495,19 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         configBundle.putParcelableArrayList("PLUGIN_CONFIG", plugins)
 
 
-        sendCommand(DWCommand.SetConfig, configBundle) { err, _ ->
-            if (err != null) {
-                callback(Result.failure(err))
+        sendCommand(DWCommand.SetConfig, configBundle) { res ->
+            if (res.isFailure) {
+                callback(Result.failure(res.exceptionOrNull()!!))
+
             } else {
-                callback(Result.success(Unit))
+                val cmd = res.getOrThrow()
+
+                when (cmd.result) {
+                    "SUCCESS" -> callback(Result.success(Unit))
+                    else -> callback(Result.failure(Error(cmd.result)))
+                }
+
+
             }
         }
 
