@@ -32,4 +32,4 @@ jobs:
           fatal-warnings: true
           annotate: true
       - name: Check Formatting
-        run: flutter format --set-exit-if-changed --output none $(find lib test -name "*.dart" -not \( -name "*.*mocks.dart" \))
+        run: dart format --set-exit-if-changed --output none $(find lib test -name "*.dart" -not \( -name "*.*mocks.dart" \))
