@@ -1,5 +1,10 @@
+# 2.1.0
 
-# 2.0.0-dev.1
+* Update to Gradle 8
+* Update to Kotlin 1.9
+* Update to Flutter3.13
+
+# 2.0.0
 
 * Prerelease with breaking API changes. It enables the user to properly await until a command was send to the underlying Zebra API as well as specifying command identifiers to listen on the result of any action. 
 
