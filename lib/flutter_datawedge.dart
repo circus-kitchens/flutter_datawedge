@@ -46,9 +46,12 @@ class FlutterDataWedge {
   /// Initialize the plugin
   /// This will create a new profile with the given [profileName]
   /// and enable onScannerStatus stream
-  Future<void> initialize({String? commandIdentifier}) async {
+  Future<void> initialize(
+      {String? commandIdentifier, bool shallCreateProfile = false}) async {
     await _enableListeningScannerStatus(commandIdentifier: commandIdentifier);
-    await _createProfile(commandIdentifier: commandIdentifier);
+    if (shallCreateProfile) {
+      await _createProfile(commandIdentifier: commandIdentifier);
+    }
     _isInitialized = true;
   }
 
