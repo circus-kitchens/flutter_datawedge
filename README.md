@@ -14,6 +14,7 @@ Initialize the FlutterDataWedge Object and attach a listener to the onScanResult
 
     FlutterDataWedge dw = FlutterDataWedge(profileName: "Example Profile");
     await dw.initialize();
+    await createDefaultProfile(profileName: "Example Profile");
     StreamSubscription onScanSubscription = dw.onScanResult.listen((ScanResult result) {
         print(result.data);
     });
@@ -28,6 +29,12 @@ Initialize the FlutterDataWedge Object and attach a listener to the onScanResult
 `dispose()` will close all Streams.
 
 *Also checkout the example application.*
+
+### Profiles 
+Unlike previous versions, this version of the package won't create a profile and configure it while calling `initialize`.
+Instead a profile can be created using the `createDefaultProfile` method.
+To query all available profiles use `requestProfiles`, to query the active profile use `requestActiveProfile`.
+The functions `waitForProfiles` and `waitForActiveProfile` can be used to wait results after the requesting function has been called.
 
 #### async/await
 
