@@ -11,14 +11,13 @@ import 'package:flutter_datawedge/src/consts/datawedge_event_type.dart';
 import 'package:flutter_datawedge/src/consts/method_channel_methods.dart';
 import 'package:flutter_datawedge/src/consts/scanner_control_states.dart';
 import 'package:flutter_datawedge/src/consts/scanner_plugin_command.dart';
+import 'package:uuid/uuid.dart';
 
 import 'models/action_result.dart';
 import 'models/flutter_datawedge_exception.dart';
 import 'models/scan_result.dart';
 
 class FlutterDataWedge {
-  final String profileName;
-
   late final Stream<ScanResult> _scanResultStream;
   late final Stream<ScannerStatus>? _scannerStatusStream;
   late final Stream<ActionResult>? _scannerEventStream;
@@ -38,17 +37,15 @@ class FlutterDataWedge {
   Stream<ActionResult> get onScannerEvent => _scannerEventStream!;
 
   /// Create a new instance of [FlutterDataWedge]
-  /// [profileName] is the name of the profile which will be created
-  FlutterDataWedge({
-    required this.profileName,
-  }) {
+  FlutterDataWedge() {
     _setUpStreams();
   }
 
   /// Initialize the plugin
   /// This will enable onScannerStatus stream
   Future<void> initialize({String? commandIdentifier}) async {
-    await _enableListeningScannerStatus(commandIdentifier: commandIdentifier);
+    final String identifier = commandIdentifier ?? Uuid().v4();
+    await _enableListeningScannerStatus(identifier);
     _isInitialized = true;
   }
 
@@ -152,14 +149,16 @@ class FlutterDataWedge {
   /// Returns when the Command is executed NOT when DataWedge is ready to be operated again
   /// For that use [onScannerEvent] to listen for the Result of the Command
   Future<void> createDefaultProfile(
-          {required String profileName, String? commandIdentifier}) async =>
-      _methodChannel.invokeMethod<void>(
-        MethodChannelMethods.createDataWedgeProfile.value,
-        jsonEncode({
-          "name": profileName,
-          'commandIdentifier': commandIdentifier ?? 'createProfile_$profileName'
-        }),
-      );
+      {required String profileName, String? commandIdentifier}) async {
+    final identifier = commandIdentifier ?? Uuid().v4();
+    _methodChannel.invokeMethod<void>(
+      MethodChannelMethods.createDataWedgeProfile.value,
+      jsonEncode({
+        "name": profileName,
+        'commandIdentifier': identifier,
+      }),
+    );
+  }
 
   /// Returns the version of the Android OS
   /// example: Android 4.4, Android 10
@@ -168,14 +167,12 @@ class FlutterDataWedge {
         MethodChannelMethods.getPlatformVersion.value,
       );
 
-  Future<void> _enableListeningScannerStatus({String? commandIdentifier}) =>
-      _methodChannel.invokeMethod<void>(
-        MethodChannelMethods.listenScannerStatus.value,
-        jsonEncode({
-          'commandIdentifier':
-              commandIdentifier ?? 'enableListeningStatus_$profileName'
-        }),
-      );
+  Future<void> _enableListeningScannerStatus(String commandIdentifier) {
+    return _methodChannel.invokeMethod<void>(
+      MethodChannelMethods.listenScannerStatus.value,
+      jsonEncode({'commandIdentifier': commandIdentifier}),
+    );
+  }
 
   void _setUpStreams() {
     final sourceStream = _eventChannel
@@ -212,13 +209,14 @@ class FlutterDataWedge {
         return Result.failure(NotInitializedException());
       }
 
+      final identifier = commandIdentifier ?? Uuid().v4();
+
       await _methodChannel.invokeMethod<void>(
         MethodChannelMethods.sendDataWedgeCommandStringParameter.value,
         jsonEncode({
           "command": command.value,
           "parameter": parameter.value,
-          'commandIdentifier':
-              commandIdentifier ?? '${command.value}_$profileName'
+          'commandIdentifier': identifier,
         }),
       );
       return Result.success(null);

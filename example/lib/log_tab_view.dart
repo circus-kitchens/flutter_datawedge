@@ -12,7 +12,8 @@ class LogTabView extends StatefulWidget {
   State<LogTabView> createState() => LogTabViewState();
 }
 
-class LogTabViewState extends State<LogTabView> with AutomaticKeepAliveClientMixin<LogTabView> {
+class LogTabViewState extends State<LogTabView>
+    with AutomaticKeepAliveClientMixin<LogTabView> {
   late final StreamSubscription<ActionResult> scannerEventSubscription;
   late final StreamSubscription<ScanResult> scanResultSubscription;
   late final StreamSubscription<ScannerStatus> scannerStatusSubscription;
@@ -43,7 +44,8 @@ class LogTabViewState extends State<LogTabView> with AutomaticKeepAliveClientMix
   void initState() {
     super.initState();
     scannerEventSubscription = widget.fdw.onScannerEvent.listen(onScannerEvent);
-    scannerStatusSubscription = widget.fdw.onScannerStatus.listen(onScannerStatus);
+    scannerStatusSubscription =
+        widget.fdw.onScannerStatus.listen(onScannerStatus);
     scanResultSubscription = widget.fdw.onScanResult.listen(onScanResult);
   }
 
@@ -115,7 +117,7 @@ extension ActionResultLog on ActionResult {
     return switch (this.command) {
       DatawedgeApiTargets.softScanTrigger => '${result}',
       DatawedgeApiTargets.scannerPlugin =>
-      result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
+        result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
       DatawedgeApiTargets.getProfiles => '${resultInfo!['profiles']}',
       DatawedgeApiTargets.getActiveProfile => '${resultInfo!['activeProfile']}',
     };

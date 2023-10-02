@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_datawedge.svg)](https://pub.dev/packages/flutter_datawedge)
 
-A Flutter package communicate with Zebra DataWedge scanners.
+A Flutter package to communicate with Zebra DataWedge scanners.
 
 ## Getting Started (under development)
 
@@ -12,7 +12,7 @@ Initialize the FlutterDataWedge Object and attach a listener to the onScanResult
 
 ``` dart
 
-    FlutterDataWedge dw = FlutterDataWedge(profileName: "Example Profile");
+    FlutterDataWedge dw = FlutterDataWedge();
     await dw.initialize();
     await createDefaultProfile(profileName: "Example Profile");
     StreamSubscription onScanSubscription = dw.onScanResult.listen((ScanResult result) {
@@ -46,7 +46,7 @@ Those can be used to determine the outcome of a command and properly wait for it
 Here is a short example:
 
 ``` dart
-    FlutterDataWedge dw = FlutterDataWedge(profileName: "Example Profile");
+    FlutterDataWedge dw = FlutterDataWedge();
     await dw.initialize();
     
     // This would be a properly awaited version of enableScanner

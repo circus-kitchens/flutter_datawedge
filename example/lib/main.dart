@@ -36,8 +36,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initScanner() async {
     if (Platform.isAndroid) {
-      fdw = FlutterDataWedge(profileName: 'FlutterDataWedge');
+      fdw = FlutterDataWedge();
       await fdw.initialize();
+      await fdw.createDefaultProfile(profileName: "Example app profile");
     }
   }
 
