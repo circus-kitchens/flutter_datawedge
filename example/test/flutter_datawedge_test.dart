@@ -1,5 +1,4 @@
 import 'package:flutter_datawedge/flutter_datawedge.dart';
-import 'package:flutter_datawedge/models/flutter_datawedge_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

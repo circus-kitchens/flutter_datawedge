@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
-import 'package:flutter_datawedge/models/action_result.dart';
-import 'package:flutter_datawedge/models/scan_result.dart';
-import 'package:flutter_datawedge/models/scanner_status.dart';
 
 class LogTabView extends StatefulWidget {
   LogTabView(this.fdw);
@@ -110,5 +107,17 @@ class _ScannerStatusLogTile extends StatelessWidget {
       title: Text('Scanner Status'),
       subtitle: Text(scannerStatus.status.toString()),
     );
+  }
+}
+
+extension ActionResultLog on ActionResult {
+  String get logContent {
+    return switch (this.command) {
+      DatawedgeApiTargets.softScanTrigger => '${result}',
+      DatawedgeApiTargets.scannerPlugin =>
+      result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
+      DatawedgeApiTargets.getProfiles => '${resultInfo!['profiles']}',
+      DatawedgeApiTargets.getActiveProfile => '${resultInfo!['activeProfile']}',
+    };
   }
 }
