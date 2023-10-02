@@ -11,4 +11,7 @@ enum DatawedgeApiTargets with ValueEnum {
   final String value;
 
   const DatawedgeApiTargets(this.value);
+
+  static DatawedgeApiTargets fromString(String value) =>
+      DatawedgeApiTargets.values.firstWhere((e) => e.value == value);
 }

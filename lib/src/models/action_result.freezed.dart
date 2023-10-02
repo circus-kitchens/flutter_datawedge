@@ -21,7 +21,7 @@ ActionResult _$ActionResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ActionResult {
   String get result => throw _privateConstructorUsedError;
-  DatawedgeApiTargets get command => throw _privateConstructorUsedError;
+  String get command => throw _privateConstructorUsedError;
   String get commandIdentifier => throw _privateConstructorUsedError;
   Map<String, dynamic>? get resultInfo => throw _privateConstructorUsedError;
 
@@ -39,7 +39,7 @@ abstract class $ActionResultCopyWith<$Res> {
   @useResult
   $Res call(
       {String result,
-      DatawedgeApiTargets command,
+      String command,
       String commandIdentifier,
       Map<String, dynamic>? resultInfo});
 }
@@ -70,7 +70,7 @@ class _$ActionResultCopyWithImpl<$Res, $Val extends ActionResult>
       command: null == command
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
-              as DatawedgeApiTargets,
+              as String,
       commandIdentifier: null == commandIdentifier
           ? _value.commandIdentifier
           : commandIdentifier // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$ActionResultImplCopyWith<$Res>
   @useResult
   $Res call(
       {String result,
-      DatawedgeApiTargets command,
+      String command,
       String commandIdentifier,
       Map<String, dynamic>? resultInfo});
 }
@@ -122,7 +122,7 @@ class __$$ActionResultImplCopyWithImpl<$Res>
       command: null == command
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
-              as DatawedgeApiTargets,
+              as String,
       commandIdentifier: null == commandIdentifier
           ? _value.commandIdentifier
           : commandIdentifier // ignore: cast_nullable_to_non_nullable
@@ -152,7 +152,7 @@ class _$ActionResultImpl extends _ActionResult {
   @override
   final String result;
   @override
-  final DatawedgeApiTargets command;
+  final String command;
   @override
   final String commandIdentifier;
   final Map<String, dynamic>? _resultInfo;
@@ -205,7 +205,7 @@ class _$ActionResultImpl extends _ActionResult {
 abstract class _ActionResult extends ActionResult {
   const factory _ActionResult(
       {required final String result,
-      required final DatawedgeApiTargets command,
+      required final String command,
       required final String commandIdentifier,
       required final Map<String, dynamic>? resultInfo}) = _$ActionResultImpl;
   const _ActionResult._() : super._();
@@ -216,7 +216,7 @@ abstract class _ActionResult extends ActionResult {
   @override
   String get result;
   @override
-  DatawedgeApiTargets get command;
+  String get command;
   @override
   String get commandIdentifier;
   @override

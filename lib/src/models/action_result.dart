@@ -9,7 +9,7 @@ part 'action_result.freezed.dart';
 class ActionResult with _$ActionResult {
   const factory ActionResult({
     required String result,
-    required DatawedgeApiTargets command,
+    required String command,
     required String commandIdentifier,
     required Map<String, dynamic>? resultInfo,
   }) = _ActionResult;

@@ -78,7 +78,7 @@ class _ActionResultLogTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(actionResult.command.value.split('.').last),
+      title: Text(actionResult.command.split('.').last),
       subtitle: Text(actionResult.logContent),
     );
   }
@@ -114,7 +114,7 @@ class _ScannerStatusLogTile extends StatelessWidget {
 
 extension ActionResultLog on ActionResult {
   String get logContent {
-    return switch (this.command) {
+    return switch (DatawedgeApiTargets.fromString(this.command)) {
       DatawedgeApiTargets.softScanTrigger => '${result}',
       DatawedgeApiTargets.scannerPlugin =>
         result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
