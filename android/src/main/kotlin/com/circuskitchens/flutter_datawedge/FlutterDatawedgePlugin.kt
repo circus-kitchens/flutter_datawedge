@@ -38,7 +38,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
 
     private lateinit var intentFilter: IntentFilter
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
 
         context = flutterPluginBinding.applicationContext
 
@@ -59,7 +59,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
 
     }
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    override fun onMethodCall(call: MethodCall, result: Result) {
 
         when (call.method) {
             MyMethods.getPlatformVersion -> {
