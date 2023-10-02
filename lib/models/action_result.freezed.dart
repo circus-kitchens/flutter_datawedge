@@ -21,7 +21,7 @@ ActionResult _$ActionResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ActionResult {
   String get result => throw _privateConstructorUsedError;
-  String get command => throw _privateConstructorUsedError;
+  DatawedgeApiTargets get command => throw _privateConstructorUsedError;
   String get commandIdentifier => throw _privateConstructorUsedError;
   Map<String, dynamic>? get resultInfo => throw _privateConstructorUsedError;
 
@@ -39,7 +39,7 @@ abstract class $ActionResultCopyWith<$Res> {
   @useResult
   $Res call(
       {String result,
-      String command,
+      DatawedgeApiTargets command,
       String commandIdentifier,
       Map<String, dynamic>? resultInfo});
 }
@@ -70,7 +70,7 @@ class _$ActionResultCopyWithImpl<$Res, $Val extends ActionResult>
       command: null == command
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DatawedgeApiTargets,
       commandIdentifier: null == commandIdentifier
           ? _value.commandIdentifier
           : commandIdentifier // ignore: cast_nullable_to_non_nullable
@@ -84,26 +84,26 @@ class _$ActionResultCopyWithImpl<$Res, $Val extends ActionResult>
 }
 
 /// @nodoc
-abstract class _$$_ActionResultCopyWith<$Res>
+abstract class _$$ActionResultImplCopyWith<$Res>
     implements $ActionResultCopyWith<$Res> {
-  factory _$$_ActionResultCopyWith(
-          _$_ActionResult value, $Res Function(_$_ActionResult) then) =
-      __$$_ActionResultCopyWithImpl<$Res>;
+  factory _$$ActionResultImplCopyWith(
+          _$ActionResultImpl value, $Res Function(_$ActionResultImpl) then) =
+      __$$ActionResultImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String result,
-      String command,
+      DatawedgeApiTargets command,
       String commandIdentifier,
       Map<String, dynamic>? resultInfo});
 }
 
 /// @nodoc
-class __$$_ActionResultCopyWithImpl<$Res>
-    extends _$ActionResultCopyWithImpl<$Res, _$_ActionResult>
-    implements _$$_ActionResultCopyWith<$Res> {
-  __$$_ActionResultCopyWithImpl(
-      _$_ActionResult _value, $Res Function(_$_ActionResult) _then)
+class __$$ActionResultImplCopyWithImpl<$Res>
+    extends _$ActionResultCopyWithImpl<$Res, _$ActionResultImpl>
+    implements _$$ActionResultImplCopyWith<$Res> {
+  __$$ActionResultImplCopyWithImpl(
+      _$ActionResultImpl _value, $Res Function(_$ActionResultImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -114,7 +114,7 @@ class __$$_ActionResultCopyWithImpl<$Res>
     Object? commandIdentifier = null,
     Object? resultInfo = freezed,
   }) {
-    return _then(_$_ActionResult(
+    return _then(_$ActionResultImpl(
       result: null == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
@@ -122,7 +122,7 @@ class __$$_ActionResultCopyWithImpl<$Res>
       command: null == command
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DatawedgeApiTargets,
       commandIdentifier: null == commandIdentifier
           ? _value.commandIdentifier
           : commandIdentifier // ignore: cast_nullable_to_non_nullable
@@ -137,8 +137,8 @@ class __$$_ActionResultCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ActionResult extends _ActionResult {
-  const _$_ActionResult(
+class _$ActionResultImpl extends _ActionResult {
+  const _$ActionResultImpl(
       {required this.result,
       required this.command,
       required this.commandIdentifier,
@@ -146,13 +146,13 @@ class _$_ActionResult extends _ActionResult {
       : _resultInfo = resultInfo,
         super._();
 
-  factory _$_ActionResult.fromJson(Map<String, dynamic> json) =>
-      _$$_ActionResultFromJson(json);
+  factory _$ActionResultImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ActionResultImplFromJson(json);
 
   @override
   final String result;
   @override
-  final String command;
+  final DatawedgeApiTargets command;
   @override
   final String commandIdentifier;
   final Map<String, dynamic>? _resultInfo;
@@ -174,7 +174,7 @@ class _$_ActionResult extends _ActionResult {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ActionResult &&
+            other is _$ActionResultImpl &&
             (identical(other.result, result) || other.result == result) &&
             (identical(other.command, command) || other.command == command) &&
             (identical(other.commandIdentifier, commandIdentifier) ||
@@ -191,12 +191,12 @@ class _$_ActionResult extends _ActionResult {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ActionResultCopyWith<_$_ActionResult> get copyWith =>
-      __$$_ActionResultCopyWithImpl<_$_ActionResult>(this, _$identity);
+  _$$ActionResultImplCopyWith<_$ActionResultImpl> get copyWith =>
+      __$$ActionResultImplCopyWithImpl<_$ActionResultImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ActionResultToJson(
+    return _$$ActionResultImplToJson(
       this,
     );
   }
@@ -205,24 +205,24 @@ class _$_ActionResult extends _ActionResult {
 abstract class _ActionResult extends ActionResult {
   const factory _ActionResult(
       {required final String result,
-      required final String command,
+      required final DatawedgeApiTargets command,
       required final String commandIdentifier,
-      required final Map<String, dynamic>? resultInfo}) = _$_ActionResult;
+      required final Map<String, dynamic>? resultInfo}) = _$ActionResultImpl;
   const _ActionResult._() : super._();
 
   factory _ActionResult.fromJson(Map<String, dynamic> json) =
-      _$_ActionResult.fromJson;
+      _$ActionResultImpl.fromJson;
 
   @override
   String get result;
   @override
-  String get command;
+  DatawedgeApiTargets get command;
   @override
   String get commandIdentifier;
   @override
   Map<String, dynamic>? get resultInfo;
   @override
   @JsonKey(ignore: true)
-  _$$_ActionResultCopyWith<_$_ActionResult> get copyWith =>
+  _$$ActionResultImplCopyWith<_$ActionResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

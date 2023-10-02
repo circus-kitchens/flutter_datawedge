@@ -78,11 +78,11 @@ class _$ScanResultCopyWithImpl<$Res, $Val extends ScanResult>
 }
 
 /// @nodoc
-abstract class _$$_ScanResultCopyWith<$Res>
+abstract class _$$ScanResultImplCopyWith<$Res>
     implements $ScanResultCopyWith<$Res> {
-  factory _$$_ScanResultCopyWith(
-          _$_ScanResult value, $Res Function(_$_ScanResult) then) =
-      __$$_ScanResultCopyWithImpl<$Res>;
+  factory _$$ScanResultImplCopyWith(
+          _$ScanResultImpl value, $Res Function(_$ScanResultImpl) then) =
+      __$$ScanResultImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -92,11 +92,11 @@ abstract class _$$_ScanResultCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ScanResultCopyWithImpl<$Res>
-    extends _$ScanResultCopyWithImpl<$Res, _$_ScanResult>
-    implements _$$_ScanResultCopyWith<$Res> {
-  __$$_ScanResultCopyWithImpl(
-      _$_ScanResult _value, $Res Function(_$_ScanResult) _then)
+class __$$ScanResultImplCopyWithImpl<$Res>
+    extends _$ScanResultCopyWithImpl<$Res, _$ScanResultImpl>
+    implements _$$ScanResultImplCopyWith<$Res> {
+  __$$ScanResultImplCopyWithImpl(
+      _$ScanResultImpl _value, $Res Function(_$ScanResultImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -106,7 +106,7 @@ class __$$_ScanResultCopyWithImpl<$Res>
     Object? labelType = null,
     Object? source = null,
   }) {
-    return _then(_$_ScanResult(
+    return _then(_$ScanResultImpl(
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -125,14 +125,14 @@ class __$$_ScanResultCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ScanResult implements _ScanResult {
-  const _$_ScanResult(
+class _$ScanResultImpl implements _ScanResult {
+  const _$ScanResultImpl(
       {@JsonKey(name: 'scanData') required this.data,
       required this.labelType,
       required this.source});
 
-  factory _$_ScanResult.fromJson(Map<String, dynamic> json) =>
-      _$$_ScanResultFromJson(json);
+  factory _$ScanResultImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ScanResultImplFromJson(json);
 
   @override
   @JsonKey(name: 'scanData')
@@ -151,7 +151,7 @@ class _$_ScanResult implements _ScanResult {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ScanResult &&
+            other is _$ScanResultImpl &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.labelType, labelType) ||
                 other.labelType == labelType) &&
@@ -165,12 +165,12 @@ class _$_ScanResult implements _ScanResult {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ScanResultCopyWith<_$_ScanResult> get copyWith =>
-      __$$_ScanResultCopyWithImpl<_$_ScanResult>(this, _$identity);
+  _$$ScanResultImplCopyWith<_$ScanResultImpl> get copyWith =>
+      __$$ScanResultImplCopyWithImpl<_$ScanResultImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ScanResultToJson(
+    return _$$ScanResultImplToJson(
       this,
     );
   }
@@ -180,10 +180,10 @@ abstract class _ScanResult implements ScanResult {
   const factory _ScanResult(
       {@JsonKey(name: 'scanData') required final String data,
       required final String labelType,
-      required final String source}) = _$_ScanResult;
+      required final String source}) = _$ScanResultImpl;
 
   factory _ScanResult.fromJson(Map<String, dynamic> json) =
-      _$_ScanResult.fromJson;
+      _$ScanResultImpl.fromJson;
 
   @override
   @JsonKey(name: 'scanData')
@@ -194,6 +194,6 @@ abstract class _ScanResult implements ScanResult {
   String get source;
   @override
   @JsonKey(ignore: true)
-  _$$_ScanResultCopyWith<_$_ScanResult> get copyWith =>
+  _$$ScanResultImplCopyWith<_$ScanResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

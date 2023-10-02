@@ -1,3 +1,4 @@
+import 'package:flutter_datawedge/src/consts/datawedge_api_targets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'action_result.g.dart';
@@ -8,7 +9,7 @@ part 'action_result.freezed.dart';
 class ActionResult with _$ActionResult {
   const factory ActionResult({
     required String result,
-    required String command,
+    required DatawedgeApiTargets command,
     required String commandIdentifier,
     required Map<String, dynamic>? resultInfo,
   }) = _ActionResult;
