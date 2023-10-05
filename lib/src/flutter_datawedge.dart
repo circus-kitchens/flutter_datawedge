@@ -112,7 +112,7 @@ class FlutterDataWedge {
   Future<List<String>> waitForProfiles() {
     final completer = Completer<List<String>>();
     final subscription = onScannerEvent.listen((event) {
-      if (event.command == DatawedgeApiTargets.getProfiles) {
+      if (event.command == DatawedgeApiTargets.getProfiles.value) {
         final profiles = event.resultInfo!['profiles'] as List<String>;
         completer.complete(profiles);
       }
@@ -137,7 +137,7 @@ class FlutterDataWedge {
   Future<String> waitForActiveProfile() {
     final completer = Completer<String>();
     final subscription = onScannerEvent.listen((event) {
-      if (event.command == DatawedgeApiTargets.getActiveProfile) {
+      if (event.command == DatawedgeApiTargets.getActiveProfile.value) {
         final profile = event.resultInfo!['activeProfile'] as String;
         completer.complete(profile);
       }
