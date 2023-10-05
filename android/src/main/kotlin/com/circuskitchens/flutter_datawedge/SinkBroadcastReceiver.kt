@@ -17,16 +17,6 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onReceive(context: Context, intent: Intent) {
 
-        //  This is useful for debugging to verify the format of received intents from DataWedge
-        //   val action = intent.action
-        //   val b = intent.extras
-        //   Log.d("Action:", action!!);
-        //   if (b != null) {
-        //       for (key in b.keySet()) {
-        //           Log.d("onReceiveExtras:", key);
-        //       }
-        //   }
-
         when (intent.action) {
             ///  A barcode has been scanned
             context.packageName + SCAN_EVENT_INTENT_ACTION -> {
@@ -95,7 +85,8 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
             }
 
             else -> {
-                Log.d("onReceive_default_case:", intent.toString());
+                // Log.d("flutter_datawedge:onReceive:default", intentToString(intent));
+                Log.d(TAG, "default_case");
             }
         }
     }
@@ -187,5 +178,30 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
 
         events!!.success(actionResult.toString())
     }
+
+    private fun intentToString(intent: Intent): String {
+        // This is useful for debugging to verify the format of received intents from DataWedge
+        val action = intent.action
+        val b = intent.extras
+        val resultStringBuilder = StringBuilder()
+
+        resultStringBuilder.append("{\n")
+        resultStringBuilder.append("  \"Action\": \"$action\",\n")
+
+        if (b != null) {
+            resultStringBuilder.append("  \"Extras\": {\n")
+            for (key in b.keySet()) {
+                val value = b[key]
+                resultStringBuilder.append("    \"$key\": \"$value\",\n")
+            }
+            resultStringBuilder.append("  }\n")
+        }
+
+        resultStringBuilder.append("}\n")
+
+        return resultStringBuilder.toString()
+    }
+
+
 
 }
