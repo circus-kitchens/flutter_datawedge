@@ -24,7 +24,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.3.2
   json_serializable: ^6.6.1
-  lints: ^2.0.1
+  lints: ">=2.0.1 <4.0.0"
 
 
 flutter:
