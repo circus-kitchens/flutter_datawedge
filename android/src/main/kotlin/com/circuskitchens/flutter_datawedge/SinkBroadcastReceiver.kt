@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.circuskitchens.flutter_datawedge.consts.MyEvents
 import com.circuskitchens.flutter_datawedge.consts.MyIntents.Companion.SCAN_EVENT_INTENT_ACTION
 import io.flutter.plugin.common.EventChannel.EventSink
@@ -14,7 +12,6 @@ import org.json.JSONObject
 
 class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastReceiver() {
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onReceive(context: Context, intent: Intent) {
 
         when (intent.action) {
@@ -24,11 +21,11 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
             }
 
             DWInterface.ACTION_RESULT -> {
-                if (intent.hasExtra("com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE")) {
+                if (intent.hasExtra(DWInterface.EXTRA_RESULT_GET_ACTIVE_PROFILE)) {
                     handleGetActiveProfile(intent)
                     return
                 }
-                if (intent.hasExtra("com.symbol.datawedge.api.RESULT_GET_PROFILES_LIST")) {
+                if (intent.hasExtra(DWInterface.EXTRA_RESULT_GET_PROFILES_LIST)) {
                     handleGetProfiles(intent)
                     return
                 }
@@ -41,14 +38,14 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
                     /*
                         if (b != null) {
                           for (key in b.keySet()) {
-                            Log.d("onReceiveBundleExtras:", key);
+                            Log.d("onReceiveBundleExtras:", key)
                           }
                         }*/
-                    val NOTIFICATION_TYPE =
+                    val notificationType =
                         b!!.getString(DWInterface.EXTRA_RESULT_NOTIFICATION_TYPE)
 
-                    if (NOTIFICATION_TYPE != null) {
-                        when (NOTIFICATION_TYPE) {
+                    if (notificationType != null) {
+                        when (notificationType) {
                             DWInterface.EXTRA_KEY_VALUE_SCANNER_STATUS -> {
                                 val status =
                                     b.getString(DWInterface.EXTRA_KEY_VALUE_NOTIFICATION_STATUS)
@@ -65,10 +62,10 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
                             DWInterface.EXTRA_KEY_VALUE_PROFILE_SWITCH -> {
                                 val profile =
                                     b.getString(DWInterface.EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME)
-                                val profileEnabled = b.getBoolean("PROFILE_ENABLED")
+                                val profileEnabled = b.getBoolean(DWInterface.EXTRA_KEY_VALUE_PROFILE_ENABLED)
                                 val profileResult = JSONObject()
 
-                                profileResult.put(MyEvents.EVENT_NAME, "PROFILE_SWITCH")
+                                profileResult.put(MyEvents.EVENT_NAME, DWInterface.EXTRA_KEY_VALUE_PROFILE_SWITCH)
                                 profileResult.put("profileEnabled", profileEnabled)
                                 profileResult.put("profile", profile)
                                 events!!.success(profileResult.toString())
@@ -85,8 +82,8 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
             }
 
             else -> {
-                // Log.d("flutter_datawedge:onReceive:default", intentToString(intent));
-                Log.d(TAG, "default_case");
+                // Log.d("flutter_datawedge:onReceive:default", intentToString(intent))
+                Log.d(TAG, "default_case")
             }
         }
     }
@@ -113,9 +110,9 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
         val commandIdentifier =
             intent.getStringExtra(DWInterface.EXTRA_COMMAND_IDENTIFIER) ?: ""
 
-        var resultInfo: JSONObject? = null;
+        var resultInfo: JSONObject? = null
         if (intent.hasExtra(DWInterface.EXTRA_RESULT_INFO)) {
-            resultInfo = JSONObject();
+            resultInfo = JSONObject()
 
             val bundle = intent.getBundleExtra(DWInterface.EXTRA_RESULT_INFO)
             val keys: Set<String> = bundle!!.keySet()
@@ -138,7 +135,7 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
     private fun handleGetProfiles(intent: Intent) {
         // We are requesting the profiles
         val profilesList: Array<String>? =
-            intent.getStringArrayExtra("com.symbol.datawedge.api.RESULT_GET_PROFILES_LIST")
+            intent.getStringArrayExtra(DWInterface.EXTRA_RESULT_GET_PROFILES_LIST)
         val actionResult = JSONObject()
         actionResult.put(MyEvents.EVENT_NAME, MyEvents.ACTION_RESULT)
 
@@ -146,12 +143,11 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
 
 
         val result = intent.getStringExtra(DWInterface.EXTRA_RESULT) ?: "SUCCESS"
-        val command = "com.symbol.datawedge.api.GET_PROFILES_LIST"
         val commandIdentifier =
             intent.getStringExtra(DWInterface.EXTRA_COMMAND_IDENTIFIER) ?: ""
 
         actionResult.put("result", result)
-        actionResult.put("command", command)
+        actionResult.put("command", DWInterface.EXTRA_GET_PROFILES)
         actionResult.put("commandIdentifier", commandIdentifier)
 
         events!!.success(actionResult.toString())
@@ -159,19 +155,19 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
 
     private fun handleGetActiveProfile(intent: Intent) {
         val activeProfile: String? =
-            intent.getStringExtra("com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE")
+            intent.getStringExtra(DWInterface.EXTRA_RESULT_GET_ACTIVE_PROFILE)
 
         val actionResult = JSONObject()
         actionResult.put(MyEvents.EVENT_NAME, MyEvents.ACTION_RESULT)
 
         val result = intent.getStringExtra(DWInterface.EXTRA_RESULT) ?: "SUCCESS"
-        val command = "com.symbol.datawedge.api.GET_ACTIVE_PROFILE"
+
         val commandIdentifier =
             intent.getStringExtra(DWInterface.EXTRA_COMMAND_IDENTIFIER) ?: ""
 
         actionResult.put("result", result)
         actionResult.put("resultInfo", JSONObject(mapOf("activeProfile" to activeProfile)))
-        actionResult.put("command", command)
+        actionResult.put("command", DWInterface.EXTRA_ACTIVE_PROFILE)
         actionResult.put("commandIdentifier", commandIdentifier)
 
         Log.d(TAG, "onReceive: $actionResult")
@@ -179,29 +175,28 @@ class SinkBroadcastReceiver(private var events: EventSink? = null) : BroadcastRe
         events!!.success(actionResult.toString())
     }
 
-    private fun intentToString(intent: Intent): String {
-        // This is useful for debugging to verify the format of received intents from DataWedge
-        val action = intent.action
-        val b = intent.extras
-        val resultStringBuilder = StringBuilder()
-
-        resultStringBuilder.append("{\n")
-        resultStringBuilder.append("  \"Action\": \"$action\",\n")
-
-        if (b != null) {
-            resultStringBuilder.append("  \"Extras\": {\n")
-            for (key in b.keySet()) {
-                val value = b[key]
-                resultStringBuilder.append("    \"$key\": \"$value\",\n")
-            }
-            resultStringBuilder.append("  }\n")
-        }
-
-        resultStringBuilder.append("}\n")
-
-        return resultStringBuilder.toString()
-    }
-
+//    private fun intentToString(intent: Intent): String {
+//        // This is useful for debugging to verify the format of received intents from DataWedge
+//        val action = intent.action
+//        val b = intent.extras
+//        val resultStringBuilder = StringBuilder()
+//
+//        resultStringBuilder.append("{\n")
+//        resultStringBuilder.append("  \"Action\": \"$action\",\n")
+//
+//        if (b != null) {
+//            resultStringBuilder.append("  \"Extras\": {\n")
+//            for (key in b.keySet()) {
+//                val value = b.getString(key)
+//                resultStringBuilder.append("    \"$key\": \"$value\",\n")
+//            }
+//            resultStringBuilder.append("  }\n")
+//        }
+//
+//        resultStringBuilder.append("}\n")
+//
+//        return resultStringBuilder.toString()
+//    }
 
 
 }

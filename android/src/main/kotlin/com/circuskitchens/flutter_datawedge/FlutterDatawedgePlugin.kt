@@ -1,11 +1,10 @@
 package com.circuskitchens.flutter_datawedge
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
-import androidx.annotation.NonNull
 import com.circuskitchens.flutter_datawedge.consts.MyChannels
 import com.circuskitchens.flutter_datawedge.consts.MyIntents
 import com.circuskitchens.flutter_datawedge.consts.MyMethods
@@ -65,33 +64,38 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             MyMethods.getPlatformVersion -> {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
+
             MyMethods.sendDataWedgeCommandStringParameter -> {
                 val arguments = JSONObject(call.arguments.toString())
                 val command: String = arguments.get("command") as String
                 val parameter: String = arguments.get("parameter") as String
                 val commandIdentifier: String = arguments.get("commandIdentifier") as String
                 dwInterface.sendCommandString(context, command, parameter, commandIdentifier)
-                result.success(null);  //  DataWedge does not return responses
+                result.success(null)  //  DataWedge does not return responses
             }
+
             MyMethods.createDataWedgeProfile -> {
                 val arguments = JSONObject(call.arguments.toString())
                 val name: String = arguments.get("name") as String
                 val commandIdentifier: String = arguments.get("commandIdentifier") as String
                 createDataWedgeProfile(name, commandIdentifier)
-                result.success(null);  //  DataWedge does not return responses
+                result.success(null)  //  DataWedge does not return responses
             }
+
             MyMethods.listenScannerStatus -> {
                 val arguments = JSONObject(call.arguments.toString())
                 val commandIdentifier: String = arguments.get("commandIdentifier") as String
                 listenScannerStatus(commandIdentifier)
-                result.success(null);  //  DataWedge does not return responses
+                result.success(null)  //  DataWedge does not return responses
             }
+
             else -> {
                 result.notImplemented()
             }
         }
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onListen(arguments: Any?, events: EventSink?) {
         val receiver = SinkBroadcastReceiver(events)
         registeredReceivers.add(receiver)
@@ -149,8 +153,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
         val intentProps = Bundle()
         intentProps.putString("intent_output_enabled", "true")
         intentProps.putString(
-            "intent_action",
-            context.packageName + MyIntents.SCAN_EVENT_INTENT_ACTION
+            "intent_action", context.packageName + MyIntents.SCAN_EVENT_INTENT_ACTION
         )
         intentProps.putString("intent_delivery", profileIntentBroadcast)  //  "2"
         intentConfig.putBundle("PARAM_LIST", intentProps)
@@ -172,8 +175,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
         val b = Bundle()
         b.putString(DWInterface.EXTRA_KEY_APPLICATION_NAME, context.packageName)
         b.putString(
-            DWInterface.EXTRA_KEY_NOTIFICATION_TYPE,
-            DWInterface.EXTRA_KEY_VALUE_SCANNER_STATUS
+            DWInterface.EXTRA_KEY_NOTIFICATION_TYPE, DWInterface.EXTRA_KEY_VALUE_SCANNER_STATUS
         )
 
         //https://techdocs.zebra.com/datawedge/latest/guide/api/setconfig/
@@ -185,7 +187,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
         )
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         for (receiver in registeredReceivers) {
             context.unregisterReceiver(receiver)
         }
