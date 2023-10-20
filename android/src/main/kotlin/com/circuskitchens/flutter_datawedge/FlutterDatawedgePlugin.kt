@@ -57,7 +57,7 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
 
     }
 
-    override fun onMethodCall(call: MethodCall, result: Result) {
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
 
         when (call.method) {
             MyMethods.sendDataWedgeCommandStringParameter -> {
