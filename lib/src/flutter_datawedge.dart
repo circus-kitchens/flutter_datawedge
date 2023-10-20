@@ -160,13 +160,6 @@ class FlutterDataWedge {
     );
   }
 
-  /// Returns the version of the Android OS
-  /// example: Android 4.4, Android 10
-  /// see also: https://developer.android.com/reference/android/os/Build.VERSION#RELEASE
-  Future<String?> platformVersion() => _methodChannel.invokeMethod<String>(
-        MethodChannelMethods.getPlatformVersion.value,
-      );
-
   Future<void> _enableListeningScannerStatus(String commandIdentifier) {
     return _methodChannel.invokeMethod<void>(
       MethodChannelMethods.listenScannerStatus.value,

@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import com.circuskitchens.flutter_datawedge.consts.MyChannels
 import com.circuskitchens.flutter_datawedge.consts.MyIntents
-import com.circuskitchens.flutter_datawedge.consts.MyMethods
+import src.main.kotlin.com.circuskitchens.flutter_datawedge.consts.MyMethods
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.EventChannel.EventSink
@@ -15,7 +15,6 @@ import io.flutter.plugin.common.EventChannel.StreamHandler
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
 import org.json.JSONObject
 
 class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
@@ -61,10 +60,6 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
     override fun onMethodCall(call: MethodCall, result: Result) {
 
         when (call.method) {
-            MyMethods.getPlatformVersion -> {
-                result.success("Android ${android.os.Build.VERSION.RELEASE}")
-            }
-
             MyMethods.sendDataWedgeCommandStringParameter -> {
                 val arguments = JSONObject(call.arguments.toString())
                 val command: String = arguments.get("command") as String
