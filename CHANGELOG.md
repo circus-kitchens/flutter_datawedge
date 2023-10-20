@@ -1,3 +1,8 @@
+# 3.0.0-dev.1
+
+* Added functions `requestProfiles` and `requestActiveProfile` to query the available profiles and the active profile
+* Creating a default profile will not be automatically done when calling initialize anymore. Instead the user has to call `createDefaultProfile` manually.
+
 # 2.1.0
 
 * Update to Gradle 8
