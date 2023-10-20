@@ -68,22 +68,22 @@ class _$ScannerStatusCopyWithImpl<$Res, $Val extends ScannerStatus>
 }
 
 /// @nodoc
-abstract class _$$_ScannerStatusCopyWith<$Res>
+abstract class _$$ScannerStatusImplCopyWith<$Res>
     implements $ScannerStatusCopyWith<$Res> {
-  factory _$$_ScannerStatusCopyWith(
-          _$_ScannerStatus value, $Res Function(_$_ScannerStatus) then) =
-      __$$_ScannerStatusCopyWithImpl<$Res>;
+  factory _$$ScannerStatusImplCopyWith(
+          _$ScannerStatusImpl value, $Res Function(_$ScannerStatusImpl) then) =
+      __$$ScannerStatusImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ScannerStatusType status, String profile});
 }
 
 /// @nodoc
-class __$$_ScannerStatusCopyWithImpl<$Res>
-    extends _$ScannerStatusCopyWithImpl<$Res, _$_ScannerStatus>
-    implements _$$_ScannerStatusCopyWith<$Res> {
-  __$$_ScannerStatusCopyWithImpl(
-      _$_ScannerStatus _value, $Res Function(_$_ScannerStatus) _then)
+class __$$ScannerStatusImplCopyWithImpl<$Res>
+    extends _$ScannerStatusCopyWithImpl<$Res, _$ScannerStatusImpl>
+    implements _$$ScannerStatusImplCopyWith<$Res> {
+  __$$ScannerStatusImplCopyWithImpl(
+      _$ScannerStatusImpl _value, $Res Function(_$ScannerStatusImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_ScannerStatusCopyWithImpl<$Res>
     Object? status = null,
     Object? profile = null,
   }) {
-    return _then(_$_ScannerStatus(
+    return _then(_$ScannerStatusImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -107,11 +107,11 @@ class __$$_ScannerStatusCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ScannerStatus implements _ScannerStatus {
-  const _$_ScannerStatus({required this.status, required this.profile});
+class _$ScannerStatusImpl implements _ScannerStatus {
+  const _$ScannerStatusImpl({required this.status, required this.profile});
 
-  factory _$_ScannerStatus.fromJson(Map<String, dynamic> json) =>
-      _$$_ScannerStatusFromJson(json);
+  factory _$ScannerStatusImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ScannerStatusImplFromJson(json);
 
   @override
   final ScannerStatusType status;
@@ -127,7 +127,7 @@ class _$_ScannerStatus implements _ScannerStatus {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ScannerStatus &&
+            other is _$ScannerStatusImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.profile, profile) || other.profile == profile));
   }
@@ -139,12 +139,12 @@ class _$_ScannerStatus implements _ScannerStatus {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ScannerStatusCopyWith<_$_ScannerStatus> get copyWith =>
-      __$$_ScannerStatusCopyWithImpl<_$_ScannerStatus>(this, _$identity);
+  _$$ScannerStatusImplCopyWith<_$ScannerStatusImpl> get copyWith =>
+      __$$ScannerStatusImplCopyWithImpl<_$ScannerStatusImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ScannerStatusToJson(
+    return _$$ScannerStatusImplToJson(
       this,
     );
   }
@@ -153,10 +153,10 @@ class _$_ScannerStatus implements _ScannerStatus {
 abstract class _ScannerStatus implements ScannerStatus {
   const factory _ScannerStatus(
       {required final ScannerStatusType status,
-      required final String profile}) = _$_ScannerStatus;
+      required final String profile}) = _$ScannerStatusImpl;
 
   factory _ScannerStatus.fromJson(Map<String, dynamic> json) =
-      _$_ScannerStatus.fromJson;
+      _$ScannerStatusImpl.fromJson;
 
   @override
   ScannerStatusType get status;
@@ -164,6 +164,6 @@ abstract class _ScannerStatus implements ScannerStatus {
   String get profile;
   @override
   @JsonKey(ignore: true)
-  _$$_ScannerStatusCopyWith<_$_ScannerStatus> get copyWith =>
+  _$$ScannerStatusImplCopyWith<_$ScannerStatusImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

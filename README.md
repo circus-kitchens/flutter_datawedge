@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_datawedge.svg)](https://pub.dev/packages/flutter_datawedge)
 
-A Flutter package communicate with Zebra DataWedge scanners.
+A Flutter package to communicate with Zebra DataWedge scanners.
 
 ## Getting Started (under development)
 
@@ -12,8 +12,9 @@ Initialize the FlutterDataWedge Object and attach a listener to the onScanResult
 
 ``` dart
 
-    FlutterDataWedge dw = FlutterDataWedge(profileName: "Example Profile");
+    FlutterDataWedge dw = FlutterDataWedge();
     await dw.initialize();
+    await createDefaultProfile(profileName: "Example Profile");
     StreamSubscription onScanSubscription = dw.onScanResult.listen((ScanResult result) {
         print(result.data);
     });
@@ -29,6 +30,12 @@ Initialize the FlutterDataWedge Object and attach a listener to the onScanResult
 
 *Also checkout the example application.*
 
+### Profiles 
+Unlike previous versions, this version of the package won't create a profile and configure it while calling `initialize`.
+Instead a profile can be created using the `createDefaultProfile` method.
+To query all available profiles use `requestProfiles`, to query the active profile use `requestActiveProfile`.
+The functions `waitForProfiles` and `waitForActiveProfile` can be used to wait results after the requesting function has been called.
+
 #### async/await
 
 Event though the public methods enableScanner(), activateScanner() and scannerControl() are
@@ -39,7 +46,7 @@ Those can be used to determine the outcome of a command and properly wait for it
 Here is a short example:
 
 ``` dart
-    FlutterDataWedge dw = FlutterDataWedge(profileName: "Example Profile");
+    FlutterDataWedge dw = FlutterDataWedge();
     await dw.initialize();
     
     // This would be a properly awaited version of enableScanner
