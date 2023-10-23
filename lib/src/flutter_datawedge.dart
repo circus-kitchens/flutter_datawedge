@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_datawedge/flutter_datawedge.dart';
+import 'package:flutter_datawedge/logger.dart';
 import 'package:flutter_datawedge/src/pigeon.dart';
 
 /// Thrown if the profile we try to create already exists
@@ -36,42 +38,64 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
     String profileName, {
     bool autoActivate = true,
   }) async {
-    if (profileName.isEmpty) {
-      throw ProfileNameEmptyError();
+    assert(profileName.isNotEmpty, 'Profile name cannot be empty');
+
+    await _hostApi.createProfile(profileName);
+
+    if (autoActivate) {
+      final packageName = await _hostApi.getPackageIdentifer();
+
+      final config = ProfileConfig(
+        profileEnabled: true,
+        profileName: profileName,
+        configMode: ConfigMode.update,
+        appList: [
+          AppEntry(
+            packageName: packageName,
+            activityList: ['*'],
+          ),
+        ],
+        intentParamters: PluginIntentParamters(
+          intentOutputEnabled: true,
+          intentAction: '$packageName.SCAN_EVENT',
+          intentDelivery: IntentDelivery.broadcast,
+        ),
+      );
+
+      await setConfig(config);
     }
-    final res = await _hostApi.createProfile(profileName);
+  }
 
-    switch (res.responseType) {
-      case CreateProfileResponseType.profileAlreadyExists:
-        throw ProfileExistsError();
-      case CreateProfileResponseType.profileNameEmpty:
-        throw ProfileNameEmptyError();
-      case CreateProfileResponseType.profileCreated:
-        if (autoActivate) {
-          final packageName = await _hostApi.getPackageIdentifer();
+  /// Disables all decoders
+  Future<List<Decoder>> disableAllDecoders(String profileName) async {
+    return _setAllDecoders(false, profileName);
+  }
 
-          final config = ProfileConfig(
-            profileEnabled: true,
-            profileName: profileName,
-            configMode: ConfigMode.update,
-            appList: [
-              AppEntry(
-                packageName: packageName,
-                activityList: ['*'],
-              ),
-            ],
-            intentParamters: PluginIntentParamters(
-              intentOutputEnabled: true,
-              intentAction: '$packageName.SCAN_EVENT',
-              intentDelivery: IntentDelivery.broadcast,
-            ),
-          );
+  /// Get the apps package identifier
+  Future<String> getPackageIdentifer() {
+    return _hostApi.getPackageIdentifer();
+  }
 
-          await setConfig(config);
-        }
+  /// Enables all decoders
+  Future<List<Decoder>> enableAllDecoders(String profileName) async {
+    return _setAllDecoders(true, profileName);
+  }
 
-        break;
+  Future<List<Decoder>> _setAllDecoders(
+    bool enabled,
+    String profileName,
+  ) async {
+    final availableDecoders = <Decoder>[];
+    for (final decoder in Decoder.values) {
+      try {
+        await _hostApi.setDecoder(decoder, enabled, profileName);
+        availableDecoders.add(decoder);
+      } catch (e) {
+        logger.info('Decoder $decoder not available');
+      }
     }
+
+    return availableDecoders;
   }
 
   /// Update a profile config
@@ -93,33 +117,37 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   @override
   @protected
   void onProfileChange() {
-    print('Profile has changed');
+    logger.debug('Profile has changed');
   }
 
   @override
   @protected
   void onConfigUpdate() {
-    print('Data wedge notified of configuration change');
+    logger.debug('Data wedge notified of configuration change');
   }
 
   @override
   @protected
   void onScanResult(ScanEvent scanEvent) {
-    print('GOt a scan');
+    logger.debug('Scan result: $scanEvent');
     _scanEvents.add(scanEvent);
   }
 
   @override
   @protected
   void onScannerStatusChanged(StatusChangeEvent statusEvent) {
+    logger.debug('Scanner status changed: ${statusEvent.newState}');
     _statusChangeEvents.add(statusEvent);
   }
 
+  /// Register for notifications from DataWedge. This is required to receive
+  /// scan events and status change events
   Future<void> registerForNotifications() async {
     await _hostApi.registerForNotifications();
   }
 
-  Future<void> softScanTrigger(bool on) async {
+  /// Set the soft scan trigger
+  Future<void> softScanTrigger({required bool on}) async {
     await _hostApi.softScanTrigger(on);
   }
 
@@ -128,21 +156,25 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   /// Resumes the scanning from suspended state
 
   Future<void> resumePlugin() async {
+    logger.debug('Resuming plugin');
     final resCode = await _hostApi.resumePlugin();
   }
 
   /// Suspends scanning temporarily
   Future<void> suspendPlugin() async {
+    logger.debug('Suspending plugin');
     final resCode = await _hostApi.suspendPlugin();
   }
 
   /// Disables scanning
   Future<void> disablePlugin() async {
+    logger.debug('Disabling plugin');
     final resCode = await _hostApi.disablePlugin();
   }
 
   /// Enables scanning
   Future<void> enablePlugin() async {
+    logger.debug('Enabling plugin');
     final resCode = await _hostApi.enablePlugin();
   }
 }

@@ -2,22 +2,6 @@
 
 import 'package:pigeon/pigeon.dart';
 
-/// Result when creating a profile
-class CreateProfileResponse {
-  CreateProfileResponse({
-    required this.responseType,
-  });
-
-  CreateProfileResponseType responseType;
-}
-
-/// Result types when creating a profile
-enum CreateProfileResponseType {
-  profileAlreadyExists,
-  profileNameEmpty,
-  profileCreated,
-}
-
 /// Mode for profile creations
 enum ConfigMode {
   createIfNotExists,
@@ -122,6 +106,9 @@ enum IntentDelivery { startActivity, startService, broadcast }
 /// Used to configure the barcode plugin. Parameters can be found here
 /// https://techdocs.zebra.com/datawedge/13-0/guide/api/setconfig/
 class PluginBarcodeParamters {
+  /// Configure decoders
+  List<DecoderConfigItem?>? decoderConfig;
+
   // UPC Parameters below
 
   bool? dataBarToUpcEan;
@@ -436,7 +423,7 @@ abstract class DataWedgeFlutterApi {
 @HostApi()
 abstract class DataWedgeHostApi {
   @async
-  CreateProfileResponse createProfile(
+  void createProfile(
     String profileName,
   );
 
@@ -459,6 +446,9 @@ abstract class DataWedgeHostApi {
   String softScanTrigger(bool on);
 
   String getPackageIdentifer();
+
+  @async
+  void setDecoder(Decoder decoder, bool enabled, String profileName);
 
   @async
   void setProfileConfig(ProfileConfig config);
@@ -543,4 +533,65 @@ enum ScannerState {
   connected,
   disconnected,
   disabled,
+}
+
+enum Decoder {
+  australianPostal,
+  aztec,
+  canadianPostal,
+  chinese2of5,
+  codabar,
+  code11,
+  code32,
+  code39,
+  code93,
+  code128,
+  compositeAb,
+  compositeC,
+  datamatrix,
+  signature,
+  d2of5,
+  dotcode,
+  dutchPostal,
+  ean8,
+  ean13,
+  finnishPostal4s,
+  gridMatrix,
+  gs1Databar,
+  gs1DatabarLim,
+  gs1DatabarExp,
+  gs1Datamatrix,
+  gs1Qrcode,
+  hanxin,
+  i2of5,
+  japanesePostal,
+  korean3of5,
+  mailmark,
+  matrix2of5,
+  maxicode,
+  micrE13b,
+  micropdf,
+  microqr,
+  msi,
+  ocrA,
+  ocrB,
+  pdf417,
+  qrcode,
+  tlc39,
+  trioptic39,
+  ukPostal,
+  usCurrency,
+  usplanet,
+  usPostal,
+  uspostnet,
+  upca,
+  upce0,
+  upce1,
+  us4state,
+  us4stateFics,
+}
+
+class DecoderConfigItem {
+  Decoder? decoder;
+  bool? enabled;
 }

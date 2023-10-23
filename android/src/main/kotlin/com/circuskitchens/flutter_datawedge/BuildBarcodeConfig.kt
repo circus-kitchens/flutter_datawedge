@@ -526,8 +526,36 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString("configure_all_scanners", params.configureAllScanners.toString())
     }
 
+
+
+
+    if(params.decoderConfig != null){
+        buildDecoderConfig(bParams,params.decoderConfig)
+    }
+
     bConfig.putBundle("PARAM_LIST", bParams)
 
+
+
+
     return bConfig
+
+}
+
+
+
+
+fun buildDecoderConfig(bundle: Bundle, params: List<DecoderConfigItem?>) {
+
+    for(decoder in params){
+        if(decoder ==null){
+            continue
+        }
+        if(decoder.decoder != null && decoder.enabled != null){
+            intentBool(bundle, decoderToString[decoder.decoder]!!,decoder.enabled)
+        }
+
+    }
+
 
 }

@@ -17,6 +17,7 @@ dependencies:
   json_annotation: ^4.8.0
   strict_json: ^2.0.6
   freezed_result: ^1.0.3+1
+  mason_logger: ^0.2.8
 
 dev_dependencies:
   build_runner: ^2.3.3

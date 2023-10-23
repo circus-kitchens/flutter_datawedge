@@ -43,19 +43,6 @@ class FlutterError (
   val details: Any? = null
 ) : Throwable()
 
-/** Result types when creating a profile */
-enum class CreateProfileResponseType(val raw: Int) {
-  PROFILEALREADYEXISTS(0),
-  PROFILENAMEEMPTY(1),
-  PROFILECREATED(2);
-
-  companion object {
-    fun ofRaw(raw: Int): CreateProfileResponseType? {
-      return values().firstOrNull { it.raw == raw }
-    }
-  }
-}
-
 /** Mode for profile creations */
 enum class ConfigMode(val raw: Int) {
   CREATEIFNOTEXISTS(0),
@@ -582,26 +569,65 @@ enum class ScannerState(val raw: Int) {
   }
 }
 
-/**
- * Result when creating a profile
- *
- * Generated class from Pigeon that represents data sent in messages.
- */
-data class CreateProfileResponse (
-  val responseType: CreateProfileResponseType
+enum class Decoder(val raw: Int) {
+  AUSTRALIANPOSTAL(0),
+  AZTEC(1),
+  CANADIANPOSTAL(2),
+  CHINESE2OF5(3),
+  CODABAR(4),
+  CODE11(5),
+  CODE32(6),
+  CODE39(7),
+  CODE93(8),
+  CODE128(9),
+  COMPOSITEAB(10),
+  COMPOSITEC(11),
+  DATAMATRIX(12),
+  SIGNATURE(13),
+  D2OF5(14),
+  DOTCODE(15),
+  DUTCHPOSTAL(16),
+  EAN8(17),
+  EAN13(18),
+  FINNISHPOSTAL4S(19),
+  GRIDMATRIX(20),
+  GS1DATABAR(21),
+  GS1DATABARLIM(22),
+  GS1DATABAREXP(23),
+  GS1DATAMATRIX(24),
+  GS1QRCODE(25),
+  HANXIN(26),
+  I2OF5(27),
+  JAPANESEPOSTAL(28),
+  KOREAN3OF5(29),
+  MAILMARK(30),
+  MATRIX2OF5(31),
+  MAXICODE(32),
+  MICRE13B(33),
+  MICROPDF(34),
+  MICROQR(35),
+  MSI(36),
+  OCRA(37),
+  OCRB(38),
+  PDF417(39),
+  QRCODE(40),
+  TLC39(41),
+  TRIOPTIC39(42),
+  UKPOSTAL(43),
+  USCURRENCY(44),
+  USPLANET(45),
+  USPOSTAL(46),
+  USPOSTNET(47),
+  UPCA(48),
+  UPCE0(49),
+  UPCE1(50),
+  US4STATE(51),
+  US4STATEFICS(52);
 
-) {
   companion object {
-    @Suppress("UNCHECKED_CAST")
-    fun fromList(list: List<Any?>): CreateProfileResponse {
-      val responseType = CreateProfileResponseType.ofRaw(list[0] as Int)!!
-      return CreateProfileResponse(responseType)
+    fun ofRaw(raw: Int): Decoder? {
+      return values().firstOrNull { it.raw == raw }
     }
-  }
-  fun toList(): List<Any?> {
-    return listOf<Any?>(
-      responseType.raw,
-    )
   }
 }
 
@@ -671,6 +697,8 @@ data class PluginIntentParamters (
  * Generated class from Pigeon that represents data sent in messages.
  */
 data class PluginBarcodeParamters (
+  /** Configure decoders */
+  val decoderConfig: List<DecoderConfigItem?>? = null,
   val dataBarToUpcEan: Boolean? = null,
   val upcEnableMarginlessDecode: Boolean? = null,
   val upcEanSecurityLevel: Long? = null,
@@ -833,168 +861,170 @@ data class PluginBarcodeParamters (
   companion object {
     @Suppress("UNCHECKED_CAST")
     fun fromList(list: List<Any?>): PluginBarcodeParamters {
-      val dataBarToUpcEan = list[0] as Boolean?
-      val upcEnableMarginlessDecode = list[1] as Boolean?
-      val upcEanSecurityLevel = list[2].let { if (it is Int) it.toLong() else it as Long? }
-      val upcEanSupplemental2 = list[3] as Boolean?
-      val upcEanSupplemental5 = list[4] as Boolean?
-      val upcEanSupplementalMode: UpcSupplementalMode? = (list[5] as Int?)?.let {
+      val decoderConfig = list[0] as List<DecoderConfigItem?>?
+      val dataBarToUpcEan = list[1] as Boolean?
+      val upcEnableMarginlessDecode = list[2] as Boolean?
+      val upcEanSecurityLevel = list[3].let { if (it is Int) it.toLong() else it as Long? }
+      val upcEanSupplemental2 = list[4] as Boolean?
+      val upcEanSupplemental5 = list[5] as Boolean?
+      val upcEanSupplementalMode: UpcSupplementalMode? = (list[6] as Int?)?.let {
         UpcSupplementalMode.ofRaw(it)
       }
-      val upcEanRetryCount = list[6].let { if (it is Int) it.toLong() else it as Long? }
-      val upcEeanLinearDecode = list[7] as Boolean?
-      val upcEanBookland = list[8] as Boolean?
-      val upcEanCoupon = list[9] as Boolean?
-      val upcEanCouponReport: UpcEanCouponReport? = (list[10] as Int?)?.let {
+      val upcEanRetryCount = list[7].let { if (it is Int) it.toLong() else it as Long? }
+      val upcEeanLinearDecode = list[8] as Boolean?
+      val upcEanBookland = list[9] as Boolean?
+      val upcEanCoupon = list[10] as Boolean?
+      val upcEanCouponReport: UpcEanCouponReport? = (list[11] as Int?)?.let {
         UpcEanCouponReport.ofRaw(it)
       }
-      val upcEanZeroExtend = list[11] as Boolean?
-      val upceanBooklandFormat: UpcEanBooklandFormat? = (list[12] as Int?)?.let {
+      val upcEanZeroExtend = list[12] as Boolean?
+      val upceanBooklandFormat: UpcEanBooklandFormat? = (list[13] as Int?)?.let {
         UpcEanBooklandFormat.ofRaw(it)
       }
-      val scanningMode: ScanningMode? = (list[13] as Int?)?.let {
+      val scanningMode: ScanningMode? = (list[14] as Int?)?.let {
         ScanningMode.ofRaw(it)
       }
-      val docCaptureTemplate = list[14] as String?
-      val commonBarcodeDynamicQuantity = list[15].let { if (it is Int) it.toLong() else it as Long? }
-      val barcodeHighlightingEnabled = list[16] as Boolean?
-      val ruleName = list[17] as String?
-      val enableUdiGs1 = list[18] as Boolean?
-      val enableUdiHibcc = list[19] as Boolean?
-      val enableUdiIccbba = list[20] as Boolean?
-      val ocrOrientation: OcrOrientation? = (list[21] as Int?)?.let {
+      val docCaptureTemplate = list[15] as String?
+      val commonBarcodeDynamicQuantity = list[16].let { if (it is Int) it.toLong() else it as Long? }
+      val barcodeHighlightingEnabled = list[17] as Boolean?
+      val ruleName = list[18] as String?
+      val enableUdiGs1 = list[19] as Boolean?
+      val enableUdiHibcc = list[20] as Boolean?
+      val enableUdiIccbba = list[21] as Boolean?
+      val ocrOrientation: OcrOrientation? = (list[22] as Int?)?.let {
         OcrOrientation.ofRaw(it)
       }
-      val ocrLines = list[22].let { if (it is Int) it.toLong() else it as Long? }
-      val ocrMinChars = list[23].let { if (it is Int) it.toLong() else it as Long? }
-      val ocrMaxChars = list[24].let { if (it is Int) it.toLong() else it as Long? }
-      val ocrSubset = list[25] as String?
-      val ocrQuietZone = list[26].let { if (it is Int) it.toLong() else it as Long? }
-      val ocrTemplate = list[27] as String?
-      val ocrCheckDigitModulus = list[28].let { if (it is Int) it.toLong() else it as Long? }
-      val ocrCheckDigitMultiplier = list[29].let { if (it is Int) it.toLong() else it as Long? }
-      val ocrCheckDigitValidation = list[30].let { if (it is Int) it.toLong() else it as Long? }
-      val inverseOcr: InverseOcr? = (list[31] as Int?)?.let {
+      val ocrLines = list[23].let { if (it is Int) it.toLong() else it as Long? }
+      val ocrMinChars = list[24].let { if (it is Int) it.toLong() else it as Long? }
+      val ocrMaxChars = list[25].let { if (it is Int) it.toLong() else it as Long? }
+      val ocrSubset = list[26] as String?
+      val ocrQuietZone = list[27].let { if (it is Int) it.toLong() else it as Long? }
+      val ocrTemplate = list[28] as String?
+      val ocrCheckDigitModulus = list[29].let { if (it is Int) it.toLong() else it as Long? }
+      val ocrCheckDigitMultiplier = list[30].let { if (it is Int) it.toLong() else it as Long? }
+      val ocrCheckDigitValidation = list[31].let { if (it is Int) it.toLong() else it as Long? }
+      val inverseOcr: InverseOcr? = (list[32] as Int?)?.let {
         InverseOcr.ofRaw(it)
       }
-      val presentationModeSensitivity: PresentationModeSensitivity? = (list[32] as Int?)?.let {
+      val presentationModeSensitivity: PresentationModeSensitivity? = (list[33] as Int?)?.let {
         PresentationModeSensitivity.ofRaw(it)
       }
-      val enableHardwareTrigger = list[33] as Boolean?
-      val autoSwitchToDefaultOnEvent: SwitchOnEvent? = (list[34] as Int?)?.let {
+      val enableHardwareTrigger = list[34] as Boolean?
+      val autoSwitchToDefaultOnEvent: SwitchOnEvent? = (list[35] as Int?)?.let {
         SwitchOnEvent.ofRaw(it)
       }
-      val digimarcDecoding = list[35] as Boolean?
-      val multiBarcodeCount = list[36].let { if (it is Int) it.toLong() else it as Long? }
-      val enableInstantReporting = list[37] as Boolean?
-      val reportDecodedBarcodes = list[38] as Boolean?
-      val scannerTriggerResource: TriggerSource? = (list[39] as Int?)?.let {
+      val digimarcDecoding = list[36] as Boolean?
+      val multiBarcodeCount = list[37].let { if (it is Int) it.toLong() else it as Long? }
+      val enableInstantReporting = list[38] as Boolean?
+      val reportDecodedBarcodes = list[39] as Boolean?
+      val scannerTriggerResource: TriggerSource? = (list[40] as Int?)?.let {
         TriggerSource.ofRaw(it)
       }
-      val scannerInputEnabled = list[40] as Boolean?
-      val scannerSelection: ScannerIdentifer? = (list[41] as Int?)?.let {
+      val scannerInputEnabled = list[41] as Boolean?
+      val scannerSelection: ScannerIdentifer? = (list[42] as Int?)?.let {
         ScannerIdentifer.ofRaw(it)
       }
-      val configureAllScanners = list[42] as Boolean?
-      val scannerSelectionByIdentifier = list[43] as String?
-      val enableAimMode = list[44] as Boolean?
-      val beamTimer = list[45].let { if (it is Int) it.toLong() else it as Long? }
-      val enableAdaptiveScanning = list[46] as Boolean?
-      val beamWidth: BeamWidth? = (list[47] as Int?)?.let {
+      val configureAllScanners = list[43] as Boolean?
+      val scannerSelectionByIdentifier = list[44] as String?
+      val enableAimMode = list[45] as Boolean?
+      val beamTimer = list[46].let { if (it is Int) it.toLong() else it as Long? }
+      val enableAdaptiveScanning = list[47] as Boolean?
+      val beamWidth: BeamWidth? = (list[48] as Int?)?.let {
         BeamWidth.ofRaw(it)
       }
-      val powerMode: PowerMode? = (list[48] as Int?)?.let {
+      val powerMode: PowerMode? = (list[49] as Int?)?.let {
         PowerMode.ofRaw(it)
       }
-      val mpdMode: MpdMode? = (list[49] as Int?)?.let {
+      val mpdMode: MpdMode? = (list[50] as Int?)?.let {
         MpdMode.ofRaw(it)
       }
-      val readerMode: ReaderMode? = (list[50] as Int?)?.let {
+      val readerMode: ReaderMode? = (list[51] as Int?)?.let {
         ReaderMode.ofRaw(it)
       }
-      val linearSecurityLevel = list[51].let { if (it is Int) it.toLong() else it as Long? }
-      val picklist: PicklistMode? = (list[52] as Int?)?.let {
+      val linearSecurityLevel = list[52].let { if (it is Int) it.toLong() else it as Long? }
+      val picklist: PicklistMode? = (list[53] as Int?)?.let {
         PicklistMode.ofRaw(it)
       }
-      val aimType: AimType? = (list[53] as Int?)?.let {
+      val aimType: AimType? = (list[54] as Int?)?.let {
         AimType.ofRaw(it)
       }
-      val sceneDetectQualifier: SceneDetectQualifier? = (list[54] as Int?)?.let {
+      val sceneDetectQualifier: SceneDetectQualifier? = (list[55] as Int?)?.let {
         SceneDetectQualifier.ofRaw(it)
       }
-      val aimTimer = list[55].let { if (it is Int) it.toLong() else it as Long? }
-      val sameBarcodeTimeout = list[56].let { if (it is Int) it.toLong() else it as Long? }
-      val triggerWakeupScan = list[57] as Boolean?
-      val differentBarcodeTimeout = list[58].let { if (it is Int) it.toLong() else it as Long? }
-      val illuminationMode: IlluminationMode? = (list[59] as Int?)?.let {
+      val aimTimer = list[56].let { if (it is Int) it.toLong() else it as Long? }
+      val sameBarcodeTimeout = list[57].let { if (it is Int) it.toLong() else it as Long? }
+      val triggerWakeupScan = list[58] as Boolean?
+      val differentBarcodeTimeout = list[59].let { if (it is Int) it.toLong() else it as Long? }
+      val illuminationMode: IlluminationMode? = (list[60] as Int?)?.let {
         IlluminationMode.ofRaw(it)
       }
-      val illuminationBrightness = list[60].let { if (it is Int) it.toLong() else it as Long? }
-      val lcdMode: LcdMode? = (list[61] as Int?)?.let {
+      val illuminationBrightness = list[61].let { if (it is Int) it.toLong() else it as Long? }
+      val lcdMode: LcdMode? = (list[62] as Int?)?.let {
         LcdMode.ofRaw(it)
       }
-      val lowPowerTimeout = list[62].let { if (it is Int) it.toLong() else it as Long? }
-      val delayToLowPowerMode: DelayToLowPowerMode? = (list[63] as Int?)?.let {
+      val lowPowerTimeout = list[63].let { if (it is Int) it.toLong() else it as Long? }
+      val delayToLowPowerMode: DelayToLowPowerMode? = (list[64] as Int?)?.let {
         DelayToLowPowerMode.ofRaw(it)
       }
-      val inverse1dMode: Inverse1dMode? = (list[64] as Int?)?.let {
+      val inverse1dMode: Inverse1dMode? = (list[65] as Int?)?.let {
         Inverse1dMode.ofRaw(it)
       }
-      val viewFinderSize = list[65].let { if (it is Int) it.toLong() else it as Long? }
-      val viewFinderPosX = list[66].let { if (it is Int) it.toLong() else it as Long? }
-      val viewFinderPosY = list[67].let { if (it is Int) it.toLong() else it as Long? }
-      val marginlessEffortLevel1d: EffortLevel? = (list[68] as Int?)?.let {
+      val viewFinderSize = list[66].let { if (it is Int) it.toLong() else it as Long? }
+      val viewFinderPosX = list[67].let { if (it is Int) it.toLong() else it as Long? }
+      val viewFinderPosY = list[68].let { if (it is Int) it.toLong() else it as Long? }
+      val marginlessEffortLevel1d: EffortLevel? = (list[69] as Int?)?.let {
         EffortLevel.ofRaw(it)
       }
-      val poorQualityBcDecodeEffortLevel: EffortLevel? = (list[69] as Int?)?.let {
+      val poorQualityBcDecodeEffortLevel: EffortLevel? = (list[70] as Int?)?.let {
         EffortLevel.ofRaw(it)
       }
-      val charsetName: Charset? = (list[70] as Int?)?.let {
+      val charsetName: Charset? = (list[71] as Int?)?.let {
         Charset.ofRaw(it)
       }
-      val autoCharsetPrefferedOrder = list[71] as List<String?>?
-      val autoCharsetFallback: Charset? = (list[72] as Int?)?.let {
+      val autoCharsetPrefferedOrder = list[72] as List<String?>?
+      val autoCharsetFallback: Charset? = (list[73] as Int?)?.let {
         Charset.ofRaw(it)
       }
-      val viewFinderMode: ViewFinderMode? = (list[73] as Int?)?.let {
+      val viewFinderMode: ViewFinderMode? = (list[74] as Int?)?.let {
         ViewFinderMode.ofRaw(it)
       }
-      val codeIdType: CodeIdType? = (list[74] as Int?)?.let {
+      val codeIdType: CodeIdType? = (list[75] as Int?)?.let {
         CodeIdType.ofRaw(it)
       }
-      val volumeSliderType: VolumeSliderType? = (list[75] as Int?)?.let {
+      val volumeSliderType: VolumeSliderType? = (list[76] as Int?)?.let {
         VolumeSliderType.ofRaw(it)
       }
-      val decodeAudioFeedbackUri = list[76] as String?
-      val decodeHapticFeedback = list[77] as Boolean?
-      val btDisconnectOnExit = list[78] as Boolean?
-      val connectionIdleTime = list[79].let { if (it is Int) it.toLong() else it as Long? }
-      val establishConnectionTime = list[80].let { if (it is Int) it.toLong() else it as Long? }
-      val remoteScannerAudioFeedbackMode = list[81].let { if (it is Int) it.toLong() else it as Long? }
-      val remoteScannerLedFeedbackMode = list[82].let { if (it is Int) it.toLong() else it as Long? }
-      val displayBtAddressBarcode = list[83] as Boolean?
-      val goodDecodeLedTimer = list[84].let { if (it is Int) it.toLong() else it as Long? }
-      val decodingLedFeedback = list[85] as Boolean?
-      val decoderUsPlanetReportCheckDigit = list[86] as Boolean?
-      val decodeScreenNotification = list[87] as Boolean?
-      val decodeScreenTime = list[88].let { if (it is Int) it.toLong() else it as Long? }
-      val decodeScreenTranslucency = list[89].let { if (it is Int) it.toLong() else it as Long? }
-      val keepParingInfoAfterReboot = list[90] as Boolean?
-      val dpmIlluminationControl: DpmIlluminationControl? = (list[91] as Int?)?.let {
+      val decodeAudioFeedbackUri = list[77] as String?
+      val decodeHapticFeedback = list[78] as Boolean?
+      val btDisconnectOnExit = list[79] as Boolean?
+      val connectionIdleTime = list[80].let { if (it is Int) it.toLong() else it as Long? }
+      val establishConnectionTime = list[81].let { if (it is Int) it.toLong() else it as Long? }
+      val remoteScannerAudioFeedbackMode = list[82].let { if (it is Int) it.toLong() else it as Long? }
+      val remoteScannerLedFeedbackMode = list[83].let { if (it is Int) it.toLong() else it as Long? }
+      val displayBtAddressBarcode = list[84] as Boolean?
+      val goodDecodeLedTimer = list[85].let { if (it is Int) it.toLong() else it as Long? }
+      val decodingLedFeedback = list[86] as Boolean?
+      val decoderUsPlanetReportCheckDigit = list[87] as Boolean?
+      val decodeScreenNotification = list[88] as Boolean?
+      val decodeScreenTime = list[89].let { if (it is Int) it.toLong() else it as Long? }
+      val decodeScreenTranslucency = list[90].let { if (it is Int) it.toLong() else it as Long? }
+      val keepParingInfoAfterReboot = list[91] as Boolean?
+      val dpmIlluminationControl: DpmIlluminationControl? = (list[92] as Int?)?.let {
         DpmIlluminationControl.ofRaw(it)
       }
-      val dpmMode: DpmMode? = (list[92] as Int?)?.let {
+      val dpmMode: DpmMode? = (list[93] as Int?)?.let {
         DpmMode.ofRaw(it)
       }
-      val qrLaunchEnable = list[93] as Boolean?
-      val qrLaunchEnableQrDecoder = list[94] as Boolean?
-      val qrLaunchShowConfirmationDialog = list[95] as Boolean?
-      val noDecodeTime = list[96].let { if (it is Int) it.toLong() else it as Long? }
-      return PluginBarcodeParamters(dataBarToUpcEan, upcEnableMarginlessDecode, upcEanSecurityLevel, upcEanSupplemental2, upcEanSupplemental5, upcEanSupplementalMode, upcEanRetryCount, upcEeanLinearDecode, upcEanBookland, upcEanCoupon, upcEanCouponReport, upcEanZeroExtend, upceanBooklandFormat, scanningMode, docCaptureTemplate, commonBarcodeDynamicQuantity, barcodeHighlightingEnabled, ruleName, enableUdiGs1, enableUdiHibcc, enableUdiIccbba, ocrOrientation, ocrLines, ocrMinChars, ocrMaxChars, ocrSubset, ocrQuietZone, ocrTemplate, ocrCheckDigitModulus, ocrCheckDigitMultiplier, ocrCheckDigitValidation, inverseOcr, presentationModeSensitivity, enableHardwareTrigger, autoSwitchToDefaultOnEvent, digimarcDecoding, multiBarcodeCount, enableInstantReporting, reportDecodedBarcodes, scannerTriggerResource, scannerInputEnabled, scannerSelection, configureAllScanners, scannerSelectionByIdentifier, enableAimMode, beamTimer, enableAdaptiveScanning, beamWidth, powerMode, mpdMode, readerMode, linearSecurityLevel, picklist, aimType, sceneDetectQualifier, aimTimer, sameBarcodeTimeout, triggerWakeupScan, differentBarcodeTimeout, illuminationMode, illuminationBrightness, lcdMode, lowPowerTimeout, delayToLowPowerMode, inverse1dMode, viewFinderSize, viewFinderPosX, viewFinderPosY, marginlessEffortLevel1d, poorQualityBcDecodeEffortLevel, charsetName, autoCharsetPrefferedOrder, autoCharsetFallback, viewFinderMode, codeIdType, volumeSliderType, decodeAudioFeedbackUri, decodeHapticFeedback, btDisconnectOnExit, connectionIdleTime, establishConnectionTime, remoteScannerAudioFeedbackMode, remoteScannerLedFeedbackMode, displayBtAddressBarcode, goodDecodeLedTimer, decodingLedFeedback, decoderUsPlanetReportCheckDigit, decodeScreenNotification, decodeScreenTime, decodeScreenTranslucency, keepParingInfoAfterReboot, dpmIlluminationControl, dpmMode, qrLaunchEnable, qrLaunchEnableQrDecoder, qrLaunchShowConfirmationDialog, noDecodeTime)
+      val qrLaunchEnable = list[94] as Boolean?
+      val qrLaunchEnableQrDecoder = list[95] as Boolean?
+      val qrLaunchShowConfirmationDialog = list[96] as Boolean?
+      val noDecodeTime = list[97].let { if (it is Int) it.toLong() else it as Long? }
+      return PluginBarcodeParamters(decoderConfig, dataBarToUpcEan, upcEnableMarginlessDecode, upcEanSecurityLevel, upcEanSupplemental2, upcEanSupplemental5, upcEanSupplementalMode, upcEanRetryCount, upcEeanLinearDecode, upcEanBookland, upcEanCoupon, upcEanCouponReport, upcEanZeroExtend, upceanBooklandFormat, scanningMode, docCaptureTemplate, commonBarcodeDynamicQuantity, barcodeHighlightingEnabled, ruleName, enableUdiGs1, enableUdiHibcc, enableUdiIccbba, ocrOrientation, ocrLines, ocrMinChars, ocrMaxChars, ocrSubset, ocrQuietZone, ocrTemplate, ocrCheckDigitModulus, ocrCheckDigitMultiplier, ocrCheckDigitValidation, inverseOcr, presentationModeSensitivity, enableHardwareTrigger, autoSwitchToDefaultOnEvent, digimarcDecoding, multiBarcodeCount, enableInstantReporting, reportDecodedBarcodes, scannerTriggerResource, scannerInputEnabled, scannerSelection, configureAllScanners, scannerSelectionByIdentifier, enableAimMode, beamTimer, enableAdaptiveScanning, beamWidth, powerMode, mpdMode, readerMode, linearSecurityLevel, picklist, aimType, sceneDetectQualifier, aimTimer, sameBarcodeTimeout, triggerWakeupScan, differentBarcodeTimeout, illuminationMode, illuminationBrightness, lcdMode, lowPowerTimeout, delayToLowPowerMode, inverse1dMode, viewFinderSize, viewFinderPosX, viewFinderPosY, marginlessEffortLevel1d, poorQualityBcDecodeEffortLevel, charsetName, autoCharsetPrefferedOrder, autoCharsetFallback, viewFinderMode, codeIdType, volumeSliderType, decodeAudioFeedbackUri, decodeHapticFeedback, btDisconnectOnExit, connectionIdleTime, establishConnectionTime, remoteScannerAudioFeedbackMode, remoteScannerLedFeedbackMode, displayBtAddressBarcode, goodDecodeLedTimer, decodingLedFeedback, decoderUsPlanetReportCheckDigit, decodeScreenNotification, decodeScreenTime, decodeScreenTranslucency, keepParingInfoAfterReboot, dpmIlluminationControl, dpmMode, qrLaunchEnable, qrLaunchEnableQrDecoder, qrLaunchShowConfirmationDialog, noDecodeTime)
     }
   }
   fun toList(): List<Any?> {
     return listOf<Any?>(
+      decoderConfig,
       dataBarToUpcEan,
       upcEnableMarginlessDecode,
       upcEanSecurityLevel,
@@ -1184,6 +1214,30 @@ data class StatusChangeEvent (
   }
 }
 
+/** Generated class from Pigeon that represents data sent in messages. */
+data class DecoderConfigItem (
+  val decoder: Decoder? = null,
+  val enabled: Boolean? = null
+
+) {
+  companion object {
+    @Suppress("UNCHECKED_CAST")
+    fun fromList(list: List<Any?>): DecoderConfigItem {
+      val decoder: Decoder? = (list[0] as Int?)?.let {
+        Decoder.ofRaw(it)
+      }
+      val enabled = list[1] as Boolean?
+      return DecoderConfigItem(decoder, enabled)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf<Any?>(
+      decoder?.raw,
+      enabled,
+    )
+  }
+}
+
 @Suppress("UNCHECKED_CAST")
 private object DataWedgeFlutterApiCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
@@ -1261,7 +1315,7 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
       }
       129.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          CreateProfileResponse.fromList(it)
+          DecoderConfigItem.fromList(it)
         }
       }
       130.toByte() -> {
@@ -1288,7 +1342,7 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
         stream.write(128)
         writeValue(stream, value.toList())
       }
-      is CreateProfileResponse -> {
+      is DecoderConfigItem -> {
         stream.write(129)
         writeValue(stream, value.toList())
       }
@@ -1311,7 +1365,7 @@ private object DataWedgeHostApiCodec : StandardMessageCodec() {
 
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
 interface DataWedgeHostApi {
-  fun createProfile(profileName: String, callback: (Result<CreateProfileResponse>) -> Unit)
+  fun createProfile(profileName: String, callback: (Result<Unit>) -> Unit)
   fun registerForNotifications()
   fun unregisterForNotifications()
   fun suspendPlugin(callback: (Result<String>) -> Unit)
@@ -1320,6 +1374,7 @@ interface DataWedgeHostApi {
   fun disablePlugin(callback: (Result<String>) -> Unit)
   fun softScanTrigger(on: Boolean, callback: (Result<String>) -> Unit)
   fun getPackageIdentifer(): String
+  fun setDecoder(decoder: Decoder, enabled: Boolean, profileName: String, callback: (Result<Unit>) -> Unit)
   fun setProfileConfig(config: ProfileConfig, callback: (Result<Unit>) -> Unit)
 
   companion object {
@@ -1336,13 +1391,12 @@ interface DataWedgeHostApi {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val profileNameArg = args[0] as String
-            api.createProfile(profileNameArg) { result: Result<CreateProfileResponse> ->
+            api.createProfile(profileNameArg) { result: Result<Unit> ->
               val error = result.exceptionOrNull()
               if (error != null) {
                 reply.reply(wrapError(error))
               } else {
-                val data = result.getOrNull()
-                reply.reply(wrapResult(data))
+                reply.reply(wrapResult(null))
               }
             }
           }
@@ -1487,6 +1541,27 @@ interface DataWedgeHostApi {
               wrapped = wrapError(exception)
             }
             reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.setDecoder", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val decoderArg = Decoder.ofRaw(args[0] as Int)!!
+            val enabledArg = args[1] as Boolean
+            val profileNameArg = args[2] as String
+            api.setDecoder(decoderArg, enabledArg, profileNameArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(wrapError(error))
+              } else {
+                reply.reply(wrapResult(null))
+              }
+            }
           }
         } else {
           channel.setMessageHandler(null)
