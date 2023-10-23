@@ -8,13 +8,6 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;
 import 'package:flutter/services.dart';
 
-/// Result types when creating a profile
-enum CreateProfileResponseType {
-  profileAlreadyExists,
-  profileNameEmpty,
-  profileCreated,
-}
-
 /// Mode for profile creations
 enum ConfigMode {
   createIfNotExists,
@@ -331,26 +324,60 @@ enum ScannerState {
   disabled,
 }
 
-/// Result when creating a profile
-class CreateProfileResponse {
-  CreateProfileResponse({
-    required this.responseType,
-  });
-
-  CreateProfileResponseType responseType;
-
-  Object encode() {
-    return <Object?>[
-      responseType.index,
-    ];
-  }
-
-  static CreateProfileResponse decode(Object result) {
-    result as List<Object?>;
-    return CreateProfileResponse(
-      responseType: CreateProfileResponseType.values[result[0]! as int],
-    );
-  }
+enum Decoder {
+  australianPostal,
+  aztec,
+  canadianPostal,
+  chinese2of5,
+  codabar,
+  code11,
+  code32,
+  code39,
+  code93,
+  code128,
+  compositeAb,
+  compositeC,
+  datamatrix,
+  signature,
+  d2of5,
+  dotcode,
+  dutchPostal,
+  ean8,
+  ean13,
+  finnishPostal4s,
+  gridMatrix,
+  gs1Databar,
+  gs1DatabarLim,
+  gs1DatabarExp,
+  gs1Datamatrix,
+  gs1Qrcode,
+  hanxin,
+  i2of5,
+  japanesePostal,
+  korean3of5,
+  mailmark,
+  matrix2of5,
+  maxicode,
+  micrE13b,
+  micropdf,
+  microqr,
+  msi,
+  ocrA,
+  ocrB,
+  pdf417,
+  qrcode,
+  tlc39,
+  trioptic39,
+  ukPostal,
+  usCurrency,
+  usplanet,
+  usPostal,
+  uspostnet,
+  upca,
+  upce0,
+  upce1,
+  us4state,
+  us4stateFics,
 }
 
 /// An application that will trigger the profile
@@ -427,6 +454,7 @@ class PluginIntentParamters {
 /// https://techdocs.zebra.com/datawedge/13-0/guide/api/setconfig/
 class PluginBarcodeParamters {
   PluginBarcodeParamters({
+    this.decoderConfig,
     this.dataBarToUpcEan,
     this.upcEnableMarginlessDecode,
     this.upcEanSecurityLevel,
@@ -525,6 +553,9 @@ class PluginBarcodeParamters {
     this.qrLaunchShowConfirmationDialog,
     this.noDecodeTime,
   });
+
+  /// Configure decoders
+  List<DecoderConfigItem?>? decoderConfig;
 
   bool? dataBarToUpcEan;
 
@@ -760,6 +791,7 @@ class PluginBarcodeParamters {
 
   Object encode() {
     return <Object?>[
+      decoderConfig,
       dataBarToUpcEan,
       upcEnableMarginlessDecode,
       upcEanSecurityLevel,
@@ -863,163 +895,164 @@ class PluginBarcodeParamters {
   static PluginBarcodeParamters decode(Object result) {
     result as List<Object?>;
     return PluginBarcodeParamters(
-      dataBarToUpcEan: result[0] as bool?,
-      upcEnableMarginlessDecode: result[1] as bool?,
-      upcEanSecurityLevel: result[2] as int?,
-      upcEanSupplemental2: result[3] as bool?,
-      upcEanSupplemental5: result[4] as bool?,
-      upcEanSupplementalMode: result[5] != null
-          ? UpcSupplementalMode.values[result[5]! as int]
+      decoderConfig: (result[0] as List<Object?>?)?.cast<DecoderConfigItem?>(),
+      dataBarToUpcEan: result[1] as bool?,
+      upcEnableMarginlessDecode: result[2] as bool?,
+      upcEanSecurityLevel: result[3] as int?,
+      upcEanSupplemental2: result[4] as bool?,
+      upcEanSupplemental5: result[5] as bool?,
+      upcEanSupplementalMode: result[6] != null
+          ? UpcSupplementalMode.values[result[6]! as int]
           : null,
-      upcEanRetryCount: result[6] as int?,
-      upcEeanLinearDecode: result[7] as bool?,
-      upcEanBookland: result[8] as bool?,
-      upcEanCoupon: result[9] as bool?,
-      upcEanCouponReport: result[10] != null
-          ? UpcEanCouponReport.values[result[10]! as int]
+      upcEanRetryCount: result[7] as int?,
+      upcEeanLinearDecode: result[8] as bool?,
+      upcEanBookland: result[9] as bool?,
+      upcEanCoupon: result[10] as bool?,
+      upcEanCouponReport: result[11] != null
+          ? UpcEanCouponReport.values[result[11]! as int]
           : null,
-      upcEanZeroExtend: result[11] as bool?,
-      upceanBooklandFormat: result[12] != null
-          ? UpcEanBooklandFormat.values[result[12]! as int]
+      upcEanZeroExtend: result[12] as bool?,
+      upceanBooklandFormat: result[13] != null
+          ? UpcEanBooklandFormat.values[result[13]! as int]
           : null,
-      scanningMode: result[13] != null
-          ? ScanningMode.values[result[13]! as int]
+      scanningMode: result[14] != null
+          ? ScanningMode.values[result[14]! as int]
           : null,
-      docCaptureTemplate: result[14] as String?,
-      commonBarcodeDynamicQuantity: result[15] as int?,
-      barcodeHighlightingEnabled: result[16] as bool?,
-      ruleName: result[17] as String?,
-      enableUdiGs1: result[18] as bool?,
-      enableUdiHibcc: result[19] as bool?,
-      enableUdiIccbba: result[20] as bool?,
-      ocrOrientation: result[21] != null
-          ? OcrOrientation.values[result[21]! as int]
+      docCaptureTemplate: result[15] as String?,
+      commonBarcodeDynamicQuantity: result[16] as int?,
+      barcodeHighlightingEnabled: result[17] as bool?,
+      ruleName: result[18] as String?,
+      enableUdiGs1: result[19] as bool?,
+      enableUdiHibcc: result[20] as bool?,
+      enableUdiIccbba: result[21] as bool?,
+      ocrOrientation: result[22] != null
+          ? OcrOrientation.values[result[22]! as int]
           : null,
-      ocrLines: result[22] as int?,
-      ocrMinChars: result[23] as int?,
-      ocrMaxChars: result[24] as int?,
-      ocrSubset: result[25] as String?,
-      ocrQuietZone: result[26] as int?,
-      ocrTemplate: result[27] as String?,
-      ocrCheckDigitModulus: result[28] as int?,
-      ocrCheckDigitMultiplier: result[29] as int?,
-      ocrCheckDigitValidation: result[30] as int?,
-      inverseOcr: result[31] != null
-          ? InverseOcr.values[result[31]! as int]
+      ocrLines: result[23] as int?,
+      ocrMinChars: result[24] as int?,
+      ocrMaxChars: result[25] as int?,
+      ocrSubset: result[26] as String?,
+      ocrQuietZone: result[27] as int?,
+      ocrTemplate: result[28] as String?,
+      ocrCheckDigitModulus: result[29] as int?,
+      ocrCheckDigitMultiplier: result[30] as int?,
+      ocrCheckDigitValidation: result[31] as int?,
+      inverseOcr: result[32] != null
+          ? InverseOcr.values[result[32]! as int]
           : null,
-      presentationModeSensitivity: result[32] != null
-          ? PresentationModeSensitivity.values[result[32]! as int]
+      presentationModeSensitivity: result[33] != null
+          ? PresentationModeSensitivity.values[result[33]! as int]
           : null,
-      enableHardwareTrigger: result[33] as bool?,
-      autoSwitchToDefaultOnEvent: result[34] != null
-          ? SwitchOnEvent.values[result[34]! as int]
+      enableHardwareTrigger: result[34] as bool?,
+      autoSwitchToDefaultOnEvent: result[35] != null
+          ? SwitchOnEvent.values[result[35]! as int]
           : null,
-      digimarcDecoding: result[35] as bool?,
-      multiBarcodeCount: result[36] as int?,
-      enableInstantReporting: result[37] as bool?,
-      reportDecodedBarcodes: result[38] as bool?,
-      scannerTriggerResource: result[39] != null
-          ? TriggerSource.values[result[39]! as int]
+      digimarcDecoding: result[36] as bool?,
+      multiBarcodeCount: result[37] as int?,
+      enableInstantReporting: result[38] as bool?,
+      reportDecodedBarcodes: result[39] as bool?,
+      scannerTriggerResource: result[40] != null
+          ? TriggerSource.values[result[40]! as int]
           : null,
-      scannerInputEnabled: result[40] as bool?,
-      scannerSelection: result[41] != null
-          ? ScannerIdentifer.values[result[41]! as int]
+      scannerInputEnabled: result[41] as bool?,
+      scannerSelection: result[42] != null
+          ? ScannerIdentifer.values[result[42]! as int]
           : null,
-      configureAllScanners: result[42] as bool?,
-      scannerSelectionByIdentifier: result[43] as String?,
-      enableAimMode: result[44] as bool?,
-      beamTimer: result[45] as int?,
-      enableAdaptiveScanning: result[46] as bool?,
-      beamWidth: result[47] != null
-          ? BeamWidth.values[result[47]! as int]
+      configureAllScanners: result[43] as bool?,
+      scannerSelectionByIdentifier: result[44] as String?,
+      enableAimMode: result[45] as bool?,
+      beamTimer: result[46] as int?,
+      enableAdaptiveScanning: result[47] as bool?,
+      beamWidth: result[48] != null
+          ? BeamWidth.values[result[48]! as int]
           : null,
-      powerMode: result[48] != null
-          ? PowerMode.values[result[48]! as int]
+      powerMode: result[49] != null
+          ? PowerMode.values[result[49]! as int]
           : null,
-      mpdMode: result[49] != null
-          ? MpdMode.values[result[49]! as int]
+      mpdMode: result[50] != null
+          ? MpdMode.values[result[50]! as int]
           : null,
-      readerMode: result[50] != null
-          ? ReaderMode.values[result[50]! as int]
+      readerMode: result[51] != null
+          ? ReaderMode.values[result[51]! as int]
           : null,
-      linearSecurityLevel: result[51] as int?,
-      picklist: result[52] != null
-          ? PicklistMode.values[result[52]! as int]
+      linearSecurityLevel: result[52] as int?,
+      picklist: result[53] != null
+          ? PicklistMode.values[result[53]! as int]
           : null,
-      aimType: result[53] != null
-          ? AimType.values[result[53]! as int]
+      aimType: result[54] != null
+          ? AimType.values[result[54]! as int]
           : null,
-      sceneDetectQualifier: result[54] != null
-          ? SceneDetectQualifier.values[result[54]! as int]
+      sceneDetectQualifier: result[55] != null
+          ? SceneDetectQualifier.values[result[55]! as int]
           : null,
-      aimTimer: result[55] as int?,
-      sameBarcodeTimeout: result[56] as int?,
-      triggerWakeupScan: result[57] as bool?,
-      differentBarcodeTimeout: result[58] as int?,
-      illuminationMode: result[59] != null
-          ? IlluminationMode.values[result[59]! as int]
+      aimTimer: result[56] as int?,
+      sameBarcodeTimeout: result[57] as int?,
+      triggerWakeupScan: result[58] as bool?,
+      differentBarcodeTimeout: result[59] as int?,
+      illuminationMode: result[60] != null
+          ? IlluminationMode.values[result[60]! as int]
           : null,
-      illuminationBrightness: result[60] as int?,
-      lcdMode: result[61] != null
-          ? LcdMode.values[result[61]! as int]
+      illuminationBrightness: result[61] as int?,
+      lcdMode: result[62] != null
+          ? LcdMode.values[result[62]! as int]
           : null,
-      lowPowerTimeout: result[62] as int?,
-      delayToLowPowerMode: result[63] != null
-          ? DelayToLowPowerMode.values[result[63]! as int]
+      lowPowerTimeout: result[63] as int?,
+      delayToLowPowerMode: result[64] != null
+          ? DelayToLowPowerMode.values[result[64]! as int]
           : null,
-      inverse1dMode: result[64] != null
-          ? Inverse1dMode.values[result[64]! as int]
+      inverse1dMode: result[65] != null
+          ? Inverse1dMode.values[result[65]! as int]
           : null,
-      viewFinderSize: result[65] as int?,
-      viewFinderPosX: result[66] as int?,
-      viewFinderPosY: result[67] as int?,
-      marginlessEffortLevel1d: result[68] != null
-          ? EffortLevel.values[result[68]! as int]
-          : null,
-      poorQualityBcDecodeEffortLevel: result[69] != null
+      viewFinderSize: result[66] as int?,
+      viewFinderPosX: result[67] as int?,
+      viewFinderPosY: result[68] as int?,
+      marginlessEffortLevel1d: result[69] != null
           ? EffortLevel.values[result[69]! as int]
           : null,
-      charsetName: result[70] != null
-          ? Charset.values[result[70]! as int]
+      poorQualityBcDecodeEffortLevel: result[70] != null
+          ? EffortLevel.values[result[70]! as int]
           : null,
-      autoCharsetPrefferedOrder: (result[71] as List<Object?>?)?.cast<String?>(),
-      autoCharsetFallback: result[72] != null
-          ? Charset.values[result[72]! as int]
+      charsetName: result[71] != null
+          ? Charset.values[result[71]! as int]
           : null,
-      viewFinderMode: result[73] != null
-          ? ViewFinderMode.values[result[73]! as int]
+      autoCharsetPrefferedOrder: (result[72] as List<Object?>?)?.cast<String?>(),
+      autoCharsetFallback: result[73] != null
+          ? Charset.values[result[73]! as int]
           : null,
-      codeIdType: result[74] != null
-          ? CodeIdType.values[result[74]! as int]
+      viewFinderMode: result[74] != null
+          ? ViewFinderMode.values[result[74]! as int]
           : null,
-      volumeSliderType: result[75] != null
-          ? VolumeSliderType.values[result[75]! as int]
+      codeIdType: result[75] != null
+          ? CodeIdType.values[result[75]! as int]
           : null,
-      decodeAudioFeedbackUri: result[76] as String?,
-      decodeHapticFeedback: result[77] as bool?,
-      btDisconnectOnExit: result[78] as bool?,
-      connectionIdleTime: result[79] as int?,
-      establishConnectionTime: result[80] as int?,
-      remoteScannerAudioFeedbackMode: result[81] as int?,
-      remoteScannerLedFeedbackMode: result[82] as int?,
-      displayBtAddressBarcode: result[83] as bool?,
-      goodDecodeLedTimer: result[84] as int?,
-      decodingLedFeedback: result[85] as bool?,
-      decoderUsPlanetReportCheckDigit: result[86] as bool?,
-      decodeScreenNotification: result[87] as bool?,
-      decodeScreenTime: result[88] as int?,
-      decodeScreenTranslucency: result[89] as int?,
-      keepParingInfoAfterReboot: result[90] as bool?,
-      dpmIlluminationControl: result[91] != null
-          ? DpmIlluminationControl.values[result[91]! as int]
+      volumeSliderType: result[76] != null
+          ? VolumeSliderType.values[result[76]! as int]
           : null,
-      dpmMode: result[92] != null
-          ? DpmMode.values[result[92]! as int]
+      decodeAudioFeedbackUri: result[77] as String?,
+      decodeHapticFeedback: result[78] as bool?,
+      btDisconnectOnExit: result[79] as bool?,
+      connectionIdleTime: result[80] as int?,
+      establishConnectionTime: result[81] as int?,
+      remoteScannerAudioFeedbackMode: result[82] as int?,
+      remoteScannerLedFeedbackMode: result[83] as int?,
+      displayBtAddressBarcode: result[84] as bool?,
+      goodDecodeLedTimer: result[85] as int?,
+      decodingLedFeedback: result[86] as bool?,
+      decoderUsPlanetReportCheckDigit: result[87] as bool?,
+      decodeScreenNotification: result[88] as bool?,
+      decodeScreenTime: result[89] as int?,
+      decodeScreenTranslucency: result[90] as int?,
+      keepParingInfoAfterReboot: result[91] as bool?,
+      dpmIlluminationControl: result[92] != null
+          ? DpmIlluminationControl.values[result[92]! as int]
           : null,
-      qrLaunchEnable: result[93] as bool?,
-      qrLaunchEnableQrDecoder: result[94] as bool?,
-      qrLaunchShowConfirmationDialog: result[95] as bool?,
-      noDecodeTime: result[96] as int?,
+      dpmMode: result[93] != null
+          ? DpmMode.values[result[93]! as int]
+          : null,
+      qrLaunchEnable: result[94] as bool?,
+      qrLaunchEnableQrDecoder: result[95] as bool?,
+      qrLaunchShowConfirmationDialog: result[96] as bool?,
+      noDecodeTime: result[97] as int?,
     );
   }
 }
@@ -1132,6 +1165,34 @@ class StatusChangeEvent {
     result as List<Object?>;
     return StatusChangeEvent(
       newState: ScannerState.values[result[0]! as int],
+    );
+  }
+}
+
+class DecoderConfigItem {
+  DecoderConfigItem({
+    this.decoder,
+    this.enabled,
+  });
+
+  Decoder? decoder;
+
+  bool? enabled;
+
+  Object encode() {
+    return <Object?>[
+      decoder?.index,
+      enabled,
+    ];
+  }
+
+  static DecoderConfigItem decode(Object result) {
+    result as List<Object?>;
+    return DecoderConfigItem(
+      decoder: result[0] != null
+          ? Decoder.values[result[0]! as int]
+          : null,
+      enabled: result[1] as bool?,
     );
   }
 }
@@ -1252,7 +1313,7 @@ class _DataWedgeHostApiCodec extends StandardMessageCodec {
     if (value is AppEntry) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
-    } else if (value is CreateProfileResponse) {
+    } else if (value is DecoderConfigItem) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
     } else if (value is PluginBarcodeParamters) {
@@ -1275,7 +1336,7 @@ class _DataWedgeHostApiCodec extends StandardMessageCodec {
       case 128: 
         return AppEntry.decode(readValue(buffer)!);
       case 129: 
-        return CreateProfileResponse.decode(readValue(buffer)!);
+        return DecoderConfigItem.decode(readValue(buffer)!);
       case 130: 
         return PluginBarcodeParamters.decode(readValue(buffer)!);
       case 131: 
@@ -1298,7 +1359,7 @@ class DataWedgeHostApi {
 
   static const MessageCodec<Object?> codec = _DataWedgeHostApiCodec();
 
-  Future<CreateProfileResponse> createProfile(String arg_profileName) async {
+  Future<void> createProfile(String arg_profileName) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.createProfile', codec,
         binaryMessenger: _binaryMessenger);
@@ -1315,13 +1376,8 @@ class DataWedgeHostApi {
         message: replyList[1] as String?,
         details: replyList[2],
       );
-    } else if (replyList[0] == null) {
-      throw PlatformException(
-        code: 'null-error',
-        message: 'Host platform returned null value for non-null return value.',
-      );
     } else {
-      return (replyList[0] as CreateProfileResponse?)!;
+      return;
     }
   }
 
@@ -1528,6 +1584,28 @@ class DataWedgeHostApi {
       );
     } else {
       return (replyList[0] as String?)!;
+    }
+  }
+
+  Future<void> setDecoder(Decoder arg_decoder, bool arg_enabled, String arg_profileName) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.setDecoder', codec,
+        binaryMessenger: _binaryMessenger);
+    final List<Object?>? replyList =
+        await channel.send(<Object?>[arg_decoder.index, arg_enabled, arg_profileName]) as List<Object?>?;
+    if (replyList == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyList.length > 1) {
+      throw PlatformException(
+        code: replyList[0]! as String,
+        message: replyList[1] as String?,
+        details: replyList[2],
+      );
+    } else {
+      return;
     }
   }
 

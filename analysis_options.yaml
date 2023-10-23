@@ -14,5 +14,4 @@ analyzer:
 
 linter:
   rules:
-    - cancel_subscriptions
-    - package_api_docs
+    public_member_api_docs: false

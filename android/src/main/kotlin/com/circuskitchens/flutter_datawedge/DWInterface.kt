@@ -21,7 +21,6 @@ enum class DWCommand(val cmd: String) {
 }
 
 
-
 enum class DWEvent(val value: String) {
     ResultAction("com.symbol.datawedge.api.RESULT_ACTION"),
     Action("com.symbol.datawedge.api.ACTION"),
@@ -29,7 +28,7 @@ enum class DWEvent(val value: String) {
 
 }
 
-enum class DWKeys(val value: String ){
+enum class DWKeys(val value: String) {
 
 
     ApplicationName("com.symbol.datawedge.api.APPLICATION_NAME"),
@@ -144,7 +143,6 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
             (DWEvent.ResultAction.value) -> {
 
 
-
                 val result = intent.getStringExtra(DWInterface.EXTRA_RESULT) ?: ""
                 val command = intent.getStringExtra(DWInterface.EXTRA_COMMAND) ?: ""
                 val commandIdentifier =
@@ -219,12 +217,11 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
                 val notification = intent.getBundleExtra(EXTRA_RESULT_NOTIFICATION) ?: return
 
 
-
                 val keys = notification.keySet()
 
                 val notificationType = notification.getString(EXTRA_KEY_NOTIFICATION_TYPE) ?: return
 
-                Log.d("Notification",notificationType)
+                Log.d("Notification", notificationType)
 
                 when (notificationType) {
                     EXTRA_KEY_VALUE_SCANNER_STATUS -> {
@@ -334,7 +331,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
     override fun createProfile(
         profileName: String,
-        callback: (kotlin.Result<CreateProfileResponse>) -> Unit
+        callback: (kotlin.Result<Unit>) -> Unit
     ) {
         sendCommand(DWCommand.CreateProfile, profileName) { result ->
             if (result.isFailure) {
@@ -342,9 +339,8 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
             } else {
                 val cmd = result.getOrThrow()
                 when (cmd.result) {
-                    "PROFILE_ALREADY_EXIST" -> callback(Result.failure(Error(cmd.result)))
-                    "PROFILE_NAME_EMPTY" -> callback(Result.failure(Error(cmd.result)))
-                    else -> callback(Result.success(CreateProfileResponse(responseType = CreateProfileResponseType.PROFILECREATED)))
+                    "SUCCESS" -> callback(Result.success(Unit))
+                    else -> callback(Result.failure(Error(cmd.result)))
                 }
             }
         }
@@ -420,7 +416,6 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
     }
 
 
-
     override fun getPackageIdentifer(): String {
         return context.applicationInfo.packageName
     }
@@ -429,12 +424,12 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
         val params = Bundle()
 
-        params.putString(DWKeys.ApplicationName.value,getPackageIdentifer())
-        params.putString(DWKeys.NotificationType.value,DWKeys.ScannerStatus.value)
+        params.putString(DWKeys.ApplicationName.value, getPackageIdentifer())
+        params.putString(DWKeys.NotificationType.value, DWKeys.ScannerStatus.value)
 
 
-        sendCommandBundle(DWCommand.RegisterForNotification,params){ res ->
-    // This command never returns
+        sendCommandBundle(DWCommand.RegisterForNotification, params) { res ->
+            // This command never returns
         }
     }
 
@@ -442,7 +437,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
 
         var cmdValue = DWKeys.SoftScanTriggerStart.value
 
-        if(!on)
+        if (!on)
             cmdValue = DWKeys.SoftScanTriggerStop.value
 
 
@@ -462,8 +457,6 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         }
 
 
-
-
     }
 
     override fun unregisterForNotifications(): Unit {
@@ -471,6 +464,55 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
     }
 
 
+    // Tries to call set config with each of the known decoders set to false.
+    override fun setDecoder(
+        decoder: Decoder,
+        enabled: Boolean,
+        profileName: String,
+        callback: (Result<Unit>) -> Unit
+    ): Unit {
+
+
+        val configBundle = Bundle()
+
+        // Base config
+        configBundle.putString("PROFILE_NAME", profileName)
+        configBundle.putString("CONFIG_MODE", "UPDATE")
+
+        val bConfig = Bundle()
+        val bParams = Bundle()
+
+        intentBool(bParams, decoderToString[decoder]!!, enabled)
+
+        bParams.putString("scanner_selection_by_identifier","AUTO")
+
+        bConfig.putString("PLUGIN_NAME", "BARCODE")
+        bConfig.putBundle("PARAM_LIST", bParams)
+
+        val plugins = arrayListOf<Bundle>(
+            bConfig
+        )
+
+        configBundle.putParcelableArrayList("PLUGIN_CONFIG", plugins)
+
+        sendCommand(DWCommand.SetConfig, configBundle) { res ->
+            if (res.isFailure) {
+                callback(Result.failure(res.exceptionOrNull()!!))
+
+            } else {
+                val cmd = res.getOrThrow()
+
+                when (cmd.result) {
+                    "SUCCESS" -> callback(Result.success(Unit))
+                    else -> callback(Result.failure(Error(cmd.result)))
+                }
+
+
+            }
+        }
+
+
+    }
 
 
     override fun setProfileConfig(config: ProfileConfig, callback: (kotlin.Result<Unit>) -> Unit) {

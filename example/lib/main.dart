@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
@@ -25,7 +24,7 @@ Future<void> dwTest() async {
 
   print("Creating profile...");
   try {
-    await dataWedge.createProfile("TestFlutter");
+    await dataWedge.createProfile("TestFlutter", autoActivate: true);
   } catch (e) {
     print("Creating failed...");
   }
@@ -35,7 +34,6 @@ Future<void> dwTest() async {
       profileEnabled: true,
       configMode: ConfigMode.update,
       barcodeParamters: PluginBarcodeParamters(
-          //configureAllScanners: true,
           scannerSelection: ScannerIdentifer.auto,
           enableHardwareTrigger: true,
           enableAimMode: false,
@@ -43,6 +41,8 @@ Future<void> dwTest() async {
           dataBarToUpcEan: true));
 
   await dataWedge.setConfig(config);
+
+  await dataWedge.enableAllDecoders("TestFlutter");
 }
 
 class MyApp extends StatefulWidget {
@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     setupListeners();
+
     super.initState();
   }
 
@@ -126,13 +127,13 @@ class _MyAppState extends State<MyApp> {
             children: [
               GestureDetector(
                 onTapDown: (details) {
-                  FlutterDataWedge.instance.softScanTrigger(true);
+                  FlutterDataWedge.instance.softScanTrigger(on: true);
                 },
                 onTapUp: (details) {
-                  FlutterDataWedge.instance.softScanTrigger(false);
+                  FlutterDataWedge.instance.softScanTrigger(on: false);
                 },
                 onTapCancel: () {
-                  FlutterDataWedge.instance.softScanTrigger(false);
+                  FlutterDataWedge.instance.softScanTrigger(on: false);
                 },
                 child: ElevatedButton(
                   child: Text("Trigger"),
