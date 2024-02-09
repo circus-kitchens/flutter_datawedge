@@ -78,6 +78,34 @@ class ButtonTabView extends StatelessWidget {
               ),
             ],
           ),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () => fdw.updateProfile(
+                    profileName: 'Example app profile',
+                    pluginName: 'KEYSTROKE',
+                    config: {
+                      'keystroke_output_enabled': true,
+                    },
+                  ),
+                  child: Text('Enable KeyStroke Events'),
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () => fdw.updateProfile(
+                    profileName: 'Example app profile',
+                    pluginName: 'KEYSTROKE',
+                    config: {
+                      'keystroke_output_enabled': false,
+                    },
+                  ),
+                  child: Text('Disable KeyStroke Events'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
