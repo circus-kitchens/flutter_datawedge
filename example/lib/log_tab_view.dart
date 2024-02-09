@@ -120,6 +120,8 @@ extension ActionResultLog on ActionResult {
         result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
       DatawedgeApiTargets.getProfiles => '${resultInfo!['profiles']}',
       DatawedgeApiTargets.getActiveProfile => '${resultInfo!['activeProfile']}',
+      DatawedgeApiTargets.setConfig =>
+        result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
     };
   }
 }

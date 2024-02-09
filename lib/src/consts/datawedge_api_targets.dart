@@ -6,6 +6,7 @@ enum DatawedgeApiTargets with ValueEnum {
   softScanTrigger('com.symbol.datawedge.api.SOFT_SCAN_TRIGGER'),
   scannerPlugin('com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN'),
   getProfiles('com.symbol.datawedge.api.GET_PROFILES_LIST'),
+  setConfig('com.symbol.datawedge.api.SET_CONFIG'),
   getActiveProfile('com.symbol.datawedge.api.GET_ACTIVE_PROFILE');
 
   final String value;

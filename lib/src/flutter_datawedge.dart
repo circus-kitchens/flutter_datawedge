@@ -160,6 +160,28 @@ class FlutterDataWedge {
     );
   }
 
+  /// update existing Datawedge profile and the specified plugin config
+  /// Returns when the Command is executed NOT when DataWedge is ready to be operated again
+  /// For that use [onScannerEvent] to listen for the Result of the Command
+  /// Check out the official documentation https://techdocs.zebra.com/datawedge/13-0/guide/api/setconfig/
+  /// to know which config attributes are supported
+  Future<void> updateProfile(
+      {required String profileName,
+      required String pluginName,
+      Map<String, dynamic> config = const {},
+      String? commandIdentifier}) async {
+    final identifier = commandIdentifier ?? Uuid().v4();
+    _methodChannel.invokeMethod<void>(
+      MethodChannelMethods.updateDataWedgeProfile.value,
+      jsonEncode({
+        "profileName": profileName,
+        "pluginName": pluginName,
+        "commandIdentifier": identifier,
+        "config": config,
+      }),
+    );
+  }
+
   Future<void> _enableListeningScannerStatus(String commandIdentifier) {
     return _methodChannel.invokeMethod<void>(
       MethodChannelMethods.listenScannerStatus.value,
