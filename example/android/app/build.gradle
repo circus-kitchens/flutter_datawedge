@@ -25,8 +25,8 @@ if (flutterVersionName == null) {
 
 
 android {
+    namespace 'com.circuskitchens.flutter_datawedge_example'
     compileSdk flutter.compileSdkVersion
-
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         applicationId "com.circuskitchens.flutter_datawedge_example"
-         minSdkVersion flutter.minSdkVersion
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -60,3 +60,4 @@ flutter {
 }
 
 
+dependencies{}
