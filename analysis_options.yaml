@@ -1,4 +1,4 @@
-include: package:lints/core.yaml
+include: package:very_good_analysis/analysis_options.yaml
 
 analyzer:
   exclude:
@@ -14,5 +14,4 @@ analyzer:
 
 linter:
   rules:
-    - cancel_subscriptions
-    - package_api_docs
+    public_member_api_docs: false

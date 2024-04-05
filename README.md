@@ -4,68 +4,90 @@
 
 A Flutter package to communicate with Zebra DataWedge scanners.
 
-## Getting Started (under development)
+## Getting Started
 
-#### Example
+Add flutter_datawedge to your project
 
-Initialize the FlutterDataWedge Object and attach a listener to the onScanResult Stream.
-
-``` dart
-
-    FlutterDataWedge dw = FlutterDataWedge();
-    await dw.initialize();
-    await createDefaultProfile(profileName: "Example Profile");
-    StreamSubscription onScanSubscription = dw.onScanResult.listen((ScanResult result) {
-        print(result.data);
-    });
-    
-    [...]
-    
-    // Stop listening for new scans.
-    onScanSubscription.cancel();
-    dw.dispose();
+```sh
+    dart pub add flutter_datawedge
 ```
 
-`dispose()` will close all Streams.
+You can access DataWedge through the singleton
 
-*Also checkout the example application.*
+```dart
 
-### Profiles 
-Unlike previous versions, this version of the package won't create a profile and configure it while calling `initialize`.
-Instead a profile can be created using the `createDefaultProfile` method.
-To query all available profiles use `requestProfiles`, to query the active profile use `requestActiveProfile`.
-The functions `waitForProfiles` and `waitForActiveProfile` can be used to wait results after the requesting function has been called.
+    var dataWedge = FlutterDataWedge.instance;
 
-#### async/await
+```
 
-Event though the public methods enableScanner(), activateScanner() and scannerControl() are
-asynchronous they return as soon as the command is executed.
-Each of these methods (as well as initialize()) will cause ActionResult objects to be emitted on the
-onScannerEvent Stream.
-Those can be used to determine the outcome of a command and properly wait for it.
-Here is a short example:
+If you don't have a profile for your app, you can use
 
-``` dart
-    FlutterDataWedge dw = FlutterDataWedge();
-    await dw.initialize();
-    
-    // This would be a properly awaited version of enableScanner
-    Future<ActionResult> enableScanner() {
-        final completer = Completer<ActionResult>();
-        final myIdentifier = "someIdentifier";
-        
-        StreamSubscription onScannerEventSubscription = dw.onScannerEvent.listen((ActionResult result) {
-            if (result.commandIdentifier == myIdentifier) {
-                completer.complete(result);
-            }
-        });
-        
-        
-        dw.enablescanner(true,commandIdentifier: myIdentifier);
-        
-        return completer.future;
-    }
+```dart
+    await FlutterDataWedge.instance.createProfile("MyProfile",autoActivate: true);
+```
 
+If you want to make further adjustments to your profile you can use `setConfig`
+
+```dart
+
+    var config = ProfileConfig(
+        profileName: "MyProfile",
+        profileEnabled: true,
+        configMode: ConfigMode.update,
+        barcodeParamters: PluginBarcodeParamters(
+            scannerSelection: ScannerIdentifer.auto,
+            enableHardwareTrigger: true,
+            enableAimMode: false,
+        )
+    );
+  await FlutterDataWedge.instance.setConfig(config);
+```
+
+The parameter auto activate will configure your profile to automatically activate when your application
+is in the foreground and enables intent output to receive scans.
+
+You can then simply listen for barcodes:
+
+```dart
+
+    var scanSub = FlutterDataWedge.instance.scans.listen((event) {
+      // Do something with a ScanEvent
+      print(event.dataString);
+    });
+
+    // later
+
+    scanSub.cancel()
+
+```
+
+To receive the current status of the scanner you will have to register for notifications
+
+```dart
+    await FlutterDataWedge.instance.registerForNotifications();
+```
+
+You can then listen on the stream of events
+
+```dart
+     FlutterDataWedge.instance.status.listen(....)
+```
+
+### Controlling the scanner
+
+```dart
+    await FlutterDataWedge.instance.suspendPlugin(); // Temporarily suspend scanning
+    await FlutterDataWedge.instance.resumePlugin(); // Resume after suspending
+    await FlutterDataWedge.instance.enablePlugin(); // Enable dw
+    await FlutterDataWedge.instance.disablePlugin(); // Disable dw
+```
+
+You can also create a soft trigger:
+
+```dart
+    FlutterDataWedge.instance.softScanTrigger(true); // Starts scanning
+    ...
+    FlutterDataWedge.instance.softScanTrigger(false); // Stops scanning
 ```
 
 ## Acknowledgements
