@@ -77,6 +77,29 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
                 result.success(null)  //  DataWedge does not return responses
             }
 
+            MyMethods.updateDataWedgeProfile -> {
+                val arguments = JSONObject(call.arguments.toString())
+                val profileName: String = arguments.get("profileName") as String
+                val pluginName: String = arguments.get("pluginName") as String
+                val commandIdentifier: String = arguments.get("commandIdentifier") as String
+
+                val configJson: JSONObject = arguments.getJSONObject("config")
+                val config = mutableMapOf<String, Any>()
+
+                for (key in configJson.keys()) {
+                    config[key] = configJson.get(key)
+                }
+
+                updateProfilePluginConfig(
+                    profileName,
+                    pluginName,
+                    config.toMap(),
+                    commandIdentifier
+                )
+
+                result.success(null)  //  DataWedge does not return responses
+            }
+
             MyMethods.listenScannerStatus -> {
                 val arguments = JSONObject(call.arguments.toString())
                 val commandIdentifier: String = arguments.get("commandIdentifier") as String
@@ -162,6 +185,43 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
             "intentOutputConfig_$commandIdentifier"
         )
 
+    }
+
+    private fun updateProfilePluginConfig(
+        profileName: String,
+        pluginName: String,
+        config: Map<String, Any>,
+        commandIdentifier: String,
+    ) {
+        val profileConfig = Bundle()
+        profileConfig.putString(DWInterface.EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME, profileName)
+        profileConfig.putString("CONFIG_MODE", "UPDATE")
+
+        val pluginConfig = Bundle()
+        pluginConfig.putString("PLUGIN_NAME", pluginName.uppercase())
+        pluginConfig.putString("RESET_CONFIG", "false")
+
+        val paramBundle = Bundle()
+
+        for ((key, value) in config) {
+            when (value) {
+                is String -> paramBundle.putString(key, value)
+                //bool value is always passed as string
+                is Boolean -> paramBundle.putString(key, value.toString())
+                is Double -> paramBundle.putDouble(key, value)
+                is Int -> paramBundle.putInt(key, value)
+            }
+        }
+
+        pluginConfig.putBundle("PARAM_LIST", paramBundle)
+        profileConfig.putBundle("PLUGIN_CONFIG", pluginConfig)
+
+        dwInterface.sendCommandBundle(
+            context,
+            DWInterface.ACTION_SET_CONFIG,
+            profileConfig,
+            "profileConfigUpdate_$commandIdentifier"
+        )
     }
 
 
