@@ -2,9 +2,11 @@ package com.circuskitchens.flutter_datawedge
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Build
 import com.circuskitchens.flutter_datawedge.consts.MyChannels
 import com.circuskitchens.flutter_datawedge.consts.MyIntents
 import src.main.kotlin.com.circuskitchens.flutter_datawedge.consts.MyMethods
@@ -117,7 +119,11 @@ class FlutterDatawedgePlugin : FlutterPlugin, MethodCallHandler, StreamHandler {
     override fun onListen(arguments: Any?, events: EventSink?) {
         val receiver = SinkBroadcastReceiver(events)
         registeredReceivers.add(receiver)
-        context.registerReceiver(receiver, intentFilter)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            context.registerReceiver(receiver, intentFilter, RECEIVER_EXPORTED)
+        }else{
+           context.registerReceiver(receiver, intentFilter)
+        }
     }
 
     override fun onCancel(arguments: Any?) {
