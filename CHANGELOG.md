@@ -2,7 +2,7 @@
 
 - Add compatibly with Android 14. Contributed by [AhmadHusein5853](https://github.com/AhmadHusein5853)
 - Update gradle, lints and kotlin
-- 
+- Filter out unsupported events and add logs
 
 # 3.1.0-dev.1
 
