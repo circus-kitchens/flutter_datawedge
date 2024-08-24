@@ -1,3 +1,9 @@
+# 3.1.0-dev.2
+
+- Add compatibly with Android 14. Contributed by [AhmadHusein5853](https://github.com/AhmadHusein5853)
+- Update gradle, lints and kotlin
+- Filter out unsupported events and add logs
+
 # 3.1.0-dev.1
 
 - Added a `updateProfile` function to update the configuration of a profile. Contribution by [Bobekos](https://github.com/bobekos)
