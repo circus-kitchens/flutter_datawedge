@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 enum DataWedgeEventType {
   eventName('EVENT_NAME'),
   scannerStatus('SCANNER_STATUS'),
@@ -8,7 +10,7 @@ enum DataWedgeEventType {
 
   const DataWedgeEventType(this.value);
 
-  static DataWedgeEventType fromMap(Map<String, dynamic> event) =>
+  static DataWedgeEventType? fromMap(Map<String, dynamic> event) =>
       DataWedgeEventType.values
-          .firstWhere((type) => type.value == event['EVENT_NAME']);
+          .firstWhereOrNull((type) => type.value == event['EVENT_NAME']);
 }

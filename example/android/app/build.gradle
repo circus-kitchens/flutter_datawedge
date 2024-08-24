@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     namespace "com.circuskitchens.flutter_datawedge_example"
 
@@ -46,8 +46,8 @@ android {
 
     defaultConfig {
         applicationId "com.circuskitchens.flutter_datawedge_example"
-        minSdkVersion 19
-        targetSdkVersion 33
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

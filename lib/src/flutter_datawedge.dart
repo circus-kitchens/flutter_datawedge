@@ -200,18 +200,45 @@ class FlutterDataWedge {
         .where((event) =>
             DataWedgeEventType.fromMap(event) ==
             DataWedgeEventType.actionResult)
-        .map(ActionResult.fromJson);
+        .map((event) {
+          try {
+            return ActionResult.fromJson(event);
+          } catch (e) {
+            print('Invalid `ActionResult`: $event caused by: $e');
+            return null;
+          }
+        })
+        .where((event) => event is ActionResult)
+        .cast();
 
     _scanResultStream = sourceStream
         .where((event) =>
             DataWedgeEventType.fromMap(event) == DataWedgeEventType.scanResult)
-        .map(ScanResult.fromJson);
+        .map((event) {
+          try {
+            return ScanResult.fromJson(event);
+          } catch (e) {
+            print('Invalid `ScanResult`: $event caused by: $e');
+            return null;
+          }
+        })
+        .where((event) => event is ScanResult)
+        .cast();
 
     _scannerStatusStream = sourceStream
         .where((event) =>
             DataWedgeEventType.fromMap(event) ==
             DataWedgeEventType.scannerStatus)
-        .map(ScannerStatus.fromJson);
+        .map((event) {
+          try {
+            return ScannerStatus.fromJson(event);
+          } catch (e) {
+            print('Invalid `ScannerStatus`: $event caused by: $e');
+            return null;
+          }
+        })
+        .where((event) => event is ScannerStatus)
+        .cast();
   }
 
   Future<Result<void, FlutterDatawedgeException>> _sendDataWedgeCommand(
