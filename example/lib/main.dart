@@ -20,11 +20,13 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   late FlutterDataWedge fdw;
   Future<void>? initScannerResult;
 
@@ -38,7 +40,7 @@ class _MyAppState extends State<MyApp> {
     if (Platform.isAndroid) {
       fdw = FlutterDataWedge();
       await fdw.initialize();
-      await fdw.createDefaultProfile(profileName: "Example app profile");
+      await fdw.createDefaultProfile(profileName: 'Example app profile');
     }
   }
 
@@ -67,8 +69,8 @@ class _MyAppState extends State<MyApp> {
               ),
               body: TabBarView(
                 children: [
-                  ButtonTabView(this.fdw),
-                  LogTabView(this.fdw),
+                  ButtonTabView(fdw),
+                  LogTabView(fdw),
                 ],
               ),
             ),

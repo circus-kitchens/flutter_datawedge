@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 
 class LogTabView extends StatefulWidget {
-  LogTabView(this.fdw);
+  const LogTabView(this.fdw, {super.key});
 
   final FlutterDataWedge fdw;
 
@@ -71,7 +71,7 @@ class LogTabViewState extends State<LogTabView>
 }
 
 class _ActionResultLogTile extends StatelessWidget {
-  _ActionResultLogTile(this.actionResult);
+  const _ActionResultLogTile(this.actionResult);
 
   final ActionResult actionResult;
 
@@ -85,7 +85,7 @@ class _ActionResultLogTile extends StatelessWidget {
 }
 
 class _ScanResultLogTile extends StatelessWidget {
-  _ScanResultLogTile(this.scanResult);
+  const _ScanResultLogTile(this.scanResult);
 
   final ScanResult scanResult;
 
@@ -99,7 +99,7 @@ class _ScanResultLogTile extends StatelessWidget {
 }
 
 class _ScannerStatusLogTile extends StatelessWidget {
-  _ScannerStatusLogTile(this.scannerStatus);
+  const _ScannerStatusLogTile(this.scannerStatus);
 
   final ScannerStatus scannerStatus;
 
@@ -114,14 +114,14 @@ class _ScannerStatusLogTile extends StatelessWidget {
 
 extension ActionResultLog on ActionResult {
   String get logContent {
-    return switch (DatawedgeApiTargets.fromString(this.command)) {
-      DatawedgeApiTargets.softScanTrigger => '${result}',
+    return switch (DatawedgeApiTargets.fromString(command)) {
+      DatawedgeApiTargets.softScanTrigger => result,
       DatawedgeApiTargets.scannerPlugin =>
-        result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
+        result == 'SUCCESS' ? result : '${resultInfo!['RESULT_CODE']}',
       DatawedgeApiTargets.getProfiles => '${resultInfo!['profiles']}',
       DatawedgeApiTargets.getActiveProfile => '${resultInfo!['activeProfile']}',
       DatawedgeApiTargets.setConfig =>
-        result == "SUCCESS" ? '$result' : '${resultInfo!['RESULT_CODE']}',
+        result == "SUCCESS" ? result : '${resultInfo!['RESULT_CODE']}',
     };
   }
 }
