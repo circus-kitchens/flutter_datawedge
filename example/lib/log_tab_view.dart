@@ -121,7 +121,7 @@ extension ActionResultLog on ActionResult {
       DatawedgeApiTargets.getProfiles => '${resultInfo!['profiles']}',
       DatawedgeApiTargets.getActiveProfile => '${resultInfo!['activeProfile']}',
       DatawedgeApiTargets.setConfig =>
-        result == "SUCCESS" ? result : '${resultInfo!['RESULT_CODE']}',
+        result == 'SUCCESS' ? result : '${resultInfo!['RESULT_CODE']}',
     };
   }
 }
