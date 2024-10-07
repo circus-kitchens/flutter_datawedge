@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 
 class ButtonTabView extends StatelessWidget {
-  ButtonTabView(this.fdw);
+  const ButtonTabView(this.fdw, {super.key});
 
   final FlutterDataWedge fdw;
 
