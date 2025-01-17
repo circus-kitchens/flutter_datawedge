@@ -1,3 +1,7 @@
+# 3.1.0-dev.3
+
+- Update freezed, json_serializable, kotlin and gradle
+
 # 3.1.0-dev.2
 
 - Add compatibly with Android 14. Contributed by [AhmadHusein5853](https://github.com/AhmadHusein5853)
