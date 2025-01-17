@@ -4,17 +4,7 @@ on:
     types: [ published ]
 
 jobs:
-  package-publishing:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@master
-      - name: 'Publish to pub.dev'
-        uses: k-paxian/dart-package-publisher@master
-        with:
-          accessToken: ${{ secrets.PUB_DEV_OAUTH_ACCESS_TOKEN }}
-          refreshToken: ${{ secrets.PUB_DEV_OAUTH_REFRESH_TOKEN }}
-          format: true
-          flutter: true
-          flutterBranch: 'stable'
-          skipTests: true
+  publish:
+    permissions:
+      id-token: write # Required for authentication using OIDC
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
