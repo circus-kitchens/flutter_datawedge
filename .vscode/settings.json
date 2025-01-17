@@ -1,7 +1,8 @@
 {
-    "cSpell.words": [
-        "circuskitchens",
-        "cupertino",
-        "datawedge"
-    ]
+  "cSpell.words": [
+    "circuskitchens",
+    "cupertino",
+    "datawedge"
+  ],
+  "dart.flutterSdkPath": ".fvm/versions/3.24.1"
 }
