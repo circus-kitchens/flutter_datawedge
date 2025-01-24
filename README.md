@@ -4,7 +4,9 @@
 
 A Flutter package to communicate with Zebra DataWedge scanners.
 
-## Getting Started (under development)
+Internally, this package useses the [DataWedge APIs](https://techdocs.zebra.com/datawedge/latest/guide/api/overview/) and therefore is on compatible with Android.
+
+## Getting Started
 
 #### Example
 
