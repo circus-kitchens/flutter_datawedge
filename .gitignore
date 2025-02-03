@@ -11,3 +11,6 @@ Dart_packages.xml
 *.idea/
 pubspec.lock
 doc
+
+# FVM Version Cache
+.fvm/
