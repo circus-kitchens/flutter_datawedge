@@ -1,3 +1,8 @@
+# 3.1.0
+
+- Update gradle
+- (This contains all changes of previous dev builds)
+
 # 3.1.0-dev.3
 
 - Update freezed, json_serializable, kotlin and gradle
