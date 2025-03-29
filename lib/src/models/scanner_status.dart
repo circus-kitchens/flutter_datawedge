@@ -5,7 +5,7 @@ part 'scanner_status.g.dart';
 part 'scanner_status.freezed.dart';
 
 @freezed
-class ScannerStatus with _$ScannerStatus {
+abstract class ScannerStatus with _$ScannerStatus {
   const factory ScannerStatus({
     required ScannerStatusType status,
     required String profile,

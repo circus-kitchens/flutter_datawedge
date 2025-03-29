@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,161 +10,142 @@ part of 'scanner_status.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-ScannerStatus _$ScannerStatusFromJson(Map<String, dynamic> json) {
-  return _ScannerStatus.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ScannerStatus {
-  ScannerStatusType get status => throw _privateConstructorUsedError;
-  String get profile => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ScannerStatusCopyWith<ScannerStatus> get copyWith =>
-      throw _privateConstructorUsedError;
+ ScannerStatusType get status; String get profile;
+/// Create a copy of ScannerStatus
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ScannerStatusCopyWith<ScannerStatus> get copyWith => _$ScannerStatusCopyWithImpl<ScannerStatus>(this as ScannerStatus, _$identity);
+
+  /// Serializes this ScannerStatus to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScannerStatus&&(identical(other.status, status) || other.status == status)&&(identical(other.profile, profile) || other.profile == profile));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,status,profile);
+
+@override
+String toString() {
+  return 'ScannerStatus(status: $status, profile: $profile)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ScannerStatusCopyWith<$Res> {
-  factory $ScannerStatusCopyWith(
-          ScannerStatus value, $Res Function(ScannerStatus) then) =
-      _$ScannerStatusCopyWithImpl<$Res, ScannerStatus>;
-  @useResult
-  $Res call({ScannerStatusType status, String profile});
-}
+abstract mixin class $ScannerStatusCopyWith<$Res>  {
+  factory $ScannerStatusCopyWith(ScannerStatus value, $Res Function(ScannerStatus) _then) = _$ScannerStatusCopyWithImpl;
+@useResult
+$Res call({
+ ScannerStatusType status, String profile
+});
 
+
+
+
+}
 /// @nodoc
-class _$ScannerStatusCopyWithImpl<$Res, $Val extends ScannerStatus>
+class _$ScannerStatusCopyWithImpl<$Res>
     implements $ScannerStatusCopyWith<$Res> {
-  _$ScannerStatusCopyWithImpl(this._value, this._then);
+  _$ScannerStatusCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ScannerStatus _self;
+  final $Res Function(ScannerStatus) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? status = null,
-    Object? profile = null,
-  }) {
-    return _then(_value.copyWith(
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as ScannerStatusType,
-      profile: null == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
+/// Create a copy of ScannerStatus
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? profile = null,}) {
+  return _then(_self.copyWith(
+status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as ScannerStatusType,profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ScannerStatusImplCopyWith<$Res>
-    implements $ScannerStatusCopyWith<$Res> {
-  factory _$$ScannerStatusImplCopyWith(
-          _$ScannerStatusImpl value, $Res Function(_$ScannerStatusImpl) then) =
-      __$$ScannerStatusImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({ScannerStatusType status, String profile});
 }
 
-/// @nodoc
-class __$$ScannerStatusImplCopyWithImpl<$Res>
-    extends _$ScannerStatusCopyWithImpl<$Res, _$ScannerStatusImpl>
-    implements _$$ScannerStatusImplCopyWith<$Res> {
-  __$$ScannerStatusImplCopyWithImpl(
-      _$ScannerStatusImpl _value, $Res Function(_$ScannerStatusImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? status = null,
-    Object? profile = null,
-  }) {
-    return _then(_$ScannerStatusImpl(
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as ScannerStatusType,
-      profile: null == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
 
 /// @nodoc
 @JsonSerializable()
-class _$ScannerStatusImpl implements _ScannerStatus {
-  const _$ScannerStatusImpl({required this.status, required this.profile});
 
-  factory _$ScannerStatusImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ScannerStatusImplFromJson(json);
+class _ScannerStatus implements ScannerStatus {
+  const _ScannerStatus({required this.status, required this.profile});
+  factory _ScannerStatus.fromJson(Map<String, dynamic> json) => _$ScannerStatusFromJson(json);
 
-  @override
-  final ScannerStatusType status;
-  @override
-  final String profile;
+@override final  ScannerStatusType status;
+@override final  String profile;
 
-  @override
-  String toString() {
-    return 'ScannerStatus(status: $status, profile: $profile)';
-  }
+/// Create a copy of ScannerStatus
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ScannerStatusCopyWith<_ScannerStatus> get copyWith => __$ScannerStatusCopyWithImpl<_ScannerStatus>(this, _$identity);
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ScannerStatusImpl &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.profile, profile) || other.profile == profile));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, status, profile);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ScannerStatusImplCopyWith<_$ScannerStatusImpl> get copyWith =>
-      __$$ScannerStatusImplCopyWithImpl<_$ScannerStatusImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ScannerStatusImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$ScannerStatusToJson(this, );
 }
 
-abstract class _ScannerStatus implements ScannerStatus {
-  const factory _ScannerStatus(
-      {required final ScannerStatusType status,
-      required final String profile}) = _$ScannerStatusImpl;
-
-  factory _ScannerStatus.fromJson(Map<String, dynamic> json) =
-      _$ScannerStatusImpl.fromJson;
-
-  @override
-  ScannerStatusType get status;
-  @override
-  String get profile;
-  @override
-  @JsonKey(ignore: true)
-  _$$ScannerStatusImplCopyWith<_$ScannerStatusImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScannerStatus&&(identical(other.status, status) || other.status == status)&&(identical(other.profile, profile) || other.profile == profile));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,status,profile);
+
+@override
+String toString() {
+  return 'ScannerStatus(status: $status, profile: $profile)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ScannerStatusCopyWith<$Res> implements $ScannerStatusCopyWith<$Res> {
+  factory _$ScannerStatusCopyWith(_ScannerStatus value, $Res Function(_ScannerStatus) _then) = __$ScannerStatusCopyWithImpl;
+@override @useResult
+$Res call({
+ ScannerStatusType status, String profile
+});
+
+
+
+
+}
+/// @nodoc
+class __$ScannerStatusCopyWithImpl<$Res>
+    implements _$ScannerStatusCopyWith<$Res> {
+  __$ScannerStatusCopyWithImpl(this._self, this._then);
+
+  final _ScannerStatus _self;
+  final $Res Function(_ScannerStatus) _then;
+
+/// Create a copy of ScannerStatus
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? profile = null,}) {
+  return _then(_ScannerStatus(
+status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as ScannerStatusType,profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

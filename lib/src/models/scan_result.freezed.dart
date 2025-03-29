@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,191 +10,145 @@ part of 'scan_result.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-ScanResult _$ScanResultFromJson(Map<String, dynamic> json) {
-  return _ScanResult.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ScanResult {
-  @JsonKey(name: 'scanData')
-  String get data => throw _privateConstructorUsedError;
-  String get labelType => throw _privateConstructorUsedError;
-  String get source => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ScanResultCopyWith<ScanResult> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'scanData') String get data; String get labelType; String get source;
+/// Create a copy of ScanResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ScanResultCopyWith<ScanResult> get copyWith => _$ScanResultCopyWithImpl<ScanResult>(this as ScanResult, _$identity);
+
+  /// Serializes this ScanResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScanResult&&(identical(other.data, data) || other.data == data)&&(identical(other.labelType, labelType) || other.labelType == labelType)&&(identical(other.source, source) || other.source == source));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,data,labelType,source);
+
+@override
+String toString() {
+  return 'ScanResult(data: $data, labelType: $labelType, source: $source)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ScanResultCopyWith<$Res> {
-  factory $ScanResultCopyWith(
-          ScanResult value, $Res Function(ScanResult) then) =
-      _$ScanResultCopyWithImpl<$Res, ScanResult>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'scanData') String data,
-      String labelType,
-      String source});
-}
+abstract mixin class $ScanResultCopyWith<$Res>  {
+  factory $ScanResultCopyWith(ScanResult value, $Res Function(ScanResult) _then) = _$ScanResultCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'scanData') String data, String labelType, String source
+});
 
+
+
+
+}
 /// @nodoc
-class _$ScanResultCopyWithImpl<$Res, $Val extends ScanResult>
+class _$ScanResultCopyWithImpl<$Res>
     implements $ScanResultCopyWith<$Res> {
-  _$ScanResultCopyWithImpl(this._value, this._then);
+  _$ScanResultCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ScanResult _self;
+  final $Res Function(ScanResult) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? labelType = null,
-    Object? source = null,
-  }) {
-    return _then(_value.copyWith(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String,
-      labelType: null == labelType
-          ? _value.labelType
-          : labelType // ignore: cast_nullable_to_non_nullable
-              as String,
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
+/// Create a copy of ScanResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? data = null,Object? labelType = null,Object? source = null,}) {
+  return _then(_self.copyWith(
+data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as String,labelType: null == labelType ? _self.labelType : labelType // ignore: cast_nullable_to_non_nullable
+as String,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ScanResultImplCopyWith<$Res>
-    implements $ScanResultCopyWith<$Res> {
-  factory _$$ScanResultImplCopyWith(
-          _$ScanResultImpl value, $Res Function(_$ScanResultImpl) then) =
-      __$$ScanResultImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'scanData') String data,
-      String labelType,
-      String source});
 }
 
-/// @nodoc
-class __$$ScanResultImplCopyWithImpl<$Res>
-    extends _$ScanResultCopyWithImpl<$Res, _$ScanResultImpl>
-    implements _$$ScanResultImplCopyWith<$Res> {
-  __$$ScanResultImplCopyWithImpl(
-      _$ScanResultImpl _value, $Res Function(_$ScanResultImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? labelType = null,
-    Object? source = null,
-  }) {
-    return _then(_$ScanResultImpl(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String,
-      labelType: null == labelType
-          ? _value.labelType
-          : labelType // ignore: cast_nullable_to_non_nullable
-              as String,
-      source: null == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
 
 /// @nodoc
 @JsonSerializable()
-class _$ScanResultImpl implements _ScanResult {
-  const _$ScanResultImpl(
-      {@JsonKey(name: 'scanData') required this.data,
-      required this.labelType,
-      required this.source});
 
-  factory _$ScanResultImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ScanResultImplFromJson(json);
+class _ScanResult implements ScanResult {
+  const _ScanResult({@JsonKey(name: 'scanData') required this.data, required this.labelType, required this.source});
+  factory _ScanResult.fromJson(Map<String, dynamic> json) => _$ScanResultFromJson(json);
 
-  @override
-  @JsonKey(name: 'scanData')
-  final String data;
-  @override
-  final String labelType;
-  @override
-  final String source;
+@override@JsonKey(name: 'scanData') final  String data;
+@override final  String labelType;
+@override final  String source;
 
-  @override
-  String toString() {
-    return 'ScanResult(data: $data, labelType: $labelType, source: $source)';
-  }
+/// Create a copy of ScanResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ScanResultCopyWith<_ScanResult> get copyWith => __$ScanResultCopyWithImpl<_ScanResult>(this, _$identity);
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ScanResultImpl &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.labelType, labelType) ||
-                other.labelType == labelType) &&
-            (identical(other.source, source) || other.source == source));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, data, labelType, source);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ScanResultImplCopyWith<_$ScanResultImpl> get copyWith =>
-      __$$ScanResultImplCopyWithImpl<_$ScanResultImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ScanResultImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$ScanResultToJson(this, );
 }
 
-abstract class _ScanResult implements ScanResult {
-  const factory _ScanResult(
-      {@JsonKey(name: 'scanData') required final String data,
-      required final String labelType,
-      required final String source}) = _$ScanResultImpl;
-
-  factory _ScanResult.fromJson(Map<String, dynamic> json) =
-      _$ScanResultImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'scanData')
-  String get data;
-  @override
-  String get labelType;
-  @override
-  String get source;
-  @override
-  @JsonKey(ignore: true)
-  _$$ScanResultImplCopyWith<_$ScanResultImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScanResult&&(identical(other.data, data) || other.data == data)&&(identical(other.labelType, labelType) || other.labelType == labelType)&&(identical(other.source, source) || other.source == source));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,data,labelType,source);
+
+@override
+String toString() {
+  return 'ScanResult(data: $data, labelType: $labelType, source: $source)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ScanResultCopyWith<$Res> implements $ScanResultCopyWith<$Res> {
+  factory _$ScanResultCopyWith(_ScanResult value, $Res Function(_ScanResult) _then) = __$ScanResultCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'scanData') String data, String labelType, String source
+});
+
+
+
+
+}
+/// @nodoc
+class __$ScanResultCopyWithImpl<$Res>
+    implements _$ScanResultCopyWith<$Res> {
+  __$ScanResultCopyWithImpl(this._self, this._then);
+
+  final _ScanResult _self;
+  final $Res Function(_ScanResult) _then;
+
+/// Create a copy of ScanResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? data = null,Object? labelType = null,Object? source = null,}) {
+  return _then(_ScanResult(
+data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as String,labelType: null == labelType ? _self.labelType : labelType // ignore: cast_nullable_to_non_nullable
+as String,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on
