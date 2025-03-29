@@ -8,7 +8,7 @@ permissions:
   checks: write
   contents: read
 env:
-  FLUTTER_VERSION: "3.24.1"
+  FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
 jobs:
   lint:
