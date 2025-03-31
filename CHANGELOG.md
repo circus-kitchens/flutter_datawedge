@@ -1,3 +1,8 @@
+# 3.2.0
+
+- Update to freezed 3
+- Require Dart 3.7 and Flutter 3.29
+
 # 3.1.0
 
 - Update gradle
