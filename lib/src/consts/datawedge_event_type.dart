@@ -11,6 +11,7 @@ enum DataWedgeEventType {
   const DataWedgeEventType(this.value);
 
   static DataWedgeEventType? fromMap(Map<String, dynamic> event) =>
-      DataWedgeEventType.values
-          .firstWhereOrNull((type) => type.value == event['EVENT_NAME']);
+      DataWedgeEventType.values.firstWhereOrNull(
+        (type) => type.value == event['EVENT_NAME'],
+      );
 }

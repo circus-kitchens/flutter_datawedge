@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,220 +10,156 @@ part of 'action_result.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-ActionResult _$ActionResultFromJson(Map<String, dynamic> json) {
-  return _ActionResult.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ActionResult {
-  String get result => throw _privateConstructorUsedError;
-  String get command => throw _privateConstructorUsedError;
-  String get commandIdentifier => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get resultInfo => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ActionResultCopyWith<ActionResult> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get result; String get command; String get commandIdentifier; Map<String, dynamic>? get resultInfo;
+/// Create a copy of ActionResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ActionResultCopyWith<ActionResult> get copyWith => _$ActionResultCopyWithImpl<ActionResult>(this as ActionResult, _$identity);
+
+  /// Serializes this ActionResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActionResult&&(identical(other.result, result) || other.result == result)&&(identical(other.command, command) || other.command == command)&&(identical(other.commandIdentifier, commandIdentifier) || other.commandIdentifier == commandIdentifier)&&const DeepCollectionEquality().equals(other.resultInfo, resultInfo));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,result,command,commandIdentifier,const DeepCollectionEquality().hash(resultInfo));
+
+@override
+String toString() {
+  return 'ActionResult(result: $result, command: $command, commandIdentifier: $commandIdentifier, resultInfo: $resultInfo)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ActionResultCopyWith<$Res> {
-  factory $ActionResultCopyWith(
-          ActionResult value, $Res Function(ActionResult) then) =
-      _$ActionResultCopyWithImpl<$Res, ActionResult>;
-  @useResult
-  $Res call(
-      {String result,
-      String command,
-      String commandIdentifier,
-      Map<String, dynamic>? resultInfo});
-}
+abstract mixin class $ActionResultCopyWith<$Res>  {
+  factory $ActionResultCopyWith(ActionResult value, $Res Function(ActionResult) _then) = _$ActionResultCopyWithImpl;
+@useResult
+$Res call({
+ String result, String command, String commandIdentifier, Map<String, dynamic>? resultInfo
+});
 
+
+
+
+}
 /// @nodoc
-class _$ActionResultCopyWithImpl<$Res, $Val extends ActionResult>
+class _$ActionResultCopyWithImpl<$Res>
     implements $ActionResultCopyWith<$Res> {
-  _$ActionResultCopyWithImpl(this._value, this._then);
+  _$ActionResultCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ActionResult _self;
+  final $Res Function(ActionResult) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? result = null,
-    Object? command = null,
-    Object? commandIdentifier = null,
-    Object? resultInfo = freezed,
-  }) {
-    return _then(_value.copyWith(
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as String,
-      command: null == command
-          ? _value.command
-          : command // ignore: cast_nullable_to_non_nullable
-              as String,
-      commandIdentifier: null == commandIdentifier
-          ? _value.commandIdentifier
-          : commandIdentifier // ignore: cast_nullable_to_non_nullable
-              as String,
-      resultInfo: freezed == resultInfo
-          ? _value.resultInfo
-          : resultInfo // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-    ) as $Val);
-  }
+/// Create a copy of ActionResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? result = null,Object? command = null,Object? commandIdentifier = null,Object? resultInfo = freezed,}) {
+  return _then(_self.copyWith(
+result: null == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as String,command: null == command ? _self.command : command // ignore: cast_nullable_to_non_nullable
+as String,commandIdentifier: null == commandIdentifier ? _self.commandIdentifier : commandIdentifier // ignore: cast_nullable_to_non_nullable
+as String,resultInfo: freezed == resultInfo ? _self.resultInfo : resultInfo // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ActionResultImplCopyWith<$Res>
-    implements $ActionResultCopyWith<$Res> {
-  factory _$$ActionResultImplCopyWith(
-          _$ActionResultImpl value, $Res Function(_$ActionResultImpl) then) =
-      __$$ActionResultImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String result,
-      String command,
-      String commandIdentifier,
-      Map<String, dynamic>? resultInfo});
 }
 
-/// @nodoc
-class __$$ActionResultImplCopyWithImpl<$Res>
-    extends _$ActionResultCopyWithImpl<$Res, _$ActionResultImpl>
-    implements _$$ActionResultImplCopyWith<$Res> {
-  __$$ActionResultImplCopyWithImpl(
-      _$ActionResultImpl _value, $Res Function(_$ActionResultImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? result = null,
-    Object? command = null,
-    Object? commandIdentifier = null,
-    Object? resultInfo = freezed,
-  }) {
-    return _then(_$ActionResultImpl(
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as String,
-      command: null == command
-          ? _value.command
-          : command // ignore: cast_nullable_to_non_nullable
-              as String,
-      commandIdentifier: null == commandIdentifier
-          ? _value.commandIdentifier
-          : commandIdentifier // ignore: cast_nullable_to_non_nullable
-              as String,
-      resultInfo: freezed == resultInfo
-          ? _value._resultInfo
-          : resultInfo // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-    ));
-  }
-}
 
 /// @nodoc
 @JsonSerializable()
-class _$ActionResultImpl extends _ActionResult {
-  const _$ActionResultImpl(
-      {required this.result,
-      required this.command,
-      required this.commandIdentifier,
-      required final Map<String, dynamic>? resultInfo})
-      : _resultInfo = resultInfo,
-        super._();
 
-  factory _$ActionResultImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ActionResultImplFromJson(json);
+class _ActionResult extends ActionResult {
+  const _ActionResult({required this.result, required this.command, required this.commandIdentifier, required final  Map<String, dynamic>? resultInfo}): _resultInfo = resultInfo,super._();
+  factory _ActionResult.fromJson(Map<String, dynamic> json) => _$ActionResultFromJson(json);
 
-  @override
-  final String result;
-  @override
-  final String command;
-  @override
-  final String commandIdentifier;
-  final Map<String, dynamic>? _resultInfo;
-  @override
-  Map<String, dynamic>? get resultInfo {
-    final value = _resultInfo;
-    if (value == null) return null;
-    if (_resultInfo is EqualUnmodifiableMapView) return _resultInfo;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
-  }
-
-  @override
-  String toString() {
-    return 'ActionResult(result: $result, command: $command, commandIdentifier: $commandIdentifier, resultInfo: $resultInfo)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ActionResultImpl &&
-            (identical(other.result, result) || other.result == result) &&
-            (identical(other.command, command) || other.command == command) &&
-            (identical(other.commandIdentifier, commandIdentifier) ||
-                other.commandIdentifier == commandIdentifier) &&
-            const DeepCollectionEquality()
-                .equals(other._resultInfo, _resultInfo));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, result, command,
-      commandIdentifier, const DeepCollectionEquality().hash(_resultInfo));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ActionResultImplCopyWith<_$ActionResultImpl> get copyWith =>
-      __$$ActionResultImplCopyWithImpl<_$ActionResultImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ActionResultImplToJson(
-      this,
-    );
-  }
+@override final  String result;
+@override final  String command;
+@override final  String commandIdentifier;
+ final  Map<String, dynamic>? _resultInfo;
+@override Map<String, dynamic>? get resultInfo {
+  final value = _resultInfo;
+  if (value == null) return null;
+  if (_resultInfo is EqualUnmodifiableMapView) return _resultInfo;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
 }
 
-abstract class _ActionResult extends ActionResult {
-  const factory _ActionResult(
-      {required final String result,
-      required final String command,
-      required final String commandIdentifier,
-      required final Map<String, dynamic>? resultInfo}) = _$ActionResultImpl;
-  const _ActionResult._() : super._();
 
-  factory _ActionResult.fromJson(Map<String, dynamic> json) =
-      _$ActionResultImpl.fromJson;
+/// Create a copy of ActionResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ActionResultCopyWith<_ActionResult> get copyWith => __$ActionResultCopyWithImpl<_ActionResult>(this, _$identity);
 
-  @override
-  String get result;
-  @override
-  String get command;
-  @override
-  String get commandIdentifier;
-  @override
-  Map<String, dynamic>? get resultInfo;
-  @override
-  @JsonKey(ignore: true)
-  _$$ActionResultImplCopyWith<_$ActionResultImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$ActionResultToJson(this, );
 }
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ActionResult&&(identical(other.result, result) || other.result == result)&&(identical(other.command, command) || other.command == command)&&(identical(other.commandIdentifier, commandIdentifier) || other.commandIdentifier == commandIdentifier)&&const DeepCollectionEquality().equals(other._resultInfo, _resultInfo));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,result,command,commandIdentifier,const DeepCollectionEquality().hash(_resultInfo));
+
+@override
+String toString() {
+  return 'ActionResult(result: $result, command: $command, commandIdentifier: $commandIdentifier, resultInfo: $resultInfo)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ActionResultCopyWith<$Res> implements $ActionResultCopyWith<$Res> {
+  factory _$ActionResultCopyWith(_ActionResult value, $Res Function(_ActionResult) _then) = __$ActionResultCopyWithImpl;
+@override @useResult
+$Res call({
+ String result, String command, String commandIdentifier, Map<String, dynamic>? resultInfo
+});
+
+
+
+
+}
+/// @nodoc
+class __$ActionResultCopyWithImpl<$Res>
+    implements _$ActionResultCopyWith<$Res> {
+  __$ActionResultCopyWithImpl(this._self, this._then);
+
+  final _ActionResult _self;
+  final $Res Function(_ActionResult) _then;
+
+/// Create a copy of ActionResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? result = null,Object? command = null,Object? commandIdentifier = null,Object? resultInfo = freezed,}) {
+  return _then(_ActionResult(
+result: null == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as String,command: null == command ? _self.command : command // ignore: cast_nullable_to_non_nullable
+as String,commandIdentifier: null == commandIdentifier ? _self.commandIdentifier : commandIdentifier // ignore: cast_nullable_to_non_nullable
+as String,resultInfo: freezed == resultInfo ? _self._resultInfo : resultInfo // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
+  ));
+}
+
+
+}
+
+// dart format on

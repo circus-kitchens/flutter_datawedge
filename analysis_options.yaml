@@ -15,4 +15,3 @@ analyzer:
 linter:
   rules:
     - cancel_subscriptions
-    - package_api_docs
