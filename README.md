@@ -25,7 +25,6 @@ Initialize the FlutterDataWedge Object and attach a listener to the onScanResult
     
     // Stop listening for new scans.
     onScanSubscription.cancel();
-    dw.dispose();
 ```
 
 `dispose()` will close all Streams.
