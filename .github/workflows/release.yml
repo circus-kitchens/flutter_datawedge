@@ -1,0 +1,203 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/workflows/**'
+      - '*.md'
+      - 'CHANGELOG.md'
+      - '.gitignore'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FLUTTER_CHANNEL: "stable"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - name: Dependencies
+        run: flutter pub get
+      - name: Dart Analyze
+        run: dart analyze
+      - name: Check Formatting
+        run: dart format --set-exit-if-changed --output none $(find lib test -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" \))
+
+  android-build:
+    needs: [lint]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - name: Java Setup
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Dependencies
+        run: flutter pub get
+      - name: Build Android Example APK
+        run: cd example && flutter build apk --release
+
+  test:
+    needs: [lint]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - name: Dependencies
+        run: flutter pub get
+      - name: Run Tests
+        run: flutter test
+
+  release:
+    needs: [lint, android-build, test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: ${{ env.FLUTTER_CHANNEL }}
+
+      - name: Activate mtrust-api-guard
+        run: dart pub global activate mtrust_api_guard 6.0.4
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Detect API Changes
+        id: version
+        run: |
+          mtrust-api-guard --input pubspec.yaml --output .bump-result.json || true
+
+          if [ ! -f .bump-result.json ]; then
+            echo "ERROR: mtrust-api-guard did not produce output file"
+            exit 1
+          fi
+
+          echo "mtrust-api-guard output:"
+          cat .bump-result.json
+
+          jq empty .bump-result.json || { echo "ERROR: Invalid JSON output from mtrust-api-guard"; exit 1; }
+
+          CHANGE_TYPE=$(jq -r '.change_type // "none"' .bump-result.json)
+          NEW_VERSION=$(jq -r '.new_version // ""' .bump-result.json)
+          CHANGELOG=$(jq -r '.changelog // ""' .bump-result.json)
+
+          echo "change_type=$CHANGE_TYPE" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "changelog<<CHANGELOG_EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "CHANGELOG_EOF" >> $GITHUB_OUTPUT
+
+          echo "Version Detection: change_type=$CHANGE_TYPE new_version=$NEW_VERSION"
+
+      - name: Skip Release (No API Changes)
+        if: steps.version.outputs.change_type == 'none'
+        run: |
+          echo "No API changes detected. Skipping release."
+          exit 0
+
+      - name: Verify No Duplicate Tag
+        id: check-tag
+        if: steps.version.outputs.change_type != 'none'
+        run: |
+          VERSION="${{ steps.version.outputs.new_version }}"
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Tag v$VERSION already exists. Release is idempotent (skipping)."
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag v$VERSION does not exist. Proceeding with release."
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure Git
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Update pubspec.yaml Version
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: |
+          VERSION="${{ steps.version.outputs.new_version }}"
+          sed -i "s/^version: .*/version: $VERSION/" pubspec.yaml
+          echo "Updated pubspec.yaml to version $VERSION"
+
+      - name: Update CHANGELOG.md
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: |
+          ENTRY="${{ steps.version.outputs.changelog }}"
+          awk '/<!-- Entries below/{print; print ""; print "'"$ENTRY"'"; next}1' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+          echo "Updated CHANGELOG.md with release entry"
+
+      - name: Commit Version Bump
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: |
+          VERSION="${{ steps.version.outputs.new_version }}"
+          git add pubspec.yaml CHANGELOG.md
+          git commit -m "chore: release $VERSION"
+
+      - name: Create Annotated Git Tag
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: |
+          VERSION="${{ steps.version.outputs.new_version }}"
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+          echo "Created annotated tag v$VERSION"
+
+      - name: Push Changes and Tags
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: git push origin main --tags
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.change_type != 'none' && steps.check-tag.outputs.tag_exists == 'false'
+        run: |
+          VERSION="${{ steps.version.outputs.new_version }}"
+          CHANGELOG="${{ steps.version.outputs.changelog }}"
+          gh release create "v$VERSION" \
+            --title "Release $VERSION" \
+            --notes "$CHANGELOG" \
+            --target main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Summary
+        if: always()
+        run: |
+          echo "## Release Summary"
+          echo "- Change Type: ${{ steps.version.outputs.change_type }}"
+          echo "- New Version: ${{ steps.version.outputs.new_version }}"
+          echo "- Tag Exists: ${{ steps.check-tag.outputs.tag_exists }}"
