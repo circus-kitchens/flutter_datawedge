@@ -40,11 +40,11 @@
 11. **Android build verification gate active in CI** - `.github/workflows/pull_request.yml` includes `flutter build apk` step for example app; PR cannot merge if Android build fails; Kotlin compilation errors surface in GitHub UI
 12. **Test placeholder exists and passes in CI** - `test/flutter_datawedge_test.dart` exists with at least one passing test; `flutter test` executes in CI workflow and passes; test gate blocks PR merge if any test fails
 
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 01-01-PLAN.md — Update pubspec.yaml SDK constraints and all dependency versions
-- [ ] 01-02-PLAN.md — Migrate android/build.gradle to Kotlin DSL, update Gradle 9.4.1 and Kotlin 2.3.20, update generate.sh, regenerate Pigeon and Freezed code
+- [x] 01-02-PLAN.md — Migrate android/build.gradle to Kotlin DSL, update Gradle 9.4.1 and Kotlin 2.3.20, update generate.sh, regenerate Pigeon and Freezed code
 - [ ] 01-03-PLAN.md — Extend pull_request.yml with Android build and test jobs; create placeholder test; remove pub.dev publish workflow
 
 ---
@@ -74,7 +74,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Dependency Modernization & Android Build Verification | 1/3 | In Progress|  |
+| 1. Dependency Modernization & Android Build Verification | 2/3 | In Progress|  |
 | 2. Release Automation & Semantic Versioning | 0/N | Not started | — |
 
 ---
