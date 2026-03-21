@@ -595,3 +595,17 @@ class DecoderConfigItem {
   Decoder? decoder;
   bool? enabled;
 }
+
+@HostApi()
+abstract class LedLightBarHostApi {
+  void setLight(int ledId, int color);
+  void setLedOff();
+  void setLightSequence(
+    int ledId,
+    int color1,
+    int period1,
+    int color2,
+    int period2,
+  );
+  void setLedSequenceOff(int ledId, int color);
+}

@@ -22,15 +22,6 @@ void main() {
 Future<void> dwTest() async {
   var dataWedge = FlutterDataWedge.instance;
 
-  debugPrint("Creating profile...");
-  try {
-    await dataWedge.createProfile("TestFlutter", autoActivate: true);
-  } catch (e, stackTrace) {
-    debugPrint("Creating failed...");
-    debugPrint(stackTrace.toString());
-    debugPrint(e.toString());
-  }
-
   var config = ProfileConfig(
     profileName: "TestFlutter",
     profileEnabled: true,
@@ -197,11 +188,90 @@ class _MyAppState extends State<_MyApp> {
           ),
         ),
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.only(top: 8),
-        separatorBuilder: (context, n) => Divider(),
-        itemBuilder: _buildScan,
-        itemCount: _scans.length,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text('LED Light Bar Controls', style: Theme.of(context).textTheme.titleMedium),
+                    SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => FlutterDataWedge.instance.led.setLight(
+                            Colors.green.shade700,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade700,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Green'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => FlutterDataWedge.instance.led.setLight(
+                            Colors.red.shade700,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red.shade700,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Red'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => FlutterDataWedge.instance.led.setLightSequence(
+                            color1: Colors.red.shade700,
+                            period1: const Duration(milliseconds: 500),
+                            color2: Colors.blue.shade700,
+                            period2: const Duration(milliseconds: 500),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue.shade700,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Police Sequence'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => FlutterDataWedge.instance.led.setLedSequenceOff(
+                            Colors.green,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Green Sequence Off'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => FlutterDataWedge.instance.led.setLedOff(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey.shade800,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Turn Off'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.only(top: 8),
+              separatorBuilder: (context, n) => const Divider(),
+              itemBuilder: _buildScan,
+              itemCount: _scans.length,
+            ),
+          ),
+        ],
       ),
     );
   }

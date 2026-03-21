@@ -11,6 +11,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import com.circuskitchens.flutter_datawedge.pigeon.DataWedgeFlutterApi
 import com.circuskitchens.flutter_datawedge.pigeon.DataWedgeHostApi
+import com.circuskitchens.flutter_datawedge.pigeon.LedLightBarHostApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 
 class FlutterDatawedgePlugin : FlutterPlugin {
@@ -19,6 +20,7 @@ class FlutterDatawedgePlugin : FlutterPlugin {
     private var flutter: FlutterPlugin.FlutterPluginBinding? = null
     private var flutterApi: DataWedgeFlutterApi? = null
     private var dwInterface: DWInterface? = null
+    private var ledServiceConnection: LedServiceConnection? = null
     private lateinit var intentFilter: IntentFilter
 
     @RequiresApi(LOLLIPOP)
@@ -29,12 +31,19 @@ class FlutterDatawedgePlugin : FlutterPlugin {
         flutterApi = api
         DataWedgeHostApi.setUp(flutterPluginBinding.binaryMessenger,dwInterface)
         dwInterface?.setupBroadcastReceiver()
+        
+        ledServiceConnection = LedServiceConnection(flutterPluginBinding.applicationContext)
+        LedLightBarHostApi.setUp(flutterPluginBinding.binaryMessenger, ledServiceConnection)
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         dwInterface?.dispose()
         DataWedgeHostApi.setUp(binding.binaryMessenger,null)
         flutterApi = null
+        
+        ledServiceConnection?.dispose()
+        LedLightBarHostApi.setUp(binding.binaryMessenger, null)
+        ledServiceConnection = null
     }
 
 }

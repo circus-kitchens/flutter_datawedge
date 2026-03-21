@@ -31,6 +31,11 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   /// Get the singleton instance to this class
   static FlutterDataWedge get instance => _flutterDataWedge;
 
+  final LedLightBar _led = LedLightBar();
+
+  /// Access the KC50 LED Light Bar API
+  LedLightBar get led => _led;
+
   /// create a new profile in data wedge with the name [profileName]
   /// if [autoActivate] is true, current app is added as an activation app
   /// to the profile.
@@ -158,27 +163,43 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   Future<void> resumePlugin() async {
     logger.debug('Resuming plugin');
     final resCode = await _hostApi.resumePlugin();
-    logger.debug('Resume plugin result: $resCode');
+
+    if (resCode != 'SUCCESS') {
+      logger.debug('Resume plugin result: $resCode');
+      throw Exception('Failed to resume plugin: $resCode');
+    }
   }
 
   /// Suspends scanning temporarily
   Future<void> suspendPlugin() async {
     logger.debug('Suspending plugin');
     final resCode = await _hostApi.suspendPlugin();
-    logger.debug('Suspend plugin result: $resCode');
+
+    if (resCode != 'SUCCESS') {
+      logger.debug('Suspend plugin result: $resCode');
+      throw Exception('Failed to suspend plugin: $resCode');
+    }
   }
 
   /// Disables scanning
   Future<void> disablePlugin() async {
     logger.debug('Disabling plugin');
     final resCode = await _hostApi.disablePlugin();
-    logger.debug('Disable plugin result: $resCode');
+
+    if (resCode != 'SUCCESS') {
+      logger.debug('Disable plugin result: $resCode');
+      throw Exception('Failed to disable plugin: $resCode');
+    }
   }
 
   /// Enables scanning
   Future<void> enablePlugin() async {
     logger.debug('Enabling plugin');
     final resCode = await _hostApi.enablePlugin();
-    logger.debug('Enable plugin result: $resCode');
+
+    if (resCode != 'SUCCESS') {
+      logger.debug('Enable plugin result: $resCode');
+      throw Exception('Failed to enable plugin: $resCode');
+    }
   }
 }

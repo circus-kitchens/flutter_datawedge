@@ -10,9 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
 Object? _extractReplyValueOrThrow(
-    List<Object?>? replyList,
-    String channelName, {
-    required bool isNullValid,
+  List<Object?>? replyList,
+  String channelName, {
+  required bool isNullValid,
 }) {
   if (replyList == null) {
     throw PlatformException(
@@ -34,8 +34,11 @@ Object? _extractReplyValueOrThrow(
   return replyList.firstOrNull;
 }
 
-
-List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty = false}) {
+List<Object?> wrapResponse({
+  Object? result,
+  PlatformException? error,
+  bool empty = false,
+}) {
   if (empty) {
     return <Object?>[];
   }
@@ -44,20 +47,24 @@ List<Object?> wrapResponse({Object? result, PlatformException? error, bool empty
   }
   return <Object?>[error.code, error.message, error.details];
 }
+
 bool _deepEquals(Object? a, Object? b) {
   if (a is List && b is List) {
     return a.length == b.length &&
-        a.indexed
-        .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+        a.indexed.every(
+          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
+        );
   }
   if (a is Map && b is Map) {
-    return a.length == b.length && a.entries.every((MapEntry<Object?, Object?> entry) =>
-        (b as Map<Object?, Object?>).containsKey(entry.key) &&
-        _deepEquals(entry.value, b[entry.key]));
+    return a.length == b.length &&
+        a.entries.every(
+          (MapEntry<Object?, Object?> entry) =>
+              (b as Map<Object?, Object?>).containsKey(entry.key) &&
+              _deepEquals(entry.value, b[entry.key]),
+        );
   }
   return a == b;
 }
-
 
 /// Mode for profile creations
 enum ConfigMode {
@@ -450,7 +457,8 @@ class AppEntry {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static AppEntry decode(Object result) {
     result as List<Object?>;
@@ -474,8 +482,7 @@ class AppEntry {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class PluginIntentParamters {
@@ -508,7 +515,8 @@ class PluginIntentParamters {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PluginIntentParamters decode(Object result) {
     result as List<Object?>;
@@ -535,8 +543,7 @@ class PluginIntentParamters {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 /// Used to configure the barcode plugin. Parameters can be found here
@@ -982,7 +989,8 @@ class PluginBarcodeParamters {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PluginBarcodeParamters decode(Object result) {
     result as List<Object?>;
@@ -1059,7 +1067,8 @@ class PluginBarcodeParamters {
       marginlessEffortLevel1d: result[69] as EffortLevel?,
       poorQualityBcDecodeEffortLevel: result[70] as EffortLevel?,
       charsetName: result[71] as Charset?,
-      autoCharsetPrefferedOrder: (result[72] as List<Object?>?)?.cast<String?>(),
+      autoCharsetPrefferedOrder: (result[72] as List<Object?>?)
+          ?.cast<String?>(),
       autoCharsetFallback: result[73] as Charset?,
       viewFinderMode: result[74] as ViewFinderMode?,
       codeIdType: result[75] as CodeIdType?,
@@ -1102,8 +1111,7 @@ class PluginBarcodeParamters {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class PluginConfig {
@@ -1128,7 +1136,8 @@ class PluginConfig {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PluginConfig decode(Object result) {
     result as List<Object?>;
@@ -1153,8 +1162,7 @@ class PluginConfig {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class ProfileConfig {
@@ -1191,7 +1199,8 @@ class ProfileConfig {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static ProfileConfig decode(Object result) {
     result as List<Object?>;
@@ -1219,8 +1228,7 @@ class ProfileConfig {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class ScanEvent {
@@ -1253,7 +1261,8 @@ class ScanEvent {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static ScanEvent decode(Object result) {
     result as List<Object?>;
@@ -1280,8 +1289,7 @@ class ScanEvent {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class StatusChangeEvent {
@@ -1298,7 +1306,8 @@ class StatusChangeEvent {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static StatusChangeEvent decode(Object result) {
     result as List<Object?>;
@@ -1321,8 +1330,7 @@ class StatusChangeEvent {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class DecoderConfigItem {
@@ -1343,7 +1351,8 @@ class DecoderConfigItem {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static DecoderConfigItem decode(Object result) {
     result as List<Object?>;
@@ -1367,10 +1376,8 @@ class DecoderConfigItem {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
-
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -1379,136 +1386,136 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is ConfigMode) {
+    } else if (value is ConfigMode) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
-    }    else if (value is PluginName) {
+    } else if (value is PluginName) {
       buffer.putUint8(130);
       writeValue(buffer, value.index);
-    }    else if (value is ScannerIdentifer) {
+    } else if (value is ScannerIdentifer) {
       buffer.putUint8(131);
       writeValue(buffer, value.index);
-    }    else if (value is UpcSupplementalMode) {
+    } else if (value is UpcSupplementalMode) {
       buffer.putUint8(132);
       writeValue(buffer, value.index);
-    }    else if (value is UpcEanCouponReport) {
+    } else if (value is UpcEanCouponReport) {
       buffer.putUint8(133);
       writeValue(buffer, value.index);
-    }    else if (value is UpcEanBooklandFormat) {
+    } else if (value is UpcEanBooklandFormat) {
       buffer.putUint8(134);
       writeValue(buffer, value.index);
-    }    else if (value is ScanningMode) {
+    } else if (value is ScanningMode) {
       buffer.putUint8(135);
       writeValue(buffer, value.index);
-    }    else if (value is InverseOcr) {
+    } else if (value is InverseOcr) {
       buffer.putUint8(136);
       writeValue(buffer, value.index);
-    }    else if (value is OcrOrientation) {
+    } else if (value is OcrOrientation) {
       buffer.putUint8(137);
       writeValue(buffer, value.index);
-    }    else if (value is IntentDelivery) {
+    } else if (value is IntentDelivery) {
       buffer.putUint8(138);
       writeValue(buffer, value.index);
-    }    else if (value is DpmMode) {
+    } else if (value is DpmMode) {
       buffer.putUint8(139);
       writeValue(buffer, value.index);
-    }    else if (value is BeamWidth) {
+    } else if (value is BeamWidth) {
       buffer.putUint8(140);
       writeValue(buffer, value.index);
-    }    else if (value is PowerMode) {
+    } else if (value is PowerMode) {
       buffer.putUint8(141);
       writeValue(buffer, value.index);
-    }    else if (value is MpdMode) {
+    } else if (value is MpdMode) {
       buffer.putUint8(142);
       writeValue(buffer, value.index);
-    }    else if (value is PicklistMode) {
+    } else if (value is PicklistMode) {
       buffer.putUint8(143);
       writeValue(buffer, value.index);
-    }    else if (value is ReaderMode) {
+    } else if (value is ReaderMode) {
       buffer.putUint8(144);
       writeValue(buffer, value.index);
-    }    else if (value is TriggerSource) {
+    } else if (value is TriggerSource) {
       buffer.putUint8(145);
       writeValue(buffer, value.index);
-    }    else if (value is DpmIlluminationControl) {
+    } else if (value is DpmIlluminationControl) {
       buffer.putUint8(146);
       writeValue(buffer, value.index);
-    }    else if (value is VolumeSliderType) {
+    } else if (value is VolumeSliderType) {
       buffer.putUint8(147);
       writeValue(buffer, value.index);
-    }    else if (value is CodeIdType) {
+    } else if (value is CodeIdType) {
       buffer.putUint8(148);
       writeValue(buffer, value.index);
-    }    else if (value is ViewFinderMode) {
+    } else if (value is ViewFinderMode) {
       buffer.putUint8(149);
       writeValue(buffer, value.index);
-    }    else if (value is Charset) {
+    } else if (value is Charset) {
       buffer.putUint8(150);
       writeValue(buffer, value.index);
-    }    else if (value is EffortLevel) {
+    } else if (value is EffortLevel) {
       buffer.putUint8(151);
       writeValue(buffer, value.index);
-    }    else if (value is Inverse1dMode) {
+    } else if (value is Inverse1dMode) {
       buffer.putUint8(152);
       writeValue(buffer, value.index);
-    }    else if (value is DelayToLowPowerMode) {
+    } else if (value is DelayToLowPowerMode) {
       buffer.putUint8(153);
       writeValue(buffer, value.index);
-    }    else if (value is LcdMode) {
+    } else if (value is LcdMode) {
       buffer.putUint8(154);
       writeValue(buffer, value.index);
-    }    else if (value is IlluminationMode) {
+    } else if (value is IlluminationMode) {
       buffer.putUint8(155);
       writeValue(buffer, value.index);
-    }    else if (value is SceneDetectQualifier) {
+    } else if (value is SceneDetectQualifier) {
       buffer.putUint8(156);
       writeValue(buffer, value.index);
-    }    else if (value is AimType) {
+    } else if (value is AimType) {
       buffer.putUint8(157);
       writeValue(buffer, value.index);
-    }    else if (value is SwitchOnEvent) {
+    } else if (value is SwitchOnEvent) {
       buffer.putUint8(158);
       writeValue(buffer, value.index);
-    }    else if (value is PresentationModeSensitivity) {
+    } else if (value is PresentationModeSensitivity) {
       buffer.putUint8(159);
       writeValue(buffer, value.index);
-    }    else if (value is LabelType) {
+    } else if (value is LabelType) {
       buffer.putUint8(160);
       writeValue(buffer, value.index);
-    }    else if (value is ScanSource) {
+    } else if (value is ScanSource) {
       buffer.putUint8(161);
       writeValue(buffer, value.index);
-    }    else if (value is DecodeMode) {
+    } else if (value is DecodeMode) {
       buffer.putUint8(162);
       writeValue(buffer, value.index);
-    }    else if (value is ScannerState) {
+    } else if (value is ScannerState) {
       buffer.putUint8(163);
       writeValue(buffer, value.index);
-    }    else if (value is Decoder) {
+    } else if (value is Decoder) {
       buffer.putUint8(164);
       writeValue(buffer, value.index);
-    }    else if (value is AppEntry) {
+    } else if (value is AppEntry) {
       buffer.putUint8(165);
       writeValue(buffer, value.encode());
-    }    else if (value is PluginIntentParamters) {
+    } else if (value is PluginIntentParamters) {
       buffer.putUint8(166);
       writeValue(buffer, value.encode());
-    }    else if (value is PluginBarcodeParamters) {
+    } else if (value is PluginBarcodeParamters) {
       buffer.putUint8(167);
       writeValue(buffer, value.encode());
-    }    else if (value is PluginConfig) {
+    } else if (value is PluginConfig) {
       buffer.putUint8(168);
       writeValue(buffer, value.encode());
-    }    else if (value is ProfileConfig) {
+    } else if (value is ProfileConfig) {
       buffer.putUint8(169);
       writeValue(buffer, value.encode());
-    }    else if (value is ScanEvent) {
+    } else if (value is ScanEvent) {
       buffer.putUint8(170);
       writeValue(buffer, value.encode());
-    }    else if (value is StatusChangeEvent) {
+    } else if (value is StatusChangeEvent) {
       buffer.putUint8(171);
       writeValue(buffer, value.encode());
-    }    else if (value is DecoderConfigItem) {
+    } else if (value is DecoderConfigItem) {
       buffer.putUint8(172);
       writeValue(buffer, value.encode());
     } else {
@@ -1660,33 +1667,46 @@ abstract class DataWedgeFlutterApi {
 
   void onConfigUpdate();
 
-  static void setUp(DataWedgeFlutterApi? api, {BinaryMessenger? binaryMessenger, String messageChannelSuffix = '',}) {
-    messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  static void setUp(
+    DataWedgeFlutterApi? api, {
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) {
+    messageChannelSuffix = messageChannelSuffix.isNotEmpty
+        ? '.$messageChannelSuffix'
+        : '';
     {
       final pigeonVar_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScannerStatusChanged$messageChannelSuffix', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScannerStatusChanged$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
           final List<Object?> args = message! as List<Object?>;
-          final StatusChangeEvent arg_statusEvent = args[0]! as StatusChangeEvent;
+          final StatusChangeEvent arg_statusEvent =
+              args[0]! as StatusChangeEvent;
           try {
             api.onScannerStatusChanged(arg_statusEvent);
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
           }
         });
       }
     }
     {
       final pigeonVar_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScanResult$messageChannelSuffix', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onScanResult$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
@@ -1698,16 +1718,20 @@ abstract class DataWedgeFlutterApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
           }
         });
       }
     }
     {
       final pigeonVar_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onProfileChange$messageChannelSuffix', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onProfileChange$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
@@ -1717,16 +1741,20 @@ abstract class DataWedgeFlutterApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
           }
         });
       }
     }
     {
       final pigeonVar_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onConfigUpdate$messageChannelSuffix', pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeFlutterApi.onConfigUpdate$messageChannelSuffix',
+        pigeonChannelCodec,
+        binaryMessenger: binaryMessenger,
+      );
       if (api == null) {
         pigeonVar_channel.setMessageHandler(null);
       } else {
@@ -1736,8 +1764,10 @@ abstract class DataWedgeFlutterApi {
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
-          }          catch (e) {
-            return wrapResponse(error: PlatformException(code: 'error', message: e.toString()));
+          } catch (e) {
+            return wrapResponse(
+              error: PlatformException(code: 'error', message: e.toString()),
+            );
           }
         });
       }
@@ -1749,9 +1779,13 @@ class DataWedgeHostApi {
   /// Constructor for [DataWedgeHostApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  DataWedgeHostApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  DataWedgeHostApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) : pigeonVar_binaryMessenger = binaryMessenger,
+       pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
+           ? '.$messageChannelSuffix'
+           : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -1759,25 +1793,28 @@ class DataWedgeHostApi {
   final String pigeonVar_messageChannelSuffix;
 
   Future<void> createProfile(String profileName) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.createProfile$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.createProfile$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[profileName]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[profileName],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
   }
 
   Future<void> registerForNotifications() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.registerForNotifications$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.registerForNotifications$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1787,15 +1824,15 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
   }
 
   Future<void> unregisterForNotifications() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.unregisterForNotifications$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.unregisterForNotifications$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1805,15 +1842,15 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
   }
 
   Future<String> suspendPlugin() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.suspendPlugin$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.suspendPlugin$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1823,16 +1860,16 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as String;
   }
 
   Future<String> resumePlugin() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.resumePlugin$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.resumePlugin$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1842,16 +1879,16 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as String;
   }
 
   Future<String> enablePlugin() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.enablePlugin$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.enablePlugin$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1861,16 +1898,16 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as String;
   }
 
   Future<String> disablePlugin() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.disablePlugin$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.disablePlugin$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1880,35 +1917,37 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as String;
   }
 
   Future<String> softScanTrigger(bool on) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.softScanTrigger$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.softScanTrigger$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[on]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[on],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as String;
   }
 
   Future<String> getPackageIdentifer() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.getPackageIdentifer$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.getPackageIdentifer$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -1918,47 +1957,156 @@ class DataWedgeHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as String;
   }
 
-  Future<void> setDecoder(Decoder decoder, bool enabled, String profileName) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.setDecoder$pigeonVar_messageChannelSuffix';
+  Future<void> setDecoder(
+    Decoder decoder,
+    bool enabled,
+    String profileName,
+  ) async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.setDecoder$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[decoder, enabled, profileName]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[decoder, enabled, profileName],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
   }
 
   Future<void> setProfileConfig(ProfileConfig config) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.setProfileConfig$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.DataWedgeHostApi.setProfileConfig$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[config]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[config],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+}
+
+class LedLightBarHostApi {
+  /// Constructor for [LedLightBarHostApi].  The [binaryMessenger] named argument is
+  /// available for dependency injection.  If it is left null, the default
+  /// BinaryMessenger will be used which routes to the host platform.
+  LedLightBarHostApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) : pigeonVar_binaryMessenger = binaryMessenger,
+       pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
+           ? '.$messageChannelSuffix'
+           : '';
+  final BinaryMessenger? pigeonVar_binaryMessenger;
+
+  static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
+
+  final String pigeonVar_messageChannelSuffix;
+
+  Future<void> setLight(int ledId, int color) async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.LedLightBarHostApi.setLight$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[ledId, color],
+    );
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  Future<void> setLedOff() async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.LedLightBarHostApi.setLedOff$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  Future<void> setLightSequence(
+    int ledId,
+    int color1,
+    int period1,
+    int color2,
+    int period2,
+  ) async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.LedLightBarHostApi.setLightSequence$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[ledId, color1, period1, color2, period2],
+    );
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  Future<void> setLedSequenceOff(int ledId, int color) async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.flutter_datawedge.LedLightBarHostApi.setLedSequenceOff$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[ledId, color],
+    );
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
   }
 }
