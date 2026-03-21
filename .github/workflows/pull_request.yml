@@ -8,7 +8,6 @@ permissions:
   checks: write
   contents: read
 env:
-  FLUTTER_VERSION: "3.13.1"
   FLUTTER_CHANNEL: "stable"
 jobs:
   lint:
@@ -16,12 +15,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Flutter Checkout
+        uses: actions/checkout@v4
+      - name: Flutter Setup
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: ${{ env.FLUTTER_CHANNEL }}
       - name: Dependencies
         run: flutter pub get
@@ -32,4 +30,43 @@ jobs:
           fatal-warnings: true
           annotate: true
       - name: Check Formatting
-        run: dart format --set-exit-if-changed --output none $(find lib test -name "*.dart" -not \( -name "*.*mocks.dart" \))
+        run: dart format --set-exit-if-changed --output none $(find lib test -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" \))
+
+  android-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [lint]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - name: Java Setup
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Dependencies
+        run: flutter pub get
+      - name: Build Android Example APK
+        run: cd example && flutter build apk --release
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [lint]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - name: Dependencies
+        run: flutter pub get
+      - name: Run Tests
+        run: flutter test
