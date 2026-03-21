@@ -21,8 +21,8 @@ fun buildIntentConfig(params: PluginIntentParamters): Bundle {
     if(params.intentDelivery != null){
         iParams.putString("intent_delivery",when(params.intentDelivery) {
             IntentDelivery.BROADCAST -> "2"
-            IntentDelivery.STARTACTIVITY -> "0"
-            IntentDelivery.STARTSERVICE -> "1"
+            IntentDelivery.START_ACTIVITY -> "0"
+            IntentDelivery.START_SERVICE -> "1"
         })
     }
 

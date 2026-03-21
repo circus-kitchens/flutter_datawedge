@@ -24,7 +24,7 @@ fun convertLabelType(input: String): LabelType{
         "LABEL-TYPE-TRIOPTIC39" ->   LabelType.TRIOPTIC39
         "LABEL-TYPE-BOOKLAND" ->   LabelType.BOOKLAND
         "LABEL-TYPE-COUPON" ->   LabelType.COUPON
-        "LABEL-TYPE-DATABAR-COUPON" ->   LabelType.DATABARCOUPON
+        "LABEL-TYPE-DATABAR-COUPON" ->   LabelType.DATABAR_COUPON
         "LABEL-TYPE-ISBT128" ->   LabelType.ISBT128
         "LABEL-TYPE-CODE32" ->   LabelType.CODE32
         "LABEL-TYPE-PDF417" ->   LabelType.PDF417
@@ -35,8 +35,8 @@ fun convertLabelType(input: String): LabelType{
         "LABEL-TYPE-DATAMATRIX" ->   LabelType.DATAMATRIX
         "LABEL-TYPE-QRCODE" ->   LabelType.QRCODE
         "LABEL-TYPE-GS1-DATABAR" ->   LabelType.GS1DATABAR
-        "LABEL-TYPE-GS1-DATABAR-LIM" ->   LabelType.GS1DATABARLIM
-        "LABEL-TYPE-GS1-DATABAR-EXP" ->   LabelType.GS1DATABAREXP
+        "LABEL-TYPE-GS1-DATABAR-LIM" ->   LabelType.GS1DATABAR_LIM
+        "LABEL-TYPE-GS1-DATABAR-EXP" ->   LabelType.GS1DATABAR_EXP
         "LABEL-TYPE-USPOSTNET" ->   LabelType.USPOSTNET
         "LABEL-TYPE-USPLANET" ->   LabelType.USPLANET
         "LABEL-TYPE-UKPOSTAL" ->   LabelType.UKPOSTAL
@@ -49,9 +49,9 @@ fun convertLabelType(input: String): LabelType{
         "LABEL-TYPE-AZTEC" ->   LabelType.AZTEC
         "LABEL-TYPE-MICROQR" ->   LabelType.MICROQR
         "LABEL-TYPE-US4STATE" ->   LabelType.US4STATE
-        "LABEL-TYPE-US4STATE-FICS" ->   LabelType.US4STATEFICS
-        "LABEL-TYPE-COMPOSITE-AB" ->   LabelType.COMPOSITEAB
-        "LABEL-TYPE-COMPOSITE-C" ->   LabelType.COMPOSITEC
+        "LABEL-TYPE-US4STATE-FICS" ->   LabelType.US4STATE_FICS
+        "LABEL-TYPE-COMPOSITE-AB" ->   LabelType.COMPOSITE_AB
+        "LABEL-TYPE-COMPOSITE-C" ->   LabelType.COMPOSITE_C
         "LABEL-TYPE-WEBCODE" ->   LabelType.WEBCODE
         "LABEL-TYPE-SIGNATURE" ->   LabelType.SIGNATURE
         "LABEL-TYPE-KOREAN-3OF5" ->   LabelType.KOREAN3OF5

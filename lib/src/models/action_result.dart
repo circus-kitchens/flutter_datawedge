@@ -5,7 +5,7 @@ part 'action_result.freezed.dart';
 
 // https://techdocs.zebra.com/datawedge/latest/guide/api/resultinfo/#example
 @freezed
-class ActionResult with _$ActionResult {
+abstract class ActionResult with _$ActionResult {
   const factory ActionResult({
     required String result,
     required String command,

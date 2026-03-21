@@ -208,9 +208,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
                             else -> throw Error("Unknown decode mode")
                         }
                     )
-                ) { ->
-
-                }
+                ) { _ -> }
 
 
             }
@@ -247,15 +245,15 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
                                     else -> throw Error("Unknown scanner state")
                                 }
                             )
-                        ) { }
+                        ) { _ -> }
                     }
 
                     EXTRA_KEY_VALUE_PROFILE_SWITCH -> {
-                        flutterApi.onProfileChange { }
+                        flutterApi.onProfileChange { _ -> }
                     }
 
                     EXTRA_KEY_VALUE_CONFIGURATION_UPDATE -> {
-                        flutterApi.onConfigUpdate {}
+                        flutterApi.onConfigUpdate { _ -> }
 
                     }
 
@@ -532,7 +530,7 @@ class DWInterface(val context: Context, val flutterApi: DataWedgeFlutterApi) : B
         configBundle.putString("PROFILE_ENABLED", config.profileEnabled.toString())
         configBundle.putString(
             "CONFIG_MODE", when (config.configMode) {
-                ConfigMode.CREATEIFNOTEXISTS -> "CREATE_IF_NOT_EXIST"
+                ConfigMode.CREATE_IF_NOT_EXISTS -> "CREATE_IF_NOT_EXIST"
                 ConfigMode.UPDATE -> "UPDATE"
                 ConfigMode.OVERWRITE -> "OVERWRITE"
             }

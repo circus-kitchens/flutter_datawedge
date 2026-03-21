@@ -2,28 +2,55 @@ group = "com.circuskitchens.flutter_datawedge"
 version = "1.0-SNAPSHOT"
 
 plugins {
-    id("com.android.library") version "8.7.3" apply false
-    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+android {
+    namespace = "com.circuskitchens.flutter_datawedge"
+    compileSdk = 36
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+        }
+    }
+
+    sourceSets {
+        named("main") {
+            java.srcDirs("src/main/kotlin")
+        }
+        named("test") {
+            java.srcDirs("src/test/kotlin")
+        }
+    }
+
+    defaultConfig {
+        minSdk = 21
+    }
+
+    dependencies {
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        testImplementation("org.mockito:mockito-core:5.0.0")
+    }
+
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+
+            it.testLogging {
+                events("passed", "skipped", "failed", "standardOut", "standardError")
+                showStandardStreams = true
+            }
+        }
     }
 }
 
-val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
-rootProject.layout.buildDirectory.value(newBuildDir)
-subprojects {
-    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
-    project.layout.buildDirectory.value(newSubprojectBuildDir)
-}
-
-subprojects {
-    project.evaluationDependsOn(":flutter_datawedge")
-}
-
-tasks.register<Delete>("clean") {
-    delete(rootProject.layout.buildDirectory)
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
 }

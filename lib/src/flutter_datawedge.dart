@@ -21,7 +21,7 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
           'Dont construct this class. Use .instance instead',
         ) {
     _instCount++;
-    DataWedgeFlutterApi.setup(this);
+    DataWedgeFlutterApi.setUp(this);
   }
   final DataWedgeHostApi _hostApi = DataWedgeHostApi();
 

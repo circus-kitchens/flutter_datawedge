@@ -18,19 +18,19 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString(
             "scanner_selection_by_identifier", when (params.scannerSelection) {
                 ScannerIdentifer.AUTO -> "AUTO"
-                ScannerIdentifer.INTERNALIMAGER -> "INTERNAL_IMAGER"
-                ScannerIdentifer.INTERNALLASER -> "INTERNAL_LASER"
-                ScannerIdentifer.INTERNALCAMERA -> "INTERNAL_CAMERA"
-                ScannerIdentifer.SERIALSSI -> "SERIAL_SSI"
-                ScannerIdentifer.BLUETOOTHSSI -> "BLUETOOTH_SSI"
-                ScannerIdentifer.BLUETOOTHRS6000 -> "BLUETOOTH_RS6000"
-                ScannerIdentifer.BLUETOOTHDS2278 -> "BLUETOOTH_DS2278"
-                ScannerIdentifer.BLUETOOTHDS3678 -> "BLUETOOTH_DS3678"
-                ScannerIdentifer.PLUGABLESSI -> "PLUGABLE_SSI"
-                ScannerIdentifer.PLUGABLESSIRS5000 -> "PLUGABLE_SSI_RS5000"
-                ScannerIdentifer.USBSSIDS3608 -> "USB_SSI_DS3608"
-                ScannerIdentifer.BLUETOOTHZEBRA -> "BLUETOOTH_ZEBRA"
-                ScannerIdentifer.USBZEBRA -> "USB_ZEBRA"
+                ScannerIdentifer.INTERNAL_IMAGER -> "INTERNAL_IMAGER"
+                ScannerIdentifer.INTERNAL_LASER -> "INTERNAL_LASER"
+                ScannerIdentifer.INTERNAL_CAMERA -> "INTERNAL_CAMERA"
+                ScannerIdentifer.SERIAL_SSI -> "SERIAL_SSI"
+                ScannerIdentifer.BLUETOOTH_SSI -> "BLUETOOTH_SSI"
+                ScannerIdentifer.BLUETOOTH_RS6000 -> "BLUETOOTH_RS6000"
+                ScannerIdentifer.BLUETOOTH_DS2278 -> "BLUETOOTH_DS2278"
+                ScannerIdentifer.BLUETOOTH_DS3678 -> "BLUETOOTH_DS3678"
+                ScannerIdentifer.PLUGABLE_SSI -> "PLUGABLE_SSI"
+                ScannerIdentifer.PLUGABLE_SSI_RS5000 -> "PLUGABLE_SSI_RS5000"
+                ScannerIdentifer.USB_SSI_DS3608 -> "USB_SSI_DS3608"
+                ScannerIdentifer.BLUETOOTH_ZEBRA -> "BLUETOOTH_ZEBRA"
+                ScannerIdentifer.USB_ZEBRA -> "USB_ZEBRA"
             }
         )
     }
@@ -68,8 +68,8 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
     if (params.upcEanCouponReport != null) {
         bParams.putString(
             "upcean_coupon_report", when (params.upcEanCouponReport) {
-                UpcEanCouponReport.OLDMODE -> "0"
-                UpcEanCouponReport.NEWMODE -> "1"
+                UpcEanCouponReport.OLD_MODE -> "0"
+                UpcEanCouponReport.NEW_MODE -> "1"
                 UpcEanCouponReport.BOTH -> "2"
             }
         )
@@ -92,9 +92,9 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString(
             "scanning_mode", when (params.scanningMode) {
                 ScanningMode.SINGLE -> "1"
-                ScanningMode.DOCUMENTCAPTURE -> "5"
+                ScanningMode.DOCUMENT_CAPTURE -> "5"
                 ScanningMode.UDI -> "2"
-                ScanningMode.MULTIBARCODE -> "3"
+                ScanningMode.MULTI_BARCODE -> "3"
             }
         )
     }
@@ -171,10 +171,10 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
 
         bParams.putString(
             "auto_switch_to_default_on_event", when (params.autoSwitchToDefaultOnEvent) {
-                SwitchOnEvent.CONNECTORDISCONNECT -> "3"
+                SwitchOnEvent.CONNECT_OR_DISCONNECT -> "3"
                 SwitchOnEvent.DISABLED -> "0"
-                SwitchOnEvent.ONCONNECT -> "1"
-                SwitchOnEvent.ONDISCONNECT -> "2"
+                SwitchOnEvent.ON_CONNECT -> "1"
+                SwitchOnEvent.ON_DISCONNECT -> "2"
             }
         )
 
@@ -196,11 +196,11 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
                 TriggerSource.RIGHT -> "RIGHT"
                 TriggerSource.GUN -> "GUN"
                 TriggerSource.PROXIMITY -> "PROXIMITY"
-                TriggerSource.KEYMAPPERSCAN -> "KEY_MAPPER_SCAN"
-                TriggerSource.KEYMAPPERL1 -> "KEY_MAPPER_L1"
-                TriggerSource.KEYMAPPERR1 -> "KEY_MAPPER_R1"
-                TriggerSource.WIREDLEFT -> "WIRED_LEFT"
-                TriggerSource.WIREDRIGHT -> "WIRED_RIGHT"
+                TriggerSource.KEY_MAPPER_SCAN -> "KEY_MAPPER_SCAN"
+                TriggerSource.KEY_MAPPER_L1 -> "KEY_MAPPER_L1"
+                TriggerSource.KEY_MAPPER_R1 -> "KEY_MAPPER_R1"
+                TriggerSource.WIRED_LEFT -> "WIRED_LEFT"
+                TriggerSource.WIRED_RIGHT -> "WIRED_RIGHT"
             }
         )
     }
@@ -241,7 +241,7 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
                 PowerMode.LOW -> "0"
                 PowerMode.OPTIMIZED -> "1"
                 PowerMode.HIGH -> "2"
-                PowerMode.ALWAYSON -> "3"
+                PowerMode.ALWAYS_ON -> "3"
 
             }
         )
@@ -281,14 +281,14 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString(
             "aim_type", when (params.aimType) {
                 AimType.TRIGGER -> "0"
-                AimType.TIMEDHOLD -> "1"
-                AimType.TIMEDRELEASE -> "2"
-                AimType.PRESSANDRELEASE -> "3"
+                AimType.TIMED_HOLD -> "1"
+                AimType.TIMED_RELEASE -> "2"
+                AimType.PRESS_AND_RELEASE -> "3"
                 AimType.PRESENTATION -> "4"
-                AimType.CONTINOUSREAD -> "5"
-                AimType.PRESSANDSUSTAIN -> "6"
-                AimType.PRESSANDCONTINUE -> "7"
-                AimType.TIMEDCONTINOUS -> "8"
+                AimType.CONTINOUS_READ -> "5"
+                AimType.PRESS_AND_SUSTAIN -> "6"
+                AimType.PRESS_AND_CONTINUE -> "7"
+                AimType.TIMED_CONTINOUS -> "8"
             }
         )
     }
@@ -297,7 +297,7 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString(
             "scene_detect_qualifier", when (params.sceneDetectQualifier) {
                 SceneDetectQualifier.NONE -> "0"
-                SceneDetectQualifier.PROXIMITYSENSOR -> "1"
+                SceneDetectQualifier.PROXIMITY_SENSOR -> "1"
             }
         )
     }
@@ -389,7 +389,7 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
                 Charset.AUTO -> "AUTO"
                 Charset.UTF8 -> "UTF-8"
                 Charset.ISO88591 -> "ISO-8859-1"
-                Charset.SHIFTJIS -> "Shift_JIS"
+                Charset.SHIFT_JIS -> "Shift_JIS"
                 Charset.GB18030 -> "GB18030"
                 Charset.NONE -> throw Error("Can not use none charset here")
 
@@ -412,7 +412,7 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
                 Charset.AUTO -> throw Error("Can not use auto charset here")
                 Charset.UTF8 -> "UTF-8"
                 Charset.ISO88591 -> "ISO-8859-1"
-                Charset.SHIFTJIS -> "Shift_JIS"
+                Charset.SHIFT_JIS -> "Shift_JIS"
                 Charset.GB18030 -> "GB18030"
                 Charset.NONE -> "NONE"
                 else -> throw Error("Unknown charset")
@@ -424,7 +424,7 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString(
             "viewfinder_mode", when (params.viewFinderMode) {
                 ViewFinderMode.ENABLED -> "1"
-                ViewFinderMode.STATICRETICLE -> "2"
+                ViewFinderMode.STATIC_RETICLE -> "2"
             }
         )
     }
@@ -443,7 +443,7 @@ fun buildBarcodeConfig(params: PluginBarcodeParamters): Bundle {
         bParams.putString(
             "volume_slider_type", when (params.volumeSliderType) {
                 VolumeSliderType.RINGER -> "0"
-                VolumeSliderType.MUSICMEDIA -> "1"
+                VolumeSliderType.MUSIC_MEDIA -> "1"
                 VolumeSliderType.ALARMS -> "2"
                 VolumeSliderType.NOTIFICATION -> "3"
             }
