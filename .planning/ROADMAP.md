@@ -45,7 +45,7 @@
 Plans:
 - [x] 01-01-PLAN.md — Update pubspec.yaml SDK constraints and all dependency versions
 - [x] 01-02-PLAN.md — Migrate android/build.gradle to Kotlin DSL, update Gradle 9.4.1 and Kotlin 2.3.20, update generate.sh, regenerate Pigeon and Freezed code
-- [ ] 01-03-PLAN.md — Extend pull_request.yml with Android build and test jobs; create placeholder test; remove pub.dev publish workflow
+- [x] 01-03-PLAN.md — Extend pull_request.yml with Android build and test jobs; create placeholder test; remove pub.dev publish workflow
 
 ---
 

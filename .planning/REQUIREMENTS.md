@@ -30,11 +30,11 @@ Requirements for this upgrade milestone. Each maps to roadmap phases.
 
 ### CI Pipeline
 
-- [ ] **CI-01**: GitHub Actions PR workflow runs dart analyze on pull requests
-- [ ] **CI-02**: GitHub Actions PR workflow runs dart format check on pull requests
-- [ ] **CI-03**: GitHub Actions PR workflow runs lint rules on pull requests
-- [ ] **CI-04**: GitHub Actions PR workflow verifies Android build compiles
-- [ ] **CI-05**: GitHub Actions PR workflow runs flutter test (placeholder test passes)
+- [x] **CI-01**: GitHub Actions PR workflow runs dart analyze on pull requests
+- [x] **CI-02**: GitHub Actions PR workflow runs dart format check on pull requests
+- [x] **CI-03**: GitHub Actions PR workflow runs lint rules on pull requests
+- [x] **CI-04**: GitHub Actions PR workflow verifies Android build compiles
+- [x] **CI-05**: GitHub Actions PR workflow runs flutter test (placeholder test passes)
 
 ### Automated Versioning
 
@@ -45,8 +45,8 @@ Requirements for this upgrade milestone. Each maps to roadmap phases.
 
 ### Testing
 
-- [ ] **TST-01**: Placeholder test file exists and passes with flutter test
-- [ ] **TST-02**: Test execution gate exists in CI pipeline for future test additions
+- [x] **TST-01**: Placeholder test file exists and passes with flutter test
+- [x] **TST-02**: Test execution gate exists in CI pipeline for future test additions
 
 ## v2 Requirements
 
@@ -92,13 +92,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GEN-02 | 1 | Complete |
 | GEN-03 | 1 | Complete |
 | GEN-04 | 1 | Complete |
-| CI-01 | 1 | Pending |
-| CI-02 | 1 | Pending |
-| CI-03 | 1 | Pending |
-| CI-04 | 1 | Pending |
-| CI-05 | 1 | Pending |
-| TST-01 | 1 | Pending |
-| TST-02 | 1 | Pending |
+| CI-01 | 1 | Complete |
+| CI-02 | 1 | Complete |
+| CI-03 | 1 | Complete |
+| CI-04 | 1 | Complete |
+| CI-05 | 1 | Complete |
+| TST-01 | 1 | Complete |
+| TST-02 | 1 | Complete |
 | VER-01 | 2 | Pending |
 | VER-02 | 2 | Pending |
 | VER-03 | 2 | Pending |
