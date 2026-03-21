@@ -14,7 +14,7 @@ void main() {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: MyApp(),
+      home: _MyApp(),
     ),
   );
 }
@@ -22,38 +22,44 @@ void main() {
 Future<void> dwTest() async {
   var dataWedge = FlutterDataWedge.instance;
 
-  print("Creating profile...");
+  debugPrint("Creating profile...");
   try {
     await dataWedge.createProfile("TestFlutter", autoActivate: true);
-  } catch (e) {
-    print("Creating failed...");
+  } catch (e, stackTrace) {
+    debugPrint("Creating failed...");
+    debugPrint(stackTrace.toString());
+    debugPrint(e.toString());
   }
 
   var config = ProfileConfig(
-      profileName: "TestFlutter",
-      profileEnabled: true,
-      configMode: ConfigMode.update,
-      barcodeParamters: PluginBarcodeParamters(
-          scannerSelection: ScannerIdentifer.auto,
-          enableHardwareTrigger: true,
-          enableAimMode: false,
-          upcEeanLinearDecode: true,
-          dataBarToUpcEan: true));
+    profileName: "TestFlutter",
+    profileEnabled: true,
+    configMode: ConfigMode.update,
+    barcodeParamters: PluginBarcodeParamters(
+      scannerSelection: ScannerIdentifer.auto,
+      enableHardwareTrigger: true,
+      enableAimMode: false,
+      upcEeanLinearDecode: true,
+      dataBarToUpcEan: true,
+    ),
+  );
 
   await dataWedge.setConfig(config);
 
   await dataWedge.enableAllDecoders("TestFlutter");
 }
 
-class MyApp extends StatefulWidget {
+class _MyApp extends StatefulWidget {
+  const _MyApp();
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<_MyApp> {
   late StreamSubscription<ScanEvent> scanSub;
 
-  List<ScanEvent> _scans = [];
+  final List<ScanEvent> _scans = [];
 
   StatusChangeEvent? _status;
 
@@ -97,15 +103,9 @@ class _MyAppState extends State<MyApp> {
         maxLines: 2,
       ),
       subtitle: Wrap(spacing: 4, children: [
-        Chip(
-            visualDensity: VisualDensity.compact,
-            label: Text(scan.labelType.name.toString())),
-        Chip(
-            visualDensity: VisualDensity.compact,
-            label: Text(scan.decodeMode.name.toString())),
-        Chip(
-            visualDensity: VisualDensity.compact,
-            label: Text(scan.source.name.toString()))
+        Chip(visualDensity: VisualDensity.compact, label: Text(scan.labelType.name.toString())),
+        Chip(visualDensity: VisualDensity.compact, label: Text(scan.decodeMode.name.toString())),
+        Chip(visualDensity: VisualDensity.compact, label: Text(scan.source.name.toString()))
       ]),
     );
   }
@@ -117,9 +117,8 @@ class _MyAppState extends State<MyApp> {
         title: const Text('🦓 Flutter DataWedge Example'),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: Colors.grey.shade200, boxShadow: [
-          BoxShadow(color: Colors.grey.shade400, blurRadius: 10)
-        ]),
+        decoration: BoxDecoration(
+            color: Colors.grey.shade200, boxShadow: [BoxShadow(color: Colors.grey.shade400, blurRadius: 10)]),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -136,15 +135,13 @@ class _MyAppState extends State<MyApp> {
                   FlutterDataWedge.instance.softScanTrigger(on: false);
                 },
                 child: ElevatedButton(
+                  onPressed: _status?.newState == ScannerState.waiting ? () {} : null,
                   child: Text("Trigger"),
-                  onPressed:
-                      _status?.newState == ScannerState.waiting ? () {} : null,
                 ),
               ),
               Row(
                 children: [
-                  Text((_status?.newState.toString() ?? "Unknown"),
-                      style: Theme.of(context).textTheme.labelLarge),
+                  Text((_status?.newState.toString() ?? "Unknown"), style: Theme.of(context).textTheme.labelLarge),
                 ],
               ),
               SizedBox(
@@ -156,8 +153,7 @@ class _MyAppState extends State<MyApp> {
                     child: ElevatedButton(
                       onPressed: _status?.newState != ScannerState.disabled
                           ? null
-                          : () async =>
-                              FlutterDataWedge.instance.enablePlugin(),
+                          : () async => FlutterDataWedge.instance.enablePlugin(),
                       child: Text('Enable Scanner'),
                     ),
                   ),
@@ -168,8 +164,7 @@ class _MyAppState extends State<MyApp> {
                     child: ElevatedButton(
                       onPressed: _status?.newState == ScannerState.disabled
                           ? null
-                          : () async =>
-                              FlutterDataWedge.instance.disablePlugin(),
+                          : () async => FlutterDataWedge.instance.disablePlugin(),
                       child: Text('Disable Scanner'),
                     ),
                   ),

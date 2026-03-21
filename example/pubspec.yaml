@@ -1,6 +1,5 @@
 name: flutter_datawedge_example
 description: Demonstrates how to use the flutter_datawedge plugin.
-
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
@@ -13,11 +12,11 @@ dependencies:
   flutter_datawedge:
     path: ../
 
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

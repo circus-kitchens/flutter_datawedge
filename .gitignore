@@ -11,3 +11,4 @@ Dart_packages.xml
 *.idea/
 pubspec.lock
 doc
+.planning/

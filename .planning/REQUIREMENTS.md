@@ -38,10 +38,10 @@ Requirements for this upgrade milestone. Each maps to roadmap phases.
 
 ### Automated Versioning
 
-- [ ] **VER-01**: mtrust-api-guard integrated into GitHub Actions release workflow
-- [ ] **VER-02**: Semantic version bumped automatically based on API change detection
-- [ ] **VER-03**: Changelog generated automatically from API diffs
-- [ ] **VER-04**: Git tags created automatically on version bump
+- [x] **VER-01**: mtrust-api-guard integrated into GitHub Actions release workflow
+- [x] **VER-02**: Semantic version bumped automatically based on API change detection
+- [x] **VER-03**: Changelog generated automatically from API diffs
+- [x] **VER-04**: Git tags created automatically on version bump
 
 ### Testing
 
@@ -99,10 +99,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CI-05 | 1 | Complete |
 | TST-01 | 1 | Complete |
 | TST-02 | 1 | Complete |
-| VER-01 | 2 | Pending |
-| VER-02 | 2 | Pending |
-| VER-03 | 2 | Pending |
-| VER-04 | 2 | Pending |
+| VER-01 | 2 | Complete |
+| VER-02 | 2 | Complete |
+| VER-03 | 2 | Complete |
+| VER-04 | 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 23 total

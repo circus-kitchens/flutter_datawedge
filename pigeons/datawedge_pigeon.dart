@@ -1,4 +1,4 @@
-//ignore_for_file: avoid_positional_boolean_parameters
+//ignore_for_file: avoid_positional_boolean_parameters, is necessary for pigeon
 
 import 'package:pigeon/pigeon.dart';
 
@@ -51,7 +51,7 @@ enum ScannerIdentifer {
   plugableSsiRS5000,
   usbSsiDS3608,
   bluetoothZebra,
-  usbZebra
+  usbZebra,
 }
 
 enum UpcSupplementalMode {
@@ -62,7 +62,7 @@ enum UpcSupplementalMode {
   supplemental378to379,
   supplemental978to979,
   supplemental414to419and434to439,
-  supplemental977
+  supplemental977,
 }
 
 enum UpcEanCouponReport { oldMode, newMode, both }
@@ -90,7 +90,7 @@ enum OcrOrientation {
   degree_90,
   degree_180,
   degree_270,
-  omnidirectional
+  omnidirectional,
 }
 
 class PluginIntentParamters {
@@ -354,7 +354,7 @@ enum AimType {
   continousRead,
   pressAndSustain,
   pressAndContinue,
-  timedContinous
+  timedContinous,
 }
 
 enum SwitchOnEvent { disabled, onConnect, onDisconnect, connectOrDisconnect }

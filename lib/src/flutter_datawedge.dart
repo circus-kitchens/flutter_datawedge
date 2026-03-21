@@ -16,10 +16,10 @@ class ProfileNameEmptyError extends Error {}
 class FlutterDataWedge extends DataWedgeFlutterApi {
   /// Used to create a new [FlutterDataWedge]
   FlutterDataWedge()
-      : assert(
-          _instCount == 0,
-          'Dont construct this class. Use .instance instead',
-        ) {
+    : assert(
+        _instCount == 0,
+        'Dont construct this class. Use .instance instead',
+      ) {
     _instCount++;
     DataWedgeFlutterApi.setUp(this);
   }
@@ -90,7 +90,7 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
       try {
         await _hostApi.setDecoder(decoder, enabled, profileName);
         availableDecoders.add(decoder);
-      } catch (e) {
+      } on Exception {
         logger.info('Decoder $decoder not available');
       }
     }
@@ -158,23 +158,27 @@ class FlutterDataWedge extends DataWedgeFlutterApi {
   Future<void> resumePlugin() async {
     logger.debug('Resuming plugin');
     final resCode = await _hostApi.resumePlugin();
+    logger.debug('Resume plugin result: $resCode');
   }
 
   /// Suspends scanning temporarily
   Future<void> suspendPlugin() async {
     logger.debug('Suspending plugin');
     final resCode = await _hostApi.suspendPlugin();
+    logger.debug('Suspend plugin result: $resCode');
   }
 
   /// Disables scanning
   Future<void> disablePlugin() async {
     logger.debug('Disabling plugin');
     final resCode = await _hostApi.disablePlugin();
+    logger.debug('Disable plugin result: $resCode');
   }
 
   /// Enables scanning
   Future<void> enablePlugin() async {
     logger.debug('Enabling plugin');
     final resCode = await _hostApi.enablePlugin();
+    logger.debug('Enable plugin result: $resCode');
   }
 }

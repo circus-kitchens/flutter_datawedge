@@ -5,23 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "flutter_datawedge",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "flutter_datawedge (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "flutter_datawedge (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
             "name": "example",
             "cwd": "example",
             "request": "launch",

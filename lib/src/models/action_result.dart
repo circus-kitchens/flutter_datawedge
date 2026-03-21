@@ -13,10 +13,11 @@ abstract class ActionResult with _$ActionResult {
     required Map<String, dynamic>? resultInfo,
   }) = _ActionResult;
 
+  factory ActionResult.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ActionResultFromJson(json);
+
   const ActionResult._();
 
   bool get success => result == 'SUCCESS';
-
-  factory ActionResult.fromJson(Map<String, dynamic> json) =>
-      _$ActionResultFromJson(json);
 }
